@@ -1,3 +1,6 @@
 [submodule "server/skynet"]
 	path = server/skynet
 	url = https://github.com/cloudwu/skynet.git
+[submodule "client/cocos2d-x"]
+	path = client/cocos2d-x
+	url = https://github.com/cocos2d/cocos2d-x.git
