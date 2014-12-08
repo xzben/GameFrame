@@ -3,14 +3,18 @@
 --
 -- @ author xzben 2014/05/16
 --
---
+-- cocostudio 的辅助工具，用于读取从cocostudio中导出的文件
 -------------------------------------------------------------------------------
 
 require_ex("core.Helper")
 
 CocoStudioHelper = CocoStudioHelper or {}
 
-
+--[[
+CocoStudioHelper.load_scene
+CocoStudioHelper.init_ui_controls
+CocoStudioHelper.load_ui
+--]]
 local LOADED_WIDGET = {}
 local AUTO_COUNT 	= {}
 
@@ -65,6 +69,9 @@ function load_widget(init_layer_obj, layer_json_file)
 	return retwidget
 end
 
+--[[
+	用于加载 cocostudio 导出的场景
+--]]
 function CocoStudioHelper.load_scene(init_layer_obj, scene_file)
 	init_layer_obj.widget_ = ccs.SceneReader:getInstance():createNodeWithSceneFile(scene_file)
 	init_layer_obj:addChild(init_layer_obj.widget_)
@@ -84,7 +91,9 @@ function CocoStudioHelper.load_scene(init_layer_obj, scene_file)
 	end
 end
 
-
+--[[
+	用户遍历初始化 cocostudio 导出的 layer
+--]]
 function CocoStudioHelper.init_ui_controls(init_layer_obj, table_control_map)
 	init_layer_obj.controls_ = {}
 	for _, theControl in ipairs(table_control_map) do

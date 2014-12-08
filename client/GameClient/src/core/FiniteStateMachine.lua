@@ -2,7 +2,8 @@
 -- @file FiniteStateMachine.lua
 --
 --  有限状态机 实现
---  使用方法
+--  使用方法 一、通过 init 函数传递一个初始化的配置table，具体见 init 接口
+--  使用方法 二、自己调用各个函数初始化
 --  第一步: 
 --		新建状态机对象:
 --			1、可以对一个骨骼动画使用  FiniteStateMachine.extend(AnimationNode)

@@ -37,6 +37,8 @@ end
 function GameScene:init()
     CocoStudioHelper.load_scene(self, "publish/FightScene.csb")
     FightUI.extend(self:get_component_by_name("ui", "GUIComponent"))
+    self.hero_img_ = self:get_component_by_tag(10010, "CCSprite")
+    self.hero_img_:setVisible(false)
 
     local fsm_init_tbl = {
         init_state = "attack",

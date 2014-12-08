@@ -35,6 +35,9 @@ function Helper.split_filename_ext(filepath)
 	return filename, ext
 end
 
+--[[
+	深度查找 node 的子节点通过节点的 name
+--]]
 function Helper.seek_child_by_name(root, name)
 	local function search_node(node)
 		if node == nil then 
@@ -56,14 +59,16 @@ function Helper.seek_child_by_name(root, name)
 	
 	return search_node(root)
 end
-
+--[[
+	深度查找 node 的子节点通过节点的 tag
+--]]
 function Helper.seek_child_by_tag(root, tag)
 	local function search_node(node)
 		if node == nil then 
 			return 
 		end
 
-		if node:getTag() == name then
+		if node:getTag() == tag then
 			return node
 		end
 
