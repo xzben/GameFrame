@@ -28,7 +28,7 @@ end
 
 -- for CCLuaEngine traceback
 function __G__TRACKBACK__(msg)
-    cclog("----------------------------------------")
+    cclog("----------------------------------------------------")
     cclog("LUA ERROR: " .. tostring(msg) .. "\n")
     local tracestr = debug.traceback()
 
@@ -37,7 +37,7 @@ function __G__TRACKBACK__(msg)
     end
     
     cclog(tracestr)
-    cclog("----------------------------------------")
+    cclog("----------------------------------------------------")
     return msg
 end
 
@@ -74,6 +74,7 @@ require_ex("core.FiniteStateMachine")
 
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")
+require_ex("core.SensitiveWordHelper")
 
 local function init_file_utils()
     
