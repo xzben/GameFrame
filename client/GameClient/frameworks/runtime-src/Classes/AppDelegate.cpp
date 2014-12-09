@@ -3,6 +3,7 @@
 #include "SimpleAudioEngine.h"
 #include "cocos2d.h"
 #include "lua_module_register.h"
+#include "network/MemoryPool.h"
 
 using namespace CocosDenshion;
 
@@ -38,6 +39,16 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     // If you want to use Quick-Cocos2d-X, please uncomment below code
     // register_all_quick_manual(L);
+
+	MemoryPool pool(MemSize::SIZE1M);
+
+	void* buffer1 = pool.Alloc(MemSize::SIZE1K);
+	pool.Free(buffer1);
+	void* buffer2 = pool.Alloc(MemSize::SIZE1K);
+	pool.Free(buffer1);
+	void* buffer3 = pool.Alloc(MemSize::SIZE1K*2);
+	pool.Free(buffer3);
+	void* buffer4 = pool.Alloc(MemSize::SIZE1K);
 
     if (engine->executeScriptFile("src/main.lua")) {
         return false;

@@ -168,6 +168,10 @@
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\crab\crab.h" />
+    <ClInclude Include="..\Classes\network\MemoryPool.h" />
+    <ClInclude Include="..\Classes\network\Mutex.h" />
+    <ClInclude Include="..\Classes\network\network.h" />
+    <ClInclude Include="..\Classes\network\packet.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -175,6 +179,10 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\crab\lua_crab.cpp" />
     <ClCompile Include="..\Classes\crab\lua_utf8.cpp" />
+    <ClCompile Include="..\Classes\network\MemoryPool.cpp" />
+    <ClCompile Include="..\Classes\network\Mutex.cpp" />
+    <ClCompile Include="..\Classes\network\network.cpp" />
+    <ClCompile Include="..\Classes\network\packet.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

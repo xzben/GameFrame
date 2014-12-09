@@ -13,6 +13,9 @@
     <Filter Include="Classes\crab">
       <UniqueIdentifier>{e957e116-708e-490f-b361-f1d21712bee6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\network">
+      <UniqueIdentifier>{819a0262-4144-46b5-b0db-1dff5023d533}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -24,6 +27,18 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="..\Classes\crab\crab.h">
       <Filter>Classes\crab</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\network\packet.h">
+      <Filter>Classes\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\network\network.h">
+      <Filter>Classes\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\network\MemoryPool.h">
+      <Filter>Classes\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\network\Mutex.h">
+      <Filter>Classes\network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +53,18 @@
     </ClCompile>
     <ClCompile Include="..\Classes\crab\lua_utf8.cpp">
       <Filter>Classes\crab</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\network\packet.cpp">
+      <Filter>Classes\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\network\network.cpp">
+      <Filter>Classes\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\network\MemoryPool.cpp">
+      <Filter>Classes\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\network\Mutex.cpp">
+      <Filter>Classes\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
