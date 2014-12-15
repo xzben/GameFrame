@@ -39,4 +39,26 @@ public:
 protected:
 	std::timed_mutex	m_lock;
 };
+
+class Guard
+{
+public:
+	Guard(Mutex* pMutex)
+	{
+		m_pGuardMuext = pMutex;
+		if (nullptr != m_pGuardMuext)
+		{
+			m_pGuardMuext->lock();
+		}
+	}
+	~Guard()
+	{
+		if (nullptr != m_pGuardMuext)
+		{
+			m_pGuardMuext->unlock();
+		}
+	}
+private:
+	Mutex	*m_pGuardMuext;
+};
 #endif//__2014_12_9_MUTEX_H__

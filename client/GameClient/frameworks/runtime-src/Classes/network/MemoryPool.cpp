@@ -1,4 +1,5 @@
 #include "MemoryPool.h"
+#include <cassert>
 
 typedef unsigned int uint32;
 typedef int			 int32;
@@ -14,23 +15,27 @@ struct apr_memnode_t{
 	char*			endp;			//指向当前可用地址的结束地址　
 };
 
+/*
+*	function:	计算最接近nSize 的 nBoundary 的整数倍的整数，获得按指定字节对齐后的大小
+*	parameter:	__nSize 为整数， _nBoundary，必须为 2 的倍数
+*	example:	Align(7， 4) = 8，Align(21, 16) = 32
+*/
+#define Align(__nSize, __nBoundary) (( (__nSize) + (__nBoundary)-1) & ~((__nBoundary) - 1))
+
 class Allocator
 {
 public:
-	enum{
-		APR_ALLOCATOR_MAX_FREE_UNLIMITED = 0,	//代表分配器分配的内存没有上限
-		DEFAULT_ALIGN = 8,						//代表 8 字节对齐
-		MAX_INDEX = 20,							//代表内存列表的节点	
-		BOUNDARY_INDEX = 12,					// 内存块的对齐 index 
-		BOUNDARY_SIZE =  (1 << BOUNDARY_INDEX), // 内存块的对齐大小size
-		MIN_ALLOC = 2*BOUNDARY_SIZE,
-	};
+
 public:
-	Allocator(size_t nMaxSize = APR_ALLOCATOR_MAX_FREE_UNLIMITED);
+	/*
+	*	nMinIndex		用于计算最小内存块大小 最小内存单元块的大小 = Align(1<<nMinIndex, DEFAULT_ALIGN)
+	*	nMaxSize		分配器list上最多挂靠的重复利用的内存大小
+	*/
+	Allocator(uint32_t nMinIndex, uint64_t nMaxSize = MemoryPool::APR_ALLOCATOR_MAX_FREE_UNLIMITED, uint32_t list_size = MemoryPool::DEFAULT_LIST_SIZE);
 	virtual ~Allocator();
 	inline const int GetMemNodeSize()
 	{
-		const int nMemNodeSize = Align(sizeof(apr_memnode_t), DEFAULT_ALIGN);
+		const int nMemNodeSize = Align(sizeof(apr_memnode_t), MemoryPool::DEFAULT_ALIGN);
 		return nMemNodeSize;
 	}
 	/*
@@ -60,15 +65,7 @@ private:
 		uiMagic *= uiMagic;
 		return (uint32)uiMagic;
 	}
-	/*
-	*	function:	计算最接近nSize 的 nBoundary 的整数倍的整数，获得按指定字节对齐后的大小
-	*	parameter:	nSize 为整数， nBoundary，必须为 2 的倍数
-	*	example:	Align(7， 4) = 8，Align(21, 16) = 32
-	*/
-	static inline size_t Align(size_t nSize, size_t nBoundary)
-	{
-		return ((nSize +nBoundary-1) & ~(nBoundary - 1));
-	}
+	
 	/*
 	*	function:	设置分配子的最大内存分配空间限制，此设置关系到，
 	*				当分配子中有多大内存时会将内存返回给系统回收
@@ -79,40 +76,43 @@ private:
 	{
 		uint32 uiMaxIndex = Align(nSize, BOUNDARY_SIZE) >> BOUNDARY_INDEX;
 		
-		//设置新的最大可存放空间大小，这操作要保证当前 m_uiCurAllocIndex(当前可存储在分配器中的内存大小)
-		//做合理的调整，如果设置新最大值时，m_uiCurAllocIndex ==  m_uiMaxIndex 则要做相应的增加，
-		//如果 m_uiCurAllocIndex < m_uiMaxIndex 那么加上这个差值也不会影响，因为 m_uiCurAllocIndex 会在后续的使用中
-		//达到这个值。
-		m_uiCurAllocIndex += uiMaxIndex - m_uiMaxIndex;
 		m_uiMaxIndex = uiMaxIndex;
-
-		if(m_uiCurAllocIndex > uiMaxIndex)
-			m_uiCurAllocIndex = uiMaxIndex;
 	}
 	/*
 	*	将分配器中挂载的空间全部给系统回收
 	*/
 	void Destroy();
 private:
-	uint32			m_uiMagic; //用于记录次分配器分配的内存块的标记值
-	uint32			m_uiCurMaxBlockIndex; //分配器中当前可用的最大块的的大小index
-	uint32			m_uiMaxIndex;//分配器可以存储的最大空间大小index
-	uint32			m_uiCurAllocIndex;//当前已经分配的可留在分配器中的空间大小，其值总是在 m_uiMaxIndex范围内
-	Mutex			m_mutex;		 //多线程访问锁
-	apr_memnode_t	*m_pfree[MAX_INDEX];//分配器当前挂载的可用内存块
+	uint32_t			m_uiMagic;				//用于记录次分配器分配的内存块的标记值
+	uint32_t			m_uiCurMaxBlockIndex;	//分配器中当前可用的最大块的的大小index
+	uint32_t			m_uiMaxIndex;			//分配器可以存储的最大空间大小	m_uiMaxIndex * BOUNDARY_SIZE
+	uint32_t			m_uiCurAllocIndex;		//当前已经分配的可留在分配器中的空间大小  m_uiCurAllocIndex * BOUNDARY_SIZE
+	Mutex				m_mutex;				//多线程访问锁
+	apr_memnode_t		**m_pfree;	//分配器当前挂载的可用内存块
+	const uint32_t		BOUNDARY_INDEX;			//最小的内存块的index
+	const uint32_t		BOUNDARY_SIZE;			//内存池中的内存块的单元大小
+	const uint32_t		MIN_ALLOC;				//内存池中最小分配的内存大小 = 2*BOUNDAY_SIZE
+	const uint32_t		LIST_SIZE;				//内存池中挂靠复用内存的list的大小,其大小决定内存池中可挂靠多少种不同大小的内存块。
+
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //class Allocator public
-Allocator::Allocator(size_t nMaxSize /*= APR_ALLOCATOR_MAX_FREE_UNLIMITED*/)
+Allocator::Allocator(uint32_t nMinIndex, uint64_t nMaxSize /* = APR_ALLOCATOR_MAX_FREE_UNLIMITED */, uint32_t list_size /*= DEFAULT_LIST_SIZE*/)
+	:BOUNDARY_INDEX(nMinIndex),
+	BOUNDARY_SIZE( Align(1<<BOUNDARY_INDEX, MemoryPool::DEFAULT_ALIGN) ),
+	MIN_ALLOC(2*BOUNDARY_SIZE),
+	LIST_SIZE(list_size)
 {
 	m_uiMagic = CreateMagic();
 	m_uiCurMaxBlockIndex = 0; //初始状态下，m_pfree[] 为空，所以没有最大可用块 
-	m_uiMaxIndex = APR_ALLOCATOR_MAX_FREE_UNLIMITED;//初始状态为可存储空间无限
+	m_uiMaxIndex = MemoryPool::APR_ALLOCATOR_MAX_FREE_UNLIMITED;//初始状态为可存储空间无限
 	m_uiCurAllocIndex = 0;//当前已经分配的可留在分配器中的空间大小，其值总是在 m_uiMaxIndex范围内
-	memset(m_pfree, 0, sizeof(m_pfree));
+	m_pfree = new apr_memnode_t*[LIST_SIZE];
 
-	if(nMaxSize != APR_ALLOCATOR_MAX_FREE_UNLIMITED)
+	memset(m_pfree, 0, sizeof(apr_memnode_t*)*LIST_SIZE);
+
+	if(nMaxSize != MemoryPool::APR_ALLOCATOR_MAX_FREE_UNLIMITED)
 		SetMaxSize(nMaxSize);
 }
 
@@ -142,10 +142,11 @@ apr_memnode_t* Allocator::Alloc(size_t nAllocSize)
 	{
 		return NULL;
 	}
-	if(index <= m_uiCurMaxBlockIndex)//当前存在可用的内存块够index
-	{
-		m_mutex.lock();
 
+	Guard guard(&m_mutex);
+	//当前存在大小够用的内存块
+	if(index <= m_uiCurMaxBlockIndex)
+	{
 		uiCurMaxBlockIndex = m_uiCurMaxBlockIndex;
 		ref = &m_pfree[index];
 		i = index;
@@ -165,20 +166,16 @@ apr_memnode_t* Allocator::Alloc(size_t nAllocSize)
 				m_uiCurMaxBlockIndex = uiCurMaxBlockIndex;
 			}
 
-			m_uiCurAllocIndex += node->index + 1;
-			if(m_uiCurAllocIndex > m_uiMaxIndex)
-				m_uiCurAllocIndex = m_uiMaxIndex;
+			m_uiCurAllocIndex -= (node->index + 1);
+			if(m_uiCurAllocIndex < 0) m_uiCurAllocIndex = 0;
 
-			m_mutex.unlock();
 			node->next = NULL;
 			node->first_avail= (char*)node + nMemNodeSize;
 			return node;
 		}
-		m_mutex.unlock();
 	}
 	else if(m_pfree[0])//如果有可用的大内存块在可用的大内存块中寻找
 	{
-		m_mutex.lock();
 		ref = &m_pfree[0];
 		while(NULL != (node = *ref) && index > node->index)
 			ref = &node->next;
@@ -186,16 +183,13 @@ apr_memnode_t* Allocator::Alloc(size_t nAllocSize)
 		if(node)
 		{
 			*ref = node->next;
-			m_uiCurAllocIndex += node->index + 1;
-			if(m_uiCurAllocIndex > m_uiMaxIndex)
-				m_uiCurAllocIndex = m_uiMaxIndex;
-
-			m_mutex.unlock();
+			m_uiCurAllocIndex -= (node->index + 1);
+			if(m_uiCurAllocIndex < 0) m_uiCurAllocIndex = 0;
+			
 			node->next = NULL;
 			node->first_avail = (char*)node + nMemNodeSize;
 			return node;
 		}
-		m_mutex.unlock();
 	}
 
 	//如果分配新内存失败
@@ -219,21 +213,21 @@ void Allocator::Free(apr_memnode_t *node)
 	uint32 uiMaxIndex, uiCurAllocIndex;
 
 	m_mutex.lock();
+
 	uiCurMaxBlockIndex = m_uiCurMaxBlockIndex;
 	uiMaxIndex = m_uiMaxIndex;
 	uiCurAllocIndex = m_uiCurAllocIndex;
-
 	do{
 		next = node->next;
 		index = node->index;
 
-		if(APR_ALLOCATOR_MAX_FREE_UNLIMITED != uiMaxIndex
-			&& index + 1 > uiCurAllocIndex) //如果当前index + 1 空间是超出限定maxindex 的空间则将其删除
+		if(MemoryPool::APR_ALLOCATOR_MAX_FREE_UNLIMITED != uiMaxIndex
+			&& uiCurAllocIndex >= uiMaxIndex) //如果当前 list 挂靠的内存块的size 超过了 最大限制则释放此节点
 		{
 			node->next = freelist;
 			freelist = node;
 		}
-		else if(index < MAX_INDEX)
+		else if(index < LIST_SIZE)
 		{
 			if(NULL == (node->next = m_pfree[index])
 				&& index > uiCurMaxBlockIndex)
@@ -241,26 +235,21 @@ void Allocator::Free(apr_memnode_t *node)
 				uiCurMaxBlockIndex = index;
 			}
 			m_pfree[index] = node;
-			if(uiCurAllocIndex >= index + 1)
-				uiCurAllocIndex -= index + 1;
-			else
-				uiCurAllocIndex = 0;
+			
+			uiCurAllocIndex += (index + 1);
 		}
 		else
 		{
 			node->next = m_pfree[0];
 			m_pfree[0] = node;
-			if(uiCurAllocIndex >= index + 1)
-				uiCurAllocIndex -= index + 1;
-			else
-				uiCurAllocIndex = 0;
 
+			uiCurAllocIndex += (index + 1);
 		}
 	}while(NULL != (node = next));
 	m_uiCurMaxBlockIndex = uiCurMaxBlockIndex;
 	m_uiCurAllocIndex = uiCurAllocIndex;
-
 	m_mutex.unlock();
+
 	while(NULL != freelist)
 	{
 		node = freelist;
@@ -268,12 +257,13 @@ void Allocator::Free(apr_memnode_t *node)
 		free(node);
 	}
 }
+
 void Allocator::Destroy()
 {
 	uint32 index;
 	apr_memnode_t *node, **ref;
 
-	for(index = 0; index < MAX_INDEX; index++)
+	for(index = 0; index < LIST_SIZE; index++)
 	{
 		ref = &m_pfree[index];
 		while((node = *ref) != NULL){
@@ -284,11 +274,12 @@ void Allocator::Destroy()
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 //class MemoryPool public
-MemoryPool::MemoryPool(size_t nMaxSize /*= Allocator::APR_ALLOCATOR_MAX_FREE_UNLIMITED*/)
+MemoryPool::MemoryPool(uint32_t nMinIndex, uint64_t nMaxSize /*= MemoryPool::APR_ALLOCATOR_MAX_FREE_UNLIMITED*/, uint32_t list_size /*= MemoryPool::DEFAULT_LIST_SIZE*/)
 {
-	m_pAllocator = new Allocator(nMaxSize);
+	m_pAllocator = new Allocator(nMinIndex, nMaxSize, list_size);
 }
-void* MemoryPool::Alloc(size_t nAllocaSize)
+
+void* MemoryPool::Alloc(uint64_t nAllocaSize)
 {
 	apr_memnode_t* node = m_pAllocator->Alloc(nAllocaSize);
 	if(node == NULL)
@@ -306,6 +297,7 @@ bool MemoryPool::Free(void* pMem)
 	apr_memnode_t* node = (apr_memnode_t*)((char*)pMem - m_pAllocator->GetMemNodeSize());
 	if(node->magic != m_pAllocator->GetMagic()) //如果此段内存不是此内存池的分配器分配的
 	{
+		assert(false);
 		return false;
 	}
 	m_pAllocator->Free(node);
