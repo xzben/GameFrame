@@ -27,6 +27,10 @@ function SensitiveWordHelper:filter_word( fliter_str )
 	return output, have_filter
 end
 
+function SensitiveWordHelper:destroy()
+	crab_core.delete_crab_obj(self._crab_obj)
+end
+
 ---[[ use example
 require_ex("Profiles.propFilterWords") --262.3798828125 KB
 local crab_obj = SensitiveWordHelper.new(propFilterWords)
@@ -34,4 +38,5 @@ local crab_obj = SensitiveWordHelper.new(propFilterWords)
 propFilterWords = nil	
 collectgarbage("collect")
 print( crab_obj:filter_word("我今天10颁奖, 你10颁奖, 他10颁奖") )
+crab_obj:destroy()
 --]]

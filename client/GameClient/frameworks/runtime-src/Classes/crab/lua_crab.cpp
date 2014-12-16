@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "crab.h"
+#include <vector>
 
 #define	luaL_checkversion(a)
 #define lua_pushunsigned		lua_pushnumber
 #define lua_tounsigned			lua_tonumber
 #define lua_rawlen				lua_objlen
+
 
 static int lua_tounsignedx(lua_State *L, int idx, int* isNum)
 {
@@ -169,20 +171,22 @@ table_new() {
     return t;
 }
 
-// construct dictinory tree
 static void
-_dict_close(Table *t) {
-    if(t == NULL) {
-        return;
-    }
-    int i = 0;
-    for(i=0; i<t->capacity; i++) {
-        TableNode *node = t->node + i;
-        if(node->flag != 0) {
-            _dict_close((Table*)node->value);
-        }
-    }
-    free(t->node);
+_dict_close(Table *t, bool free_root) {
+	if(t == NULL) {
+		return;
+	}
+	int i = 0;
+	for(i=0; i<t->capacity; i++) {
+		TableNode *node = t->node + i;
+
+		if((Table*)node->value != NULL) {
+			_dict_close((Table*)node->value, true);
+		}
+	}
+	free(t->node);
+	if(free_root)
+		free(t);
 }
 
 static void
@@ -259,7 +263,7 @@ static int new_crab_obj(lua_State *L){
 	for(i=1;i<=len;i++) {
 		lua_rawgeti(L, 1, i);
 		if(!_dict_insert(L, dict)) {
-			_dict_close(dict);
+			_dict_close(dict, false);
 			return luaL_error(L, "illegal parameters in table index %d", i);
 		}
 		lua_pop(L, 1);
@@ -308,6 +312,15 @@ static int filter_word(lua_State *L)
 	lua_pushboolean(L, flag);
 	return 1;
 }
+
+static int delete_crab_obj(lua_State *L)
+{
+	Table* dict = check_crab_obj(L, 1);
+	_dict_close(dict, false);
+
+	return 1;
+}
+
 // interface
 int
 luaopen_crab_c(lua_State *L) {
@@ -316,6 +329,7 @@ luaopen_crab_c(lua_State *L) {
     luaL_Reg l[] = {
 		{"new_crab_obj", new_crab_obj},
 		{"filter_word", filter_word},
+		{"delete_crab_obj", delete_crab_obj},
         {NULL, NULL}
     };
 
