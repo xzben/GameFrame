@@ -1,12 +1,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "crab.h"
-#include <vector>
+#include <queue>
 
-#define	luaL_checkversion(a)
-#define lua_pushunsigned		lua_pushnumber
-#define lua_tounsigned			lua_tonumber
-#define lua_rawlen				lua_objlen
+//support for lua 5.1 if use lua 5.1 please off this macro
+#if 1
+	#define	luaL_checkversion(a)
+	#define lua_pushunsigned		lua_pushnumber
+	#define lua_tounsigned			lua_tonumber
+	#define lua_rawlen				lua_objlen
+#endif
 
 
 static int lua_tounsignedx(lua_State *L, int idx, int* isNum)
@@ -189,6 +192,29 @@ _dict_close(Table *t, bool free_root) {
 		free(t);
 }
 
+static void 
+_disct_free(Table *t){
+	std::queue<Table*> free_queue;
+
+	free_queue.push(t);
+	while(!free_queue.empty())
+	{
+		Table* tmp = free_queue.front();
+		free_queue.pop();
+
+		for(int i = 0; i < tmp->capacity; i++)
+		{
+			TableNode* node = tmp->node + i;
+			if(node->value != NULL)
+				free_queue.push((Table*)node->value);
+		}
+		free(tmp->node);
+		if(tmp != t)
+			free(tmp);
+	}
+
+}
+
 static void
 _dict_dump(Table *t, int indent) {
     if(t == NULL) {
@@ -248,7 +274,7 @@ _dict_insert(lua_State *L, Table* dict) {
 #define set_crab_obj_flag(L)		do{ luaL_getmetatable((L), "crab.object");lua_setmetatable((L), -2); }while(0)
 
 static int new_crab_obj(lua_State *L){
-	luaL_checktype(L, 1, LUA_TTABLE);//检查第一个参数是否是table
+	luaL_checktype(L, 1, LUA_TTABLE);//妫�鏌ョ涓�涓弬鏁版槸鍚︽槸table
 
 	Table *dict = (Table*)lua_newuserdata(L, sizeof(Table));
 	set_crab_obj_flag(L);
@@ -263,7 +289,7 @@ static int new_crab_obj(lua_State *L){
 	for(i=1;i<=len;i++) {
 		lua_rawgeti(L, 1, i);
 		if(!_dict_insert(L, dict)) {
-			_dict_close(dict, false);
+			_disct_free(dict);
 			return luaL_error(L, "illegal parameters in table index %d", i);
 		}
 		lua_pop(L, 1);
@@ -316,7 +342,7 @@ static int filter_word(lua_State *L)
 static int delete_crab_obj(lua_State *L)
 {
 	Table* dict = check_crab_obj(L, 1);
-	_dict_close(dict, false);
+	_disct_free(dict);
 
 	return 1;
 }

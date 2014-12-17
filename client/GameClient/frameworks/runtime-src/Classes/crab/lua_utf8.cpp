@@ -3,10 +3,13 @@
 #include <stdint.h>
 #include "crab.h"
 
-#define	luaL_checkversion(a)
-#define lua_pushunsigned		lua_pushnumber
-#define lua_tounsigned			lua_tonumber
-#define lua_rawlen				lua_objlen
+//support for lua 5.1 if use lua 5.1 please off this macro
+#if 1
+	#define	luaL_checkversion(a)
+	#define lua_pushunsigned		lua_pushnumber
+	#define lua_tounsigned			lua_tonumber
+	#define lua_rawlen				lua_objlen
+#endif
 
 static int lua_tounsignedx(lua_State *L, int idx, int* isNum)
 {
