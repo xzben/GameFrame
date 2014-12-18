@@ -1,9 +1,9 @@
 root = "./"
 thread = 8
-logger = nil -- root.."../log/skynet_cm.log"
+logger = nil -- root.."../log/skynet_c1.log"
 logpath = "."
 harbor = 0
-start = "main"	-- main script
+start = "cluster_main"	-- main script
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
 luaservice = root.."service/?.lua;"..root.."test/?.lua;"..root.."../source/?.lua"
 lualoader = "lualib/loader.lua"
@@ -16,8 +16,7 @@ cluster =  root.."../source/clustername.lua"
 
 -- my config data
 max_client  		= 10			--当前节点最多链接的客户端数目
-harbor_name 		= "main"		--当前节点的名字
+harbor_name 		= "node1"		--当前节点的名字
 
-client_port 		= 3000 			--客户端链接的端口
-debug_console_port 	= 4000 			--debug console 服务的端口
+client_port 		= 3001 			--客户端链接的端口
 
