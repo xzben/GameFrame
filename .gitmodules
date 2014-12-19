@@ -7,3 +7,6 @@
 [submodule "client/3rd/pbc"]
 	path = client/3rd/pbc
 	url = https://github.com/cloudwu/pbc.git
+[submodule "server/3rd/pbc"]
+	path = server/3rd/pbc
+	url = https://github.com/cloudwu/pbc.git
