@@ -3,7 +3,7 @@ local netpack = require "netpack"
 local socket = require "socket"
 local sproto = require "sproto"
 local bit32 = require "bit32"
-
+local protobuf = require "protobuf"
 local host
 local send_request
 

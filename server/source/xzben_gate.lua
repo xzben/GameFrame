@@ -3,6 +3,7 @@ local gateserver = require "snax.gateserver"
 local netpack = require "netpack"
 
 local watchdog
+local auth
 local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
 local forwarding = {}	-- agent -> connection
 
@@ -15,6 +16,7 @@ local handler = {}
 
 function handler.open(source, conf)
 	watchdog = conf.watchdog or source
+	auth 	 = conf.auth
 end
 
 function handler.message(fd, msg, sz)
@@ -23,6 +25,8 @@ function handler.message(fd, msg, sz)
 	local agent = c.agent
 	if agent then
 		skynet.redirect(agent, c.client, "client", 0, msg, sz)
+	elseif auth then
+		skynet.send(auth, "lua", "data", fd, netpack.tostring(msg, sz))
 	else
 		skynet.send(watchdog, "lua", "socket", "data", fd, netpack.tostring(msg, sz))
 	end

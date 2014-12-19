@@ -15,8 +15,10 @@ cluster =  root.."../source/clustername.lua"
 
 
 -- my config data
+lua_path = root.."../source/?.lua;"..root.."lualib/?.lua;"..root.."lualib/?/init.lua".."./lualib/?.lua;./lualib/?/init.lua"
+lua_cpath = root.."../source/libs/?.so;"..root.."luaclib/?.so;".."./luaclib/?.so"
+
 max_client  		= 10			--当前节点最多链接的客户端数目
 harbor_name 		= "node1"		--当前节点的名字
-
 client_port 		= 3001 			--客户端链接的端口
-
+debug_console_port 	= 4001 			--debug console 服务的端口

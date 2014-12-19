@@ -1,23 +1,26 @@
-root = "./"
+root = "./skynet/"
 thread = 8
 logger = nil -- root.."../log/skynet_cm.log"
 logpath = "."
 harbor = 0
 start = "main"	-- main script
+
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
-luaservice = root.."service/?.lua;"..root.."test/?.lua;"..root.."../source/?.lua"
-lualoader = "lualib/loader.lua"
---preload = "./examples/preload.lua"	-- run preload.lua before every lua service run
-snax = root.."examples/?.lua;"..root.."test/?.lua;"..root.."../source/?.lua"
-cpath = root.."cservice/?.so"
--- daemon = "./skynet.pid.cm"
+
+luaservice = root.."../source/?.lua;"..root.."service/?.lua;"..root.."test/?.lua;"
+lualoader = root.."lualib/loader.lua"
+preload = root.."../source/preload.lua"	-- run preload.lua before every lua service run
+snax = root.."../source/?.lua;"..root.."examples/?.lua;"..root.."test/?.lua;"
+cpath = root.."../source/libs/?.so;"..root.."cservice/?.so;"
+-- daemon = root.."./skynet.pid.cm"
 cluster =  root.."../source/clustername.lua"
 
-
 -- my config data
+lua_path = root.."../source/?.lua;"..root.."lualib/?.lua;"..root.."lualib/?/init.lua".."./lualib/?.lua;./lualib/?/init.lua"
+lua_cpath = root.."../source/libs/?.so;"..root.."luaclib/?.so;".."./luaclib/?.so"
+
 max_client  		= 10			--当前节点最多链接的客户端数目
 harbor_name 		= "main"		--当前节点的名字
-
 client_port 		= 3000 			--客户端链接的端口
 debug_console_port 	= 4000 			--debug console 服务的端口
 

@@ -1,9 +1,10 @@
+package.path = "../source/?.lua;" .. package.path
+
 local skynet = require "skynet"
 local netpack = require "netpack"
-local proto = require "proto"
 
 local gate  	--门服务
-local auth 		--验证服务
+local auth 	--验证服务
 
 local CMD = {}
 local SOCKET = {}
@@ -12,8 +13,15 @@ local agent = {}
 
 -- 有客户端链接请求过来
 function SOCKET.open(fd, addr)
+	print(string.format("[watchdog]: a new client connecting fd( %d ) address( %s )", fd, addr))
+	
+	-- 开启接收客户端的数据
+	skynet.call(gate, "lua", "accpet", fd)
+	
+	--[[
 	agent[fd] = skynet.newservice("agent")
 	skynet.call(agent[fd], "lua", "start", gate, fd, proto)
+	--]]
 end
 
 local function close_agent(fd)
@@ -35,9 +43,11 @@ function SOCKET.error(fd, msg)
 end
 
 function SOCKET.data(fd, msg)
+
 end
 
 function CMD.start(conf)
+	conf.auth = auth
 	skynet.call(gate, "lua", "open" , conf)
 end
 
