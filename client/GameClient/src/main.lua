@@ -71,10 +71,10 @@ require_ex("core.EventDispatcher")
 require_ex("core.Helper")
 require_ex("core.CocoStudioHelper")
 require_ex("core.FiniteStateMachine")
+require_ex("core.VisibleRect")
+require_ex("core.TouchHelper")
 
-require_ex("View.GameScene.FightUI")
-require_ex("View.GameScene.GameScene")
-require_ex("core.SensitiveWordHelper")
+require_ex("View.LauchScene.LauchScene")
 
 local function init_file_utils()
     
@@ -100,7 +100,7 @@ end
 
 
 function lauch_scene()
-    local scene = GameScene.create()
+    local scene = LauchScene.create()
 
     -- 
     -- 如果GSession存在，则程序正在走重新启动游戏流程，需要先将GSession销毁
@@ -111,7 +111,7 @@ function lauch_scene()
         return 
     end
 
-    if cc.Director:getInstance():getRunningScene() then 
+    if cc.Director:getInstance():getRunningScene() then
         cc.Director:getInstance():replaceScene(scene)
     else
         cc.Director:getInstance():runWithScene(scene)

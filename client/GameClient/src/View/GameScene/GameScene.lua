@@ -31,7 +31,7 @@ function GameScene:on_enter( )
 end
 
 function GameScene:on_exit( )
-	--self:destroy()
+	self:destroy()
 end
 
 function GameScene:init()
