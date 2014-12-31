@@ -60,13 +60,19 @@ class CCNetwork : public cocos2d::CCNode
 public:
 	CCNetwork();
 	~CCNetwork();
-	
 	bool	init() override;
 	void	update(float delta) override;
 	int		connect(const char* host, short port, int timeval = 1000);
+	int		send_msg(PacketBuffer* buf);
+protected:
+	static void	recvThreadFunc(void* param);
 private:
 	TCPSocket		m_socket;	
-	PacketQueue		m_packets;
+	PacketQueue		m_sendPackets;
+	PacketQueue		m_recvPackets;
+	std::thread		*m_recvThread;
+	Condition		m_recvThreadCond;
+	bool			m_close;
 	bool			m_bConnected;
 	char			m_szHost[20];
 	short			m_port;

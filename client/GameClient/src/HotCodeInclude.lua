@@ -7,9 +7,15 @@ require_ex("core.CocoStudioHelper")
 require_ex("core.EventDispatcher")
 require_ex("core.Helper")
 require_ex("core.SensitiveWordHelper")
+require_ex("core.VisibleRect")
+require_ex("core.FiniteStateMachine")
+require_ex("core.TouchHelper")
 
 
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")
 
 require_ex("View.PhysicsScene.PhysicsScene")
+
+
+

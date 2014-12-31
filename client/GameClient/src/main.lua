@@ -70,10 +70,8 @@ require_ex("Configure")
 require_ex("core.EventDispatcher")
 require_ex("core.Helper")
 require_ex("core.CocoStudioHelper")
-require_ex("core.FiniteStateMachine")
 require_ex("core.VisibleRect")
 require_ex("core.TouchHelper")
-
 require_ex("View.LauchScene.LauchScene")
 
 local function init_file_utils()

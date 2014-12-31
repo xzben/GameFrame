@@ -32,7 +32,6 @@ function FightUI:control_init_right_mp_progress(control_obj)
 	control_obj:setPercent(50)
 end
 
-
 local FightUIControls = {
 	{tag_name 	= "hp01_LoadingBar", 	init_callback 	= FightUI.control_init_left_hp_progress},
 	{tag_name 	= "mp01_LoadingBar", 	init_callback 	= FightUI.control_init_left_mp_progress},

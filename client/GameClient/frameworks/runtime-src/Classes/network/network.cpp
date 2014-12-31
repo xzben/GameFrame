@@ -142,6 +142,7 @@ int		TCPSocket::send_msg(void* buffer, int len)
 
 	return nSendSize;
 }
+
 bool	TCPSocket::close()
 {
 	if (-1 == m_hSocket) 
@@ -158,6 +159,7 @@ bool	TCPSocket::close()
 
 	return bRet;
 }
+
 void	TCPSocket::get_status(bool *pReadReady /* = nullptr */, bool* pWriteReady /* = nullptr */, bool* pExceptReady /* = nullptr */, int timeval /* = 1000 */)
 {
 	if( pReadReady )
@@ -203,9 +205,49 @@ void	TCPSocket::get_status(bool *pReadReady /* = nullptr */, bool* pWriteReady /
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
+
+void	CCNetwork::recvThreadFunc(void* param)
+{
+	CCNetwork *networkObj = (CCNetwork*)param;
+	networkObj->m_recvThreadCond.wait();
+
+	bool readable = false;
+	bool writeable = false;
+	int readSize = 0;
+
+	while( !networkObj->m_close )
+	{
+		if( !networkObj->m_bConnected )
+			networkObj->m_recvThreadCond.wait();
+		
+		readable = false;
+		writeable = false;
+
+		networkObj->m_socket.get_status(&readable, &writeable, nullptr, 1000);
+
+		if(readable)
+		{
+			PacketBuffer* buf = new PacketBuffer;
+			readSize = networkObj->m_socket.recv_msg(buf->getFreeBuffer(), buf->getFreeSize());
+			buf->FillData(readSize);
+			networkObj->m_recvPackets.push(buf);
+		}
+
+		if(writeable)
+		{
+			PacketBuffer* buf = networkObj->m_sendPackets.front();
+			if(buf != nullptr)
+			{
+				int writesize = networkObj->m_socket.send_msg();
+			}
+		}
+	}
+}
+
 CCNetwork::CCNetwork() 
 	:m_port(0),
-	m_bConnected(false)
+	m_bConnected(false),
+	m_close(false)
 {
 	strcpy(m_szHost, "");
 	this->scheduleUpdate();
@@ -222,7 +264,7 @@ bool CCNetwork::init()
 		return false;
 
 	m_socket.init();
-
+	m_recvThread = new std::thread(recvThreadFunc, this);
 	return true;
 }
 
@@ -238,9 +280,17 @@ int	CCNetwork::connect(const char* host, short port, int timeval /*= 1000*/)
 	strcpy(m_szHost, host);
 	port = port;
 	
+	m_bConnected = false;
 	if( !m_socket.connect(host, port, timeval) )
 		return -1;
 
+	m_recvThreadCond.notify_all();
 	m_bConnected = true;
 	return 0;
 }
+
+int	CCNetwork::send_msg(PacketBuffer* buf)
+{
+	return m_sendPackets.push(buf);
+}
+

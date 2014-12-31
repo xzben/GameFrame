@@ -9,7 +9,6 @@ require_ex("HotCodeInclude")
 
 LauchScene = LauchScene or class("LauchScene", EventDispatcher)
 
-
 function LauchScene.create()
 	return LauchScene.extend(cc.Scene:create())
 end

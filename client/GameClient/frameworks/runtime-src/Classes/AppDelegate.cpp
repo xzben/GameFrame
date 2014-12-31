@@ -17,6 +17,7 @@ AppDelegate::AppDelegate()
 AppDelegate::~AppDelegate()
 {
     SimpleAudioEngine::end();
+	ScriptHandlerMgr::destroyInstance();
 }
 
 //if you want a different context,just modify the value of glContextAttrs
