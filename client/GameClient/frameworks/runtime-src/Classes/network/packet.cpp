@@ -48,7 +48,7 @@ int		PacketBuffer::getFreeSize()
 	return (PACKET_MAX_SIZE - m_write);
 }
 
-void	PacketBuffer::FillData(int size, void* data = nullptr)
+void	PacketBuffer::FillData(int size, void* data /*= nullptr*/)
 {
 	if(data != nullptr)
 	{

@@ -10,12 +10,14 @@ require_ex("core.SensitiveWordHelper")
 require_ex("core.VisibleRect")
 require_ex("core.FiniteStateMachine")
 require_ex("core.TouchHelper")
-
+require_ex("core.ScrollMap")
 
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")
 
 require_ex("View.PhysicsScene.PhysicsScene")
+
+require_ex("View.GameMapScene.GameMapScene")
 
 
 

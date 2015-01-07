@@ -1,5 +1,18 @@
 Helper = Helper or {}
 
+CC_CONTENT_SCALE_FACTOR = function()
+    return cc.Director:getInstance():getContentScaleFactor()
+end
+
+
+CC_POINT_PIXELS_TO_POINTS = function(pixels)
+    return cc.p(pixels.x/CC_CONTENT_SCALE_FACTOR(), pixels.y/CC_CONTENT_SCALE_FACTOR())
+end
+
+CC_POINT_POINTS_TO_PIXELS = function(points)
+    return cc.p(points.x*CC_CONTENT_SCALE_FACTOR(), points.y*CC_CONTENT_SCALE_FACTOR())
+end
+
 function Helper.create_auto_node(enter_func, exit_func)
 	local autoNode = cc.Node:create()
 	

@@ -238,7 +238,7 @@ void	CCNetwork::recvThreadFunc(void* param)
 			PacketBuffer* buf = networkObj->m_sendPackets.front();
 			if(buf != nullptr)
 			{
-				int writesize = networkObj->m_socket.send_msg();
+				//int writesize = networkObj->m_socket.send_msg();
 			}
 		}
 	}
