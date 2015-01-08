@@ -9,4 +9,5 @@
 	7、SensitiveWordHelper.lua	实现一个敏感字过滤的辅助器
 	8、SmartPageView.lua  		实现一个智能加载子页的PageView(翻页控件)控件，此控件可以按照需求动态加载子页
 	9、ScrollMap.lua			实现一个滚动底图控件
+	10、PathFindHelper.lua		实现一个寻路算法助手
 --]]

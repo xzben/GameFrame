@@ -45,7 +45,13 @@ function GameMapScene:handle_map_scroll_done(sender)
 end
 
 function GameMapScene:init()
-    local create_page_iterator = function(index, layer_size)
+    self:test_tilemap()
+    --self:test_search_path()
+    --self:test_scroll_map()
+end
+
+function GameMapScene:test_scroll_map()
+     local create_page_iterator = function(index, layer_size)
         if index > 10 then return nil end
         local layer = cc.LayerColor:create(cc.c4b(255/index, 255/index, 255/index, 200))
         layer:setName(tostring(index))
@@ -73,4 +79,59 @@ function GameMapScene:init()
     scroll_map:add_listener(ScrollMapEvent.EVT_SCROLL_DONE, self.handle_map_scroll_done, self)
 
     scroll_map:start()
+end
+
+function GameMapScene:test_search_path()
+    local map = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+        0, 1, 0, 0, 0, 1, 1, 1, 1, 0,
+        0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+        0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+        0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+        0, 1, 0, 0, 0, 1, 1, 1, 1, 0,
+        0, 1, 0, 0, 0, 1, 1, 1, 1, 0,
+        0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    }
+
+    local pathHelper = PathFindHelper.new(map, 10, 10)
+    -- 不允许走斜线的路径
+    local path = pathHelper:find_path(cc.p(4, 5), cc.p(9, 5), true) or {}
+    for _, item in pairs(path) do
+        print(string.format("(%d,%d)", item.x, item.y))
+    end
+
+    -- 允许走斜线的路径
+    local path = pathHelper:find_path(cc.p(4, 5), cc.p(9, 5), false) or {}
+    for _, item in pairs(path) do
+        print(string.format("(%d,%d)", item.x, item.y))
+    end
+end
+
+function GameMapScene:test_tilemap()
+    local parent_layer = cc.Layer:create()
+    parent_layer:setContentSize(VisibleRect:getVisibleSize())
+    self:addChild(parent_layer)
+    local map = cc.TMXTiledMap:create("TileMap/Test45TileMap.tmx")
+    --local map = cc.TMXTiledMap:create("TileMap/TestTileMap.tmx")
+    --map:setScale(0.5)
+    parent_layer:addChild(map)
+
+    local function touch_began(touch, event)
+        return true
+    end
+
+    local function touch_end(touch, event)
+        local touch_pos = touch:getLocation()
+        local map_pos = TileMapHelper.get_45_tile_pos_from_location(map, touch_pos)
+        local layer = map:getLayer("layer")
+        local real_pos = cc.p( layer:getPositionAt(map_pos) )
+        print("touch pos", map_pos.x, map_pos.y, touch_pos.x, touch_pos.y, real_pos.x, real_pos.y)
+        local tile = layer:getTileAt(map_pos)
+        if tile then
+            tile:removeFromParent()
+        end
+    end
+    TouchHelper:add_touch_listener(parent_layer, touch_began, touch_end)
 end

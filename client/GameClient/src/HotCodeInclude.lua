@@ -11,6 +11,8 @@ require_ex("core.VisibleRect")
 require_ex("core.FiniteStateMachine")
 require_ex("core.TouchHelper")
 require_ex("core.ScrollMap")
+require_ex("core.PathFindHelper")
+require_ex("core.TileMapHelper")
 
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")

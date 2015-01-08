@@ -2,7 +2,6 @@ TouchHelper = class("TouchHelper")
 TouchHelper.__index = TouchHelper
 
 function TouchHelper:add_touch_listener( obj, func_begin, func_end, func_move, func_cancel)
-
 	local function onTouchBegan(touch, event)
 		if func_begin then
 			return func_begin(touch, event)
