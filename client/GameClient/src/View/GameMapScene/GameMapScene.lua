@@ -45,15 +45,16 @@ function GameMapScene:handle_map_scroll_done(sender)
 end
 
 function GameMapScene:init()
+    self:test_search_path()
+    self:test_scroll_map()
     self:test_tilemap()
-    --self:test_search_path()
-    --self:test_scroll_map()
+    self:test_tilemap_45()
 end
 
 function GameMapScene:test_scroll_map()
      local create_page_iterator = function(index, layer_size)
         if index > 10 then return nil end
-        local layer = cc.LayerColor:create(cc.c4b(255/index, 255/index, 255/index, 200))
+        local layer = cc.LayerColor:create(cc.c4b(math.random(0, 255), math.random(0, 255), math.random(0, 255), 200))
         layer:setName(tostring(index))
         layer:setContentSize(layer_size)
 
@@ -61,12 +62,12 @@ function GameMapScene:test_scroll_map()
     end
 
     local visible_size = VisibleRect:getVisibleSize()
-    local map_size = cc.size(visible_size.width*0.8, visible_size.height*0.8)
+    local map_size = cc.size(visible_size.width*0.4, visible_size.height*0.4)
     local map_parent = ccui.Layout:create()
     map_parent:setContentSize(map_size)
     map_parent:ignoreAnchorPointForPosition(false)
     map_parent:setAnchorPoint(0.5, 0.5)
-    map_parent:setPosition(visible_size.width/2, visible_size.height/2)
+    map_parent:setPosition(visible_size.width/4, visible_size.height/4)
     map_parent:setClippingEnabled(true)
     self:addChild(map_parent)
 
@@ -111,11 +112,13 @@ end
 
 function GameMapScene:test_tilemap()
     local parent_layer = cc.Layer:create()
-    parent_layer:setContentSize(VisibleRect:getVisibleSize())
+    local layer_size = VisibleRect:getVisibleSize()
+    layer_size = cc.size(layer_size.width*0.5, layer_size.height*0.5)
+    parent_layer:setContentSize(layer_size)
+    parent_layer:setPosition(layer_size.width, 0)
     self:addChild(parent_layer)
-    local map = cc.TMXTiledMap:create("TileMap/Test45TileMap.tmx")
-    --local map = cc.TMXTiledMap:create("TileMap/TestTileMap.tmx")
-    --map:setScale(0.5)
+    local map = ccexp.TMXTiledMap:create("TileMap/TestTileMap.tmx")
+    map:setScale(0.5)
     parent_layer:addChild(map)
 
     local function touch_began(touch, event)
@@ -124,14 +127,47 @@ function GameMapScene:test_tilemap()
 
     local function touch_end(touch, event)
         local touch_pos = touch:getLocation()
-        local map_pos = TileMapHelper.get_45_tile_pos_from_location(map, touch_pos)
+        local local_pos  = parent_layer:convertToNodeSpace(touch_pos)
+
+        local map_pos = TileMapHelper.get_tile_pos_from_location(map, local_pos)
         local layer = map:getLayer("layer")
         local real_pos = cc.p( layer:getPositionAt(map_pos) )
-        print("touch pos", map_pos.x, map_pos.y, touch_pos.x, touch_pos.y, real_pos.x, real_pos.y)
+        print("touch pos", map_pos.x, map_pos.y, local_pos.x, local_pos.y, real_pos.x, real_pos.y)
         local tile = layer:getTileAt(map_pos)
         if tile then
             tile:removeFromParent()
         end
     end
-    TouchHelper:add_touch_listener(parent_layer, touch_began, touch_end)
+    TouchHelper:add_touch_listener(parent_layer, { touch_began, touch_end }, true)
+end
+
+function GameMapScene:test_tilemap_45()
+    local parent_layer = cc.Layer:create()
+    local layer_size = VisibleRect:getVisibleSize()
+    layer_size = cc.size(layer_size.width*0.5, layer_size.height*0.5)
+    parent_layer:setContentSize(layer_size)
+    parent_layer:setPosition(0, layer_size.height)
+    self:addChild(parent_layer)
+    local map = ccexp.TMXTiledMap:create("TileMap/Test45TileMap.tmx")
+    map:setScale(0.5)
+    parent_layer:addChild(map)
+
+    local function touch_began(touch, event)
+        return true
+    end
+
+    local function touch_end(touch, event)
+        local touch_pos = touch:getLocation()
+        local local_pos  = parent_layer:convertToNodeSpace(touch_pos)
+
+        local map_pos = TileMapHelper.get_tile_pos_from_location(map, local_pos)
+        local layer = map:getLayer("layer")
+        local real_pos = cc.p( layer:getPositionAt(map_pos) )
+        print("touch pos", map_pos.x, map_pos.y, local_pos.x, local_pos.y, real_pos.x, real_pos.y)
+        local tile = layer:getTileAt(map_pos)
+        if tile then
+            tile:removeFromParent()
+        end
+    end
+    TouchHelper:add_touch_listener(parent_layer, {touch_began, touch_end}, true)
 end

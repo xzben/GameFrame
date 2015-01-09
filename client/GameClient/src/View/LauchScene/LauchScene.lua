@@ -150,7 +150,7 @@ function LauchScene:create_menu_layer()
         CurPos = {x = curPosx, y = nextPosy}
     end
 
-    TouchHelper:add_touch_listener(menu_layer, onTouchBegan, nil, onTouchMoved)
+    TouchHelper:add_touch_listener(menu_layer, {onTouchBegan, nil, onTouchMoved})
     return menu_layer
 end
 

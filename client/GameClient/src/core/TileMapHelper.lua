@@ -19,9 +19,30 @@ end
 
 TileMapHelper = TileMapHelper or {}
 
-function TileMapHelper.get_tile_pos_from_location( tile_map_obj, touch_point )
-	local touch_point = cc.pSub(touch_point, cc.p(tile_map_obj:getPosition()))
 
+local function orientation_ortho_convert_function( touch_point, tile_width, tile_height, map_width, map_height)
+	local pos_x = math.floor( touch_point.x/tile_width)
+	local pos_y = math.floor((map_height*tile_height - touch_point.y)/tile_height)
+	return pos_x, pos_y 
+end
+
+local function orientation_iso_convert_function( touch_point, tile_width, tile_height, map_width, map_height)
+	local pos_x = math.floor( (touch_point.x - tile_width*touch_point.y/tile_height + tile_width*map_width/2)/tile_width )
+	local pos_y = math.floor( map_height - (touch_point.y + tile_height*touch_point.x/tile_width - tile_height*map_height/2)/tile_height )
+	return pos_x, pos_y
+end
+
+local CONVERT_FUNC_MAP = {
+	[cc.TMX_ORIENTATION_ORTHO] 	= orientation_ortho_convert_function,--正常直角地图
+	[cc.TMX_ORIENTATION_ISO] 	= orientation_iso_convert_function,--45度地图
+}
+
+function TileMapHelper.get_tile_pos_from_location( tile_map_obj, touch_point )
+	local map_orientation = tile_map_obj:getMapOrientation()
+	local convert_func 	  = CONVERT_FUNC_MAP[map_orientation]
+	assert(convert_func, "目前只支持 cc.TMX_ORIENTATION_ORTHO 和 cc.TMX_ORIENTATION_ISO")
+
+	local touch_point 	  = cc.pSub(touch_point, cc.p(tile_map_obj:getPosition()))
 	local map_scale 	= tile_map_obj:getScale()
 	local content_scale = CC_CONTENT_SCALE_FACTOR()
 
@@ -31,8 +52,7 @@ function TileMapHelper.get_tile_pos_from_location( tile_map_obj, touch_point )
 	tile_size.width = tile_size.width*content_scale*map_scale
 	tile_size.height = tile_size.height*content_scale*map_scale
 
-	local x = math.floor( touch_point.x / tile_size.width )
-	local y = math.floor( (map_size.height * tile_size.height - touch_point.y)/tile_size.height )
+	local x, y = convert_func(touch_point, tile_size.width, tile_size.height, map_size.width, map_size.height)
 	
 	x = math.max(0, x)
 	x = math.min(map_size.width-1, x)
@@ -40,27 +60,4 @@ function TileMapHelper.get_tile_pos_from_location( tile_map_obj, touch_point )
 	y = math.min(map_size.height-1, y)
 
 	return cc.p( x, y)
-end
-
-function TileMapHelper.get_45_tile_pos_from_location( tile_map_obj, touch_point )
-	local touch_point = cc.pSub(touch_point, cc.p(tile_map_obj:getPosition()))
-
-	local map_scale 	= tile_map_obj:getScale()
-	local content_scale = CC_CONTENT_SCALE_FACTOR()
-
-	local map_width = tile_map_obj:getMapSize().width
-	local map_height = tile_map_obj:getMapSize().height
-	local tile_width = tile_map_obj:getTileSize().width*content_scale*map_scale
-	local tile_height = tile_map_obj:getTileSize().height*content_scale*map_scale
-
-	local pos_x = math.floor( (touch_point.x - tile_width*touch_point.y/tile_height + tile_width*map_width/2)/tile_width )
-	local pos_y = math.floor( map_height - (touch_point.y + tile_height*touch_point.x/tile_width - tile_height*map_height/2)/tile_height )
-
-
-	pos_x = math.max(0, pos_x)
-	pos_x = math.min(tile_map_obj:getMapSize().width-1, pos_x)
-	pos_y = math.max(0, pos_y)
-	pos_y = math.min(tile_map_obj:getMapSize().height-1, pos_y)
-	
-	return cc.p( pos_x, pos_y)
 end

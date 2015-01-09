@@ -83,7 +83,7 @@ local function init_director()
     local director = cc.Director:getInstance()
     local glview = director:getOpenGLView()
     if nil == glview then
-        glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0,0, 960, 640))
+        glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0, 0, 960, 640))
         director:setOpenGLView(glview)
     end
 
