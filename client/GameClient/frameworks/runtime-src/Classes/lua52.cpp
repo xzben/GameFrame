@@ -1,6 +1,4 @@
 #include "lua52.h"
-#include "crab/crab.h"
-#include "sproto/sproto.h"
 
 /*
 ** set functions from list 'l' into table at top - 'nup'; each

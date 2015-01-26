@@ -18,9 +18,7 @@ int lua_module_register(lua_State* L)
 {
 	luaopen_utf8_c(L);
 	luaopen_crab_c(L);
-	luaopen_sproto_core(L);
-	luaopen_lpeg(L);
-	luaopen_bit32(L);
+	luaopen_protobuf_c(L);
     //Dont' change the module register order unless you know what your are doing
     register_cocosdenshion_module(L);
     register_network_module(L);

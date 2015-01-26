@@ -14,12 +14,15 @@ require_ex("core.ScrollMap")
 require_ex("core.PathFindHelper")
 require_ex("core.TileMapHelper")
 
+require_ex("Network.ProtoRegister")
+
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")
 
 require_ex("View.PhysicsScene.PhysicsScene")
 
 require_ex("View.GameMapScene.GameMapScene")
+
 
 
 

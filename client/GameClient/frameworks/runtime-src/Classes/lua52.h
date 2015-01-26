@@ -35,8 +35,6 @@ typedef lua_Unsigned	b_uint;
 
 LUALIB_API int luaopen_utf8_c(lua_State *L);
 LUALIB_API int luaopen_crab_c(lua_State *L);
-LUALIB_API int luaopen_lpeg (lua_State *L);
-LUALIB_API int luaopen_bit32 (lua_State *L);
-LUALIB_API int luaopen_sproto_core(lua_State* L);
+LUALIB_API int luaopen_protobuf_c(lua_State *L);
 
 #endif//__2015_01_26_LUA52_H__
