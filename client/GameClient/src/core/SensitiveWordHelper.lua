@@ -6,6 +6,9 @@
 --
 -------------------------------------------------------------------------------
 
+local crab_core = require("crab.core")
+local crab_utf8 = require("utf8.core")
+
 SensitiveWordHelper = SensitiveWordHelper or class("SensitiveWordHelper")
 
 function SensitiveWordHelper:ctor(propFilterWords)
