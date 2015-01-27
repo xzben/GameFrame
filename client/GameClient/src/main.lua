@@ -66,14 +66,6 @@ function require_ex(modname)
     return ret
 end
 
-require_ex("Configure")
-require_ex("core.EventDispatcher")
-require_ex("core.Helper")
-require_ex("core.CocoStudioHelper")
-require_ex("core.VisibleRect")
-require_ex("core.TouchHelper")
-require_ex("View.LauchScene.LauchScene")
-
 local function init_file_utils()
     
 end
@@ -96,10 +88,16 @@ local function init_director()
     director:setAnimationInterval(1.0 / 60)
 end
 
+require_ex("Configure")
+require_ex("core.EventDispatcher")
+require_ex("core.Helper")
+require_ex("core.CocoStudioHelper")
+require_ex("core.VisibleRect")
+require_ex("core.TouchHelper")
+require_ex("View.LauchScene.LauchScene")
 
 function lauch_scene()
     local scene = LauchScene.create()
-
     -- 
     -- 如果GSession存在，则程序正在走重新启动游戏流程，需要先将GSession销毁
     if GSession then 
@@ -116,6 +114,10 @@ function lauch_scene()
     end
 end
 
+function start_game_scene()
+    ProtoRegister.registe_all()
+end
+
 local function main()
     collectgarbage("collect")
     -- avoid memory leak
@@ -125,6 +127,7 @@ local function main()
     init_file_utils()
     init_director()
     lauch_scene()
+    start_game_scene()
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

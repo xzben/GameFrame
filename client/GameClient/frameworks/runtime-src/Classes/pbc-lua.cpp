@@ -1103,7 +1103,7 @@ LUALIB_API int luaopen_protobuf_c(lua_State *L) {
 	};
 
 	luaL_checkversion(L);
-	luaL_register(L,"protobuf",reg);
+	luaL_register(L,"protobuf.c",reg);
 
 	return 1;
 }

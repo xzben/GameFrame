@@ -7,7 +7,7 @@
 --
 -------------------------------------------------------------------------------
 
-require("protobuf")
+require("Network.protobuf")
 
 module("ProtoRegister", package.seeall)
 
@@ -17,8 +17,9 @@ f = {
 
 
 function registe(file)
-	local tmpbuffer = cc.FileUtils:getInstance():getDataFromFile(file)
-    protobuf.register(tmpbuffer)
+	local filefullpath = cc.FileUtils:getInstance():fullPathForFilename(file)
+	--print("###################", filefullpath, "###############")
+    protobuf.register_file(filefullpath)
 end
 
   
