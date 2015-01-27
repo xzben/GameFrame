@@ -358,7 +358,11 @@ LUALIB_API int luaopen_crab_c(lua_State *L) {
         {NULL, NULL}
     };
 
+	//为 user data 设置 __gc
 	luaL_newmetatable(L, "crab.object");
+	lua_pushcfunction(L, delete_crab_obj);
+	lua_setfield(L,-2,"__gc");
+
 	luaL_register(L, "crab.core", l);
     return 1;
 }

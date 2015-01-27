@@ -40,7 +40,6 @@ function PhysicsScene:init()
     propFilterWords = nil   
     collectgarbage()
     print( crab_obj:filter_word("我今天10颁奖, 你10颁奖, 他10颁奖") )
-    crab_obj:destroy()
     crab_obj = nil
     collectgarbage()
 

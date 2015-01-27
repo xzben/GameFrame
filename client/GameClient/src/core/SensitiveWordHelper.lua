@@ -29,8 +29,3 @@ function SensitiveWordHelper:filter_word( fliter_str )
 
 	return output, have_filter
 end
-
-function SensitiveWordHelper:destroy()
-	crab_core.delete_crab_obj(self._crab_obj)
-	print("############SensitiveWordHelper:destroy#############")
-end
