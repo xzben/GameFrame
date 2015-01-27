@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "crab.h"
+#include "lua52.h"
 #include <queue>
 
 //support for lua 5.1 if use lua 5.1 please off this macro
@@ -348,8 +348,7 @@ static int delete_crab_obj(lua_State *L)
 }
 
 // interface
-int
-luaopen_crab_c(lua_State *L) {
+LUALIB_API int luaopen_crab_c(lua_State *L) {
     luaL_checkversion(L);
 
     luaL_Reg l[] = {
@@ -359,8 +358,12 @@ luaopen_crab_c(lua_State *L) {
         {NULL, NULL}
     };
 
+	//为 user data 设置 __gc
 	luaL_newmetatable(L, "crab.object");
-	luaL_register(L, "crab_core", l);
+	lua_pushcfunction(L, delete_crab_obj);
+	lua_setfield(L,-2,"__gc");
+
+	luaL_register(L, "crab.core", l);
     return 1;
 }
 

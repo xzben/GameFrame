@@ -12,7 +12,7 @@
 #include "audioengine/lua_cocos2dx_audioengine_manual.h"
 #include "lua/quick/lua_cocos2dx_quick_manual.hpp"
 
-#include "crab/crab.h"
+#include "lua52.h"
 #include "lua_register/luaNetwork.h"
 
 int lua_module_register(lua_State* L)
@@ -20,7 +20,7 @@ int lua_module_register(lua_State* L)
 	luaopen_utf8_c(L);
 	luaopen_crab_c(L);
 	luaopen_network_c(L);
-
+	luaopen_protobuf_c(L);
     //Dont' change the module register order unless you know what your are doing
     register_cocosdenshion_module(L);
     register_network_module(L);

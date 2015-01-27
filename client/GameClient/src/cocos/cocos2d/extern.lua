@@ -82,6 +82,12 @@ function class(classname, super)
         cls.__ctype = 2 -- lua
         cls.__index = cls
 
+        function cls:__gc()
+            if cls.destroy then
+                cls:destroy()
+            end
+        end
+
         function cls.new(...)
             local instance = setmetatable({}, cls)
             instance.class = cls

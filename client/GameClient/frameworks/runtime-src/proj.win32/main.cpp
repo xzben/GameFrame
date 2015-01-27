@@ -2,6 +2,10 @@
 #include "AppDelegate.h"
 #include "cocos2d.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)  
+#include "vld.h"  
+#endif 
+
 USING_NS_CC;
 
 // uncomment below line, open debug console

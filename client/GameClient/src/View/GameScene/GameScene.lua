@@ -87,5 +87,4 @@ function GameScene:init()
     end
 
     self:timeout(0.5, random_event)
-
 end

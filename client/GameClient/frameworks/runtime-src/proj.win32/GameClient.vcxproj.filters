@@ -28,9 +28,6 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="..\Classes\crab\crab.h">
-      <Filter>Classes\crab</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\network\packet.h">
       <Filter>Classes\network</Filter>
     </ClInclude>
@@ -42,6 +39,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\network\Mutex.h">
       <Filter>Classes\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\lua52.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\pbc.h">
+      <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\lua_module_register.h">
       <Filter>Classes</Filter>
@@ -78,6 +81,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp">
       <Filter>Classes\lua_register</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lua52.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\pbc-lua.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

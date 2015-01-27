@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
-#include "crab.h"
+#include "lua52.h"
 
 //support for lua 5.1 if use lua 5.1 please off this macro
 #if 1
@@ -166,8 +166,7 @@ _len(lua_State *L) {
     return 1;
 }
 
-int
-luaopen_utf8_c(lua_State *L) {
+LUALIB_API int luaopen_utf8_c(lua_State *L) {
     luaL_checkversion(L);
 
     luaL_Reg l[] = {
@@ -177,7 +176,7 @@ luaopen_utf8_c(lua_State *L) {
         {NULL, NULL}
     };
 
-    luaL_register(L, "crab_utf8",l);
+	luaL_register(L, "utf8.core", l);
     return 1;
 }
 

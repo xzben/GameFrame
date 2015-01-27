@@ -16,13 +16,14 @@ require_ex("core.TileMapHelper")
 
 --网络模块
 require_ex("Network.Network")
-
+require_ex("Network.ProtoRegister")
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")
 
 require_ex("View.PhysicsScene.PhysicsScene")
 
 require_ex("View.GameMapScene.GameMapScene")
+
 
 
 
