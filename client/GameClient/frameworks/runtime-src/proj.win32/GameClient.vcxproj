@@ -168,6 +168,9 @@
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\crab\crab.h" />
+    <ClInclude Include="..\Classes\LLLua.h" />
+    <ClInclude Include="..\Classes\lua_module_register.h" />
+    <ClInclude Include="..\Classes\lua_register\luaNetwork.h" />
     <ClInclude Include="..\Classes\network\MemoryPool.h" />
     <ClInclude Include="..\Classes\network\Mutex.h" />
     <ClInclude Include="..\Classes\network\network.h" />
@@ -179,6 +182,7 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\crab\lua_crab.cpp" />
     <ClCompile Include="..\Classes\crab\lua_utf8.cpp" />
+    <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp" />
     <ClCompile Include="..\Classes\network\MemoryPool.cpp" />
     <ClCompile Include="..\Classes\network\Mutex.cpp" />
     <ClCompile Include="..\Classes\network\network.cpp" />

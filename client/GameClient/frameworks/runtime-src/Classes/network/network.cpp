@@ -1,6 +1,9 @@
 #include "network.h"
 #include <assert.h>
 #include <cstring>
+#include <cocos2d.h>
+#include "CCLuaEngine.h"
+USING_NS_CC;
 
 TCPSocket::TCPSocket()
 {
@@ -206,7 +209,7 @@ void	TCPSocket::get_status(bool *pReadReady /* = nullptr */, bool* pWriteReady /
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 
-void	CCNetwork::recvThreadFunc(void* param)
+void	CCNetwork::socketThreadFunc(void* param)
 {
 	CCNetwork *networkObj = (CCNetwork*)param;
 	networkObj->m_recvThreadCond.wait();
@@ -229,16 +232,41 @@ void	CCNetwork::recvThreadFunc(void* param)
 		{
 			PacketBuffer* buf = new PacketBuffer;
 			readSize = networkObj->m_socket.recv_msg(buf->getFreeBuffer(), buf->getFreeSize());
-			buf->FillData(readSize);
-			networkObj->m_recvPackets.push(buf);
+			if (readSize > 0)
+			{
+				buf->FillData(readSize);
+				networkObj->m_recv_lock.lock();
+				networkObj->m_recvPackets.push(buf);
+				networkObj->m_recv_lock.unlock();
+			}
+			else
+			{
+				networkObj->push_status(NETSTATE::DISCONNECT);
+			}
+			
 		}
 
 		if(writeable)
 		{
-			PacketBuffer* buf = networkObj->m_sendPackets.front();
-			if(buf != nullptr)
+			networkObj->m_send_lock.lock();
+			PacketBuffer* packet = networkObj->m_sendPackets.front();
+			networkObj->m_send_lock.unlock();
+
+			if (packet != nullptr)
 			{
-				//int writesize = networkObj->m_socket.send_msg();
+				int data_size = packet->getDataSize();
+				void* buffer = packet->getBuffer();
+
+				int send_size = networkObj->m_socket.send_msg(buffer, data_size);
+				packet->ReadData(send_size);
+
+				if (send_size >= data_size)
+				{
+					networkObj->m_send_lock.lock();
+					networkObj->m_sendPackets.pop();
+					networkObj->m_send_lock.unlock();
+					delete packet;
+				}
 			}
 		}
 	}
@@ -250,29 +278,47 @@ CCNetwork::CCNetwork()
 	m_close(false)
 {
 	strcpy(m_szHost, "");
-	this->scheduleUpdate();
 }
 
 CCNetwork::~CCNetwork()
 {
-	
+
 }
 
 bool CCNetwork::init()
 {
-	if( ! Node::init() )
-		return false;
 
 	m_socket.init();
-	m_recvThread = new std::thread(recvThreadFunc, this);
+	m_recvThread = new std::thread(socketThreadFunc, this);
 	return true;
 }
 
 void CCNetwork::update(float delta)
 {
-	Node::update(delta);
 	//////////////////////////////////////////////////////////////////////////
 	// 增加 自定义 update 操作
+	LuaStack *luaState = LuaEngine::getInstance()->getLuaStack();
+
+	m_status_lock.lock();
+	while (!m_status.empty())
+	{
+		int state = m_status.front();
+		m_status.pop();
+		lua_pushnumber(luaState->getLuaState(), state);
+		luaState->executeFunctionByHandler(m_lua_state_callback, 1);
+	}
+	m_status_lock.unlock();
+	
+	m_recv_lock.lock();
+	while (!m_recvPackets.empty())
+	{
+		PacketBuffer* packet = m_recvPackets.front();
+		const char* buffer = (const char*)packet->getBuffer();
+		int len = packet->getDataSize();
+		lua_pushlstring(luaState->getLuaState(), buffer, len);
+		luaState->executeFunctionByHandler(m_lua_msg_callback, 1);
+	}
+	m_recv_lock.unlock();
 }
 
 int	CCNetwork::connect(const char* host, short port, int timeval /*= 1000*/)
@@ -281,9 +327,13 @@ int	CCNetwork::connect(const char* host, short port, int timeval /*= 1000*/)
 	port = port;
 	
 	m_bConnected = false;
-	if( !m_socket.connect(host, port, timeval) )
+	if (!m_socket.connect(host, port, timeval))
+	{
+		push_status(NETSTATE::FAILED);
 		return -1;
+	}
 
+	push_status(NETSTATE::SUCCESS);
 	m_recvThreadCond.notify_all();
 	m_bConnected = true;
 	return 0;
@@ -291,6 +341,22 @@ int	CCNetwork::connect(const char* host, short port, int timeval /*= 1000*/)
 
 int	CCNetwork::send_msg(PacketBuffer* buf)
 {
-	return m_sendPackets.push(buf);
+	Guard guard(&m_send_lock);
+	m_sendPackets.push(buf);
+	return 0;
+}
+
+void CCNetwork::register_lua_callback(int state_ref, int msg_ref)
+{
+	m_lua_state_callback = state_ref;
+	m_lua_msg_callback = msg_ref;
+	CCDirector::sharedDirector()->getScheduler()->unscheduleAllForTarget(this);
+	CCDirector::sharedDirector()->getScheduler()->scheduleSelector(SEL_SCHEDULE(&CCNetwork::update), this, 0.0f, false);
+}
+
+void CCNetwork::push_status(int state)
+{
+	Guard guard(&m_status_lock);
+	m_status.push(state);
 }
 

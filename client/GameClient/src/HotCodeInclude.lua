@@ -14,6 +14,9 @@ require_ex("core.ScrollMap")
 require_ex("core.PathFindHelper")
 require_ex("core.TileMapHelper")
 
+--网络模块
+require_ex("Network.Network")
+
 require_ex("View.GameScene.FightUI")
 require_ex("View.GameScene.GameScene")
 

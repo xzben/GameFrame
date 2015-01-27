@@ -38,6 +38,11 @@ PacketBuffer::~PacketBuffer()
 	
 }
 
+void*	PacketBuffer::getBuffer()
+{
+	return &m_data[m_read];
+}
+
 void*	PacketBuffer::getFreeBuffer()
 {
 	return &m_data[m_write];
@@ -48,6 +53,10 @@ int		PacketBuffer::getFreeSize()
 	return (PACKET_MAX_SIZE - m_write);
 }
 
+int PacketBuffer::getDataSize()
+{
+	return m_dataSize;
+}
 void	PacketBuffer::FillData(int size, void* data /*= nullptr*/)
 {
 	if(data != nullptr)
@@ -57,52 +66,13 @@ void	PacketBuffer::FillData(int size, void* data /*= nullptr*/)
 	m_dataSize	+= size;
 	m_write		+= size;
 }
-//////////////////////////////////////////////////////////////////////////
-PacketQueue::PacketQueue()
-{
-	
-}
 
-PacketQueue::~PacketQueue()
+void	PacketBuffer::ReadData(int size, void* buffer /*= nullptr*/)
 {
-	this->clear();	
-}
-
-int PacketQueue::push(PacketBuffer* buf)
-{
-	Guard guard(&m_lock);
-	m_queue.push(buf);
-
-	return 0;
-}
-
-PacketBuffer* PacketQueue::front()
-{
-	Guard guard(&m_lock);
-	PacketBuffer* ret = nullptr;
-	if( !m_queue.empty()) ret = m_queue.front();
-	return ret;
-}
-
-void PacketQueue::pop()
-{
-	Guard guard(&m_lock);
-	if( !m_queue.empty()) m_queue.pop();
-}
-
-bool PacketQueue::empty()
-{
-	Guard guard(&m_lock);
-	return m_queue.empty();
-}
-
-void PacketQueue::clear()
-{
-	Guard guard(&m_lock);
-	while(m_queue.empty())
+	if (buffer != nullptr)
 	{
-		PacketBuffer* tmp = m_queue.front();
-		m_queue.pop();
-		delete tmp;
+		memcpy(buffer, &m_data[m_read], size);
 	}
+	m_read		+= size;
+	m_dataSize	-= size;
 }

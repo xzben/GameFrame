@@ -16,6 +16,9 @@
     <Filter Include="Classes\network">
       <UniqueIdentifier>{819a0262-4144-46b5-b0db-1dff5023d533}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\lua_register">
+      <UniqueIdentifier>{ce83c1bd-21be-41d9-be48-3b5846d4bb28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -40,6 +43,13 @@
     <ClInclude Include="..\Classes\network\Mutex.h">
       <Filter>Classes\network</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\lua_module_register.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\lua_register\luaNetwork.h">
+      <Filter>Classes\lua_register</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LLLua.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -65,6 +75,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\network\Mutex.cpp">
       <Filter>Classes\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp">
+      <Filter>Classes\lua_register</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

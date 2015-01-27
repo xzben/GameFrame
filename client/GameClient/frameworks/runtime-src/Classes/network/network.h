@@ -10,6 +10,7 @@
 
 
 #include <thread>
+#include <queue>
 //SOCKET æ‰±˙¿‡–Õ
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	#include<winsock2.h>
@@ -32,6 +33,15 @@
 
 #include "cocos2d.h"
 #include "packet.h"
+#include "Mutex.h"
+
+enum NETSTATE
+{
+	DISCONNECT  = 0,
+	CONNECTING  = 1,
+	SUCCESS     = 2,
+	FAILED      = 3,
+};
 
 class TCPSocket
 {
@@ -55,26 +65,38 @@ private:
 	SOCKET_HANDLE m_hSocket;
 };
 
-class CCNetwork : public cocos2d::CCNode
+class CCNetwork : public cocos2d::CCObject
 {
 public:
 	CCNetwork();
 	~CCNetwork();
-	bool	init() override;
-	void	update(float delta) override;
+	bool	init();
+	void	update(float delta);
 	int		connect(const char* host, short port, int timeval = 1000);
 	int		send_msg(PacketBuffer* buf);
+	void	register_lua_callback(int state_ref, int msg_ref);
+	int		get_state_callback() { return m_lua_state_callback;  }
+	int		get_msg_callback(){ return m_lua_msg_callback; }
 protected:
-	static void	recvThreadFunc(void* param);
+	static void	socketThreadFunc(void* param);
+
+	void	push_status(int state);
 private:
-	TCPSocket		m_socket;	
-	PacketQueue		m_sendPackets;
-	PacketQueue		m_recvPackets;
-	std::thread		*m_recvThread;
-	Condition		m_recvThreadCond;
-	bool			m_close;
-	bool			m_bConnected;
-	char			m_szHost[20];
-	short			m_port;
+	TCPSocket		 m_socket;
+	typedef std::queue<PacketBuffer*>	PacketQueue;
+	PacketQueue		 m_sendPackets;
+	Mutex			 m_send_lock;
+	PacketQueue		 m_recvPackets;
+	Mutex			 m_recv_lock;
+	std::queue<int>  m_status;
+	Mutex			 m_status_lock;
+	std::thread		 *m_recvThread;
+	Condition		 m_recvThreadCond;
+	bool			 m_close;
+	bool			 m_bConnected;
+	char			 m_szHost[20];
+	short			 m_port;
+	int				 m_lua_state_callback;
+	int				 m_lua_msg_callback;
 };
 #endif//__2014_12_09_PACKET_H__

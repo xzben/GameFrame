@@ -19,9 +19,12 @@ public:
 	PacketBuffer();
 	~PacketBuffer();
 
-	void*	getFreeBuffer();
+	void*	getBuffer();
+	void*   getFreeBuffer();
 	int		getFreeSize();
+	int		getDataSize();
 	void	FillData(int size, void* data = nullptr);
+	void	ReadData(int size, void* buffer = nullptr);
 #if USE_MEMORY_POOL > 0
 	void*	operator new(size_t size);
 	void*	operator new[](size_t size);
@@ -36,21 +39,4 @@ private:
 	int		m_write;					//Êý¾ÝÐ´Èëindex
 };
 
-class PacketQueue
-{
-public:
-	PacketQueue();
-	~PacketQueue();
-	
-	int					push(PacketBuffer* buf);
-
-	PacketBuffer*		front();
-	void				pop();
-	bool				empty();
-	void				clear();
-
-private:
-	std::queue<PacketBuffer*>	m_queue;
-	Mutex						m_lock;
-};
 #endif//__2014_12_09_PACKET_H__
