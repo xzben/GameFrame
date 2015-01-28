@@ -94,5 +94,3 @@ function Network:send_msg( buffer )
 		CNetwork.send_message( self._core, buffer )
 	end
 end
-
-GNetwork = GNetwork or Network.new()

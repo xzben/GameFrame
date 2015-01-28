@@ -88,11 +88,13 @@ int luaopen_network_c(lua_State *L)
 		{ "connect",			c_connect },
 		{ "send_message",		c_send_message },
 		{ "new_network",		c_new_network },
-		{ "delete_network",		c_delete_network },
 		{ "resiger_callback",	c_register_callback },
 		{ NULL, NULL },
 	};
 	luaL_newmetatable(L, OBJ_TYPE_NAME);
+	lua_pushcfunction(L, c_delete_network);
+	lua_setfield(L,-2,"__gc");
+
 	luaL_register(L, "CNetwork", l);
 	return 1;
 }
