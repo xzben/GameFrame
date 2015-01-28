@@ -24,6 +24,7 @@ require_ex("View.PhysicsScene.PhysicsScene")
 
 require_ex("View.GameMapScene.GameMapScene")
 
+require_ex("View.CocDemo.CocDemoScene")
 
 
 

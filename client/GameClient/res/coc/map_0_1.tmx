@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="isometric" width="40" height="40" tilewidth="40" tileheight="32">
+ <tileset firstgid="1" name="0.0" tilewidth="31" tileheight="35">
+  <image source="buildings_lowres/0.0.png" width="31" height="35"/>
+ </tileset>
+ <layer name="tiles" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzrEJADAMwLDk/6d7hJcUJPDunZk93lX+Gn+Nv8Zf46/x1/hr/DX+Gn+Nv8Zf46/x1/hr/DX+Gn/NL3+Xe7ihAJ0=
+  </data>
+ </layer>
+</map>

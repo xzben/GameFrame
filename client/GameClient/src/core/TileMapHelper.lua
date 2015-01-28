@@ -54,10 +54,10 @@ function TileMapHelper.get_tile_pos_from_location( tile_map_obj, touch_point )
 
 	local x, y = convert_func(touch_point, tile_size.width, tile_size.height, map_size.width, map_size.height)
 	
-	x = math.max(0, x)
-	x = math.min(map_size.width-1, x)
-	y = math.max(0, y)
-	y = math.min(map_size.height-1, y)
-
-	return cc.p( x, y)
+	local ret_x = math.max(0, x)
+	ret_x = math.min(map_size.width-1, x)
+	ret_y = math.max(0, y)
+	ret_y = math.min(map_size.height-1, y)
+	
+	return cc.p( ret_x, ret_y), cc.p(x, y)
 end

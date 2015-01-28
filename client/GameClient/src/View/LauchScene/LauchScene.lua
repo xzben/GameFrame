@@ -36,7 +36,7 @@ local _allTests = {
     {name = "Fight Scene",      create_func = GameScene.create},
     {name = "Physics Scene",    create_func = PhysicsScene.create},
     {name = "Game Map Scene",   create_func = GameMapScene.create},
-    {name = "test",             create_func = nil},
+    {name = "Coc Demo",         create_func = CocDemoScene.create},
     {name = "test",             create_func = nil},
     {name = "test",             create_func = nil},
     {name = "test",             create_func = nil},
