@@ -40,9 +40,6 @@
     <ClInclude Include="..\Classes\network\Mutex.h">
       <Filter>Classes\network</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\lua52.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\pbc.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -53,6 +50,7 @@
       <Filter>Classes\lua_register</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LLLua.h" />
+    <ClInclude Include="..\Classes\crab\crab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -79,14 +77,11 @@
     <ClCompile Include="..\Classes\network\Mutex.cpp">
       <Filter>Classes\network</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp">
-      <Filter>Classes\lua_register</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\lua52.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\pbc-lua.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp">
+      <Filter>Classes\lua_register</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

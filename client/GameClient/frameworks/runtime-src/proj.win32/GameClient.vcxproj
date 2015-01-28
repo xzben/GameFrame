@@ -183,6 +183,7 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\crab\lua_crab.cpp" />
     <ClCompile Include="..\Classes\crab\lua_utf8.cpp" />
+    <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp" />
     <ClCompile Include="..\Classes\network\MemoryPool.cpp" />
     <ClCompile Include="..\Classes\network\Mutex.cpp" />
     <ClCompile Include="..\Classes\network\network.cpp" />
