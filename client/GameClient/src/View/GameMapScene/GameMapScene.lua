@@ -127,7 +127,7 @@ function GameMapScene:test_tilemap()
 
     local function touch_end(touch, event)
         local touch_pos = touch:getLocation()
-        local local_pos  = parent_layer:convertToNodeSpace(touch_pos)
+        local local_pos  = map:convertToNodeSpace(touch_pos)
 
         local map_pos = TileMapHelper.get_tile_pos_from_location(map, local_pos)
         local layer = map:getLayer("layer")
@@ -158,7 +158,7 @@ function GameMapScene:test_tilemap_45()
 
     local function touch_end(touch, event)
         local touch_pos = touch:getLocation()
-        local local_pos  = parent_layer:convertToNodeSpace(touch_pos)
+        local local_pos  = map:convertToNodeSpace(touch_pos)
 
         local map_pos = TileMapHelper.get_tile_pos_from_location(map, local_pos)
         local layer = map:getLayer("layer")

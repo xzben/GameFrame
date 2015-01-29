@@ -37,20 +37,14 @@ local CONVERT_FUNC_MAP = {
 	[cc.TMX_ORIENTATION_ISO] 	= orientation_iso_convert_function,--45度地图
 }
 
+-- touch point  必须是 map 的 local position
 function TileMapHelper.get_tile_pos_from_location( tile_map_obj, touch_point )
 	local map_orientation = tile_map_obj:getMapOrientation()
 	local convert_func 	  = CONVERT_FUNC_MAP[map_orientation]
 	assert(convert_func, "目前只支持 cc.TMX_ORIENTATION_ORTHO 和 cc.TMX_ORIENTATION_ISO")
 
-	local touch_point 	  = cc.pSub(touch_point, cc.p(tile_map_obj:getPosition()))
-	local map_scale 	= tile_map_obj:getScale()
-	local content_scale = CC_CONTENT_SCALE_FACTOR()
-
 	local map_size  = tile_map_obj:getMapSize()
 	local tile_size = tile_map_obj:getTileSize()
-
-	tile_size.width = tile_size.width*content_scale*map_scale
-	tile_size.height = tile_size.height*content_scale*map_scale
 
 	local x, y = convert_func(touch_point, tile_size.width, tile_size.height, map_size.width, map_size.height)
 	
