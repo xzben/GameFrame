@@ -41,20 +41,21 @@ function CocDemoScene:add_bg_layer()
     bg_layer:setPosition(VisibleRect:center())
     self:addChild(bg_layer, 0)
 
-    local bg_file = "coc/background_npc/0.0.png"
+    local bg_file = "coc/background_player/0.0.png"
     local left_bg = cc.Sprite:create(bg_file)
+    left_bg:setScaleX(-1)
     local img_size = left_bg:getContentSize()
     left_bg:setPosition(visible_size.width/2-img_size.width/2, visible_size.height/2)
     local right_bg = cc.Sprite:create(bg_file)
     right_bg:setPosition(visible_size.width/2+img_size.width/2, visible_size.height/2)
-    right_bg:setScaleX(-1)
     bg_layer:addChild(left_bg)
     bg_layer:addChild(right_bg)
 
     local map = ccexp.TMXTiledMap:create("coc/map_0_1.tmx")
     map:ignoreAnchorPointForPosition(false)
     map:setAnchorPoint(0.5, 0.5)
-    map:setPosition(VisibleRect:center())
+    map:setPosition(visible_size.width/2, visible_size.height/2+42*2)
+    self.tilemap_obj_ = map
     bg_layer:addChild(map)
 
     local bg_size = cc.size(img_size.width*2, img_size.height)
@@ -88,9 +89,13 @@ function CocDemoScene:add_bg_layer()
         if touch_num == 1 then
             local touch = touchs[1]
             local touch_pos = touch:getLocation()
-            local local_pos = bg_layer:convertToNodeSpace(touch_pos)
-            local _, map_pos = TileMapHelper.get_tile_pos_from_location(map, local_pos)
-            print("map_pos:", map_pos.x, map_pos.y)
+            local start_pos = touch:getStartLocation()
+            local move_offset = cc.pSub(touch_pos, start_pos)
+            if math.abs(move_offset.x) < 2 and math.abs(move_offset.y) < 2 then
+                local local_pos = map:convertToNodeSpace(touch_pos)
+                local map_pos, map_pos_1 = TileMapHelper.get_tile_pos_from_location(map, local_pos)
+                print("map_pos:", map_pos.x, map_pos.y, "## ", map_pos_1.x, map_pos_1.y, touch_pos.x, touch_pos.y, local_pos.x, local_pos.y)
+            end
         else
 
         end
