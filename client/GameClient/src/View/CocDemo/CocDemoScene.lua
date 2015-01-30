@@ -55,7 +55,7 @@ function CocDemoScene:add_bg_layer()
     map:ignoreAnchorPointForPosition(false)
     map:setAnchorPoint(0.5, 0.5)
     map:setPosition(visible_size.width/2, visible_size.height/2+42*2)
-    self.tilemap_obj_ = map
+    self._tilemap_obj = map
     bg_layer:addChild(map)
 
     local bg_size = cc.size(img_size.width*2, img_size.height)
@@ -95,6 +95,7 @@ function CocDemoScene:add_bg_layer()
                 local local_pos = map:convertToNodeSpace(touch_pos)
                 local map_pos, map_pos_1 = TileMapHelper.get_tile_pos_from_location(map, local_pos)
                 print("map_pos:", map_pos.x, map_pos.y, "## ", map_pos_1.x, map_pos_1.y, touch_pos.x, touch_pos.y, local_pos.x, local_pos.y)
+                self:move_roles_to(map_pos)
             end
         else
 
@@ -116,7 +117,45 @@ function CocDemoScene:add_ui_layer()
     local btn_build = ccui.Button:create()
 end
 
+function CocDemoScene:load_map_data()
+    local all_map_data = require("View.CocDemo.map_0_1")
+    local map_width = nil
+    local map_height = nil
+    local map_data = nil
+    for _, layer_data in pairs(all_map_data.layers) do
+        if layer_data.type == "tilelayer" and layer_data.name == "items" then
+            map_width = layer_data.width
+            map_height = layer_data.height
+            map_data = layer_data.data
+            break
+        end 
+    end
+    assert(map_data ~= nil, "load map_data failed!!!!!!")
+    local function check_is_block( point_data )
+        return point_data ~= 0
+    end
+    self._find_path_helper = PathFindHelper.new(map_data, map_width, map_height, check_is_block)
+end
+
+function CocDemoScene:add_role_to_map( role, x, y)
+    local layer = self._tilemap_obj:getLayer("items")
+    role:init(layer, self._find_path_helper, cc.p(x, y))
+    if not self._added_roles then
+        self._added_roles = {}
+    end
+    table.insert(self._added_roles, role)
+end
+
+function CocDemoScene:move_roles_to( point )
+    for _, role in pairs(self._added_roles) do
+        role:move_to(point)
+    end
+end
+
 function CocDemoScene:init()
    self:add_bg_layer()
+   self:load_map_data()
+
+   self:add_role_to_map( BaseRole.create("coc/characters/32.0.png"), 10, 10 )
 end
 

@@ -30,23 +30,31 @@ local MOVE_OFFSET = {
 	[MOVE_DIR.RIGHT_BOTTOM] = {{ 1,-1}, 14},
 }
 
-function PathFindHelper:ctor(map_data, width, height)
+function PathFindHelper:ctor(map_data, width, height, check_block_func)
 	self._map_data 		= map_data
 	self._map_width 	= width
 	self._map_height  	= height
+	self._check_block_func = check_block_func
 
 	self:init()
 end
 
 function PathFindHelper:get_point_index( point )
-	return point.x + (point.y - 1)*self._map_width
+	return (point.x + point.y*self._map_width + 1)
 end
 
 --检查点是否是阻塞不可走的
 function PathFindHelper:check_point_is_block( point )
-	local index = self:get_point_index(point)
+	if point.x < 0 or point.x >= self._map_width or point.y < 0 or point.y >= self._map_height then
+		return true
+	end
 
-	return self._map_data[index] == 0
+	local index = self:get_point_index(point)
+	if self._check_block_func and type(self._check_block_func) == "function" then
+		return self._check_block_func(self._map_data[index])
+	else
+		return self._map_data[index] ~= 0
+	end
 end
 
 function PathFindHelper:get_h_value(p1, p2)
@@ -84,6 +92,9 @@ function PathFindHelper:find_path( start_point, end_point, only_cross)
 	while 1 do
 		table.sort(open_list, open_cmp)
 		local open_item  = table.remove(open_list)
+		if not open_item then
+			break
+		end
 		local cur_point  = open_item.point
 		local cur_index  = self:get_point_index( cur_point )
 		local cur_g_cost = open_item.g_cost
@@ -97,27 +108,33 @@ function PathFindHelper:find_path( start_point, end_point, only_cross)
 			local move_g_cost = offset[2]
 			
 			local dest_point = cc.p(cur_point.x + move_offset[1], cur_point.y + move_offset[2])
-			local dest_index = self:get_point_index( dest_point )
-			local dest_h_cost = self:get_h_value(dest_point, end_point)
-			local dest_g_cost = move_g_cost + cur_g_cost
-			
-			--如果已经在检查过的点中，或不可行走的点
-			if close_list[dest_index] or self:check_point_is_block(dest_point) then
-				--直接跳过
-			else
-				--如果此点已经在开启列表中
-				local open_record = open_check_index[dest_index]
-				if  open_record then
-					local recore_f = open_record.g_cost + open_record.h_cost
-					local dest_f = dest_g_cost + dest_h_cost
-
-					if dest_f < recore_f then
-						open_record.parent = open_item
+			if dest_point.x >= 0 and dest_point.x < self._map_width and dest_point.y >= 0 and dest_point.y < self._map_height then
+				--print("### x: ", dest_point.x, " ### y: ", dest_point.y)
+				local dest_index = self:get_point_index( dest_point )
+				local dest_h_cost = self:get_h_value(dest_point, end_point)
+				local dest_g_cost = move_g_cost + cur_g_cost
+				
+				--如果已经在检查过的点中，或不可行走的点
+				if close_list[dest_index] or self:check_point_is_block(dest_point) then
+					if not close_list[dest_index] then
+						--print(dest_point.x, dest_point.y, "is blocked", self._map_data[dest_index])
 					end
+					--直接跳过
 				else
-					local item_value = { point = dest_point, g_cost = dest_g_cost, h_cost = dest_h_cost, parent = open_item}
-					table.insert(open_list, item_value)
-					open_check_index[dest_index] = item_value
+					--如果此点已经在开启列表中
+					local open_record = open_check_index[dest_index]
+					if  open_record then
+						local recore_f = open_record.g_cost + open_record.h_cost
+						local dest_f = dest_g_cost + dest_h_cost
+
+						if dest_f < recore_f then
+							open_record.parent = open_item
+						end
+					else
+						local item_value = { point = dest_point, g_cost = dest_g_cost, h_cost = dest_h_cost, parent = open_item}
+						table.insert(open_list, item_value)
+						open_check_index[dest_index] = item_value
+					end
 				end
 			end
 		end

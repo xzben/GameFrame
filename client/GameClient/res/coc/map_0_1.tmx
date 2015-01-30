@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="0.0" tilewidth="65" tileheight="70">
   <image source="buildings/0.0.png" width="65" height="70"/>
  </tileset>
- <layer name="块层 1" width="44" height="44">
+ <layer name="items" width="44" height="44">
   <data encoding="base64" compression="zlib">
    eJztzrEJADAQxLDP/ktnChUHFrj3u7s31op+rX6tfq1+rX6tfq1+rX6tfq1+rX6tfq1+rX6tfq1+rX6tfq1+rX6t1d+lPkmuAK0=
   </data>
