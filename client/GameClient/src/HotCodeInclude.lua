@@ -27,5 +27,7 @@ require_ex("View.GameMapScene.GameMapScene")
 require_ex("View.CocDemo.BaseRole")
 require_ex("View.CocDemo.CocDemoScene")
 
+require_ex("View.CocoStudioHelper.TestCocoStudioHelper")
+
 
 

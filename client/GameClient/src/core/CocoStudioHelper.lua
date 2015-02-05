@@ -32,7 +32,6 @@ function get_auto_node(layer_json_file)
 		end
 		AUTO_COUNT[layer_json_file] = AUTO_COUNT[layer_json_file] - 1
 		if AUTO_COUNT[layer_json_file] <= 0 then
-			--print("release node "..layer_json_file)
 			LOADED_WIDGET[layer_json_file]:release()
 			LOADED_WIDGET[layer_json_file] = nil
 		end
@@ -44,11 +43,10 @@ end
 
 function load_widget(init_layer_obj, layer_json_file)
 	local filename, ext = Helper.split_filename_ext(layer_json_file)
-	local widget = LOADED_WIDGET[filename]
+	local widget = LOADED_WIDGET[layer_json_file]
 	if widget then
 		local retwidget = widget:clone()
-		retwidget:addChild(get_auto_node(filename))
-		--print("get loaded widget !!!!")
+		retwidget:addChild(get_auto_node(layer_json_file))
 		return retwidget
 	end
 
@@ -64,7 +62,7 @@ function load_widget(init_layer_obj, layer_json_file)
 	LOADED_WIDGET[layer_json_file]:retain()
 
 	local retwidget = widget:clone()
-	retwidget:addChild(get_auto_node(filename))
+	retwidget:addChild(get_auto_node(layer_json_file))
 	--print("get new widget !!!!")
 	return retwidget
 end
@@ -137,7 +135,6 @@ end
 --
 -- init_layer_obj 		要构造的 layer 对象
 -- layer_json_file 		要构造 layer 需要加载的 json/csb 文件路径
--- root_tag	root 		的数值 tag
 -- table_control_map 	初始化结构表，格式如下
 -- talbe = {
 --	{
@@ -145,20 +142,16 @@ end
 --		init_callback 	= 控件对应的初始化回调函数 function (self, control_obj) end layer 为构造的layerobj
 --	}
 --}
-function CocoStudioHelper.load_ui(init_layer_obj, layer_json_file, root_tag, table_control_map )
+function CocoStudioHelper.load_ui(init_layer_obj, layer_json_file, table_control_map )
 	init_layer_obj.widget_ = load_widget(init_layer_obj, layer_json_file)
 
 	init_layer_obj:addChild(init_layer_obj.widget_)
-	init_layer_obj.uiroot_ = init_layer_obj:getChildByTag(root_tag)
-	assert(init_layer_obj.uiroot_ ~= nil, string.format("can't load layer root: "..layer_json_file))
 
 	size = init_layer_obj:getContentSize()
-	init_layer_obj.widget_:setSize(size)
-	init_layer_obj.uiroot_:setSize(size)
+	init_layer_obj.widget_:setContentSize(size)
+	init_layer_obj.widget_:ignoreAnchorPointForPosition(false)
 	init_layer_obj.widget_:setAnchorPoint(cc.p(0.5,0.5))
-	init_layer_obj.uiroot_:ignoreAnchorPointForPosition(false)
-    init_layer_obj.uiroot_:setAnchorPoint(cc.p(0.5,0.5))
-    init_layer_obj.uiroot_:setPosition(size.width/2, size.height/2)
+    init_layer_obj.widget_:setPosition(size.width/2, size.height/2)
 
-   	return CocoStudioHelper.init_ui_controls(init_layer_obj, table_control_map) 
+   	return CocoStudioHelper.init_ui_controls(init_layer_obj.widget_, table_control_map) 
 end
