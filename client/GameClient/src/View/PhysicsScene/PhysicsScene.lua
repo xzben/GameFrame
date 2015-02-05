@@ -61,6 +61,63 @@ function PhysicsScene:init()
         print("decode person     id:", decode.id)
     else
         print("proto decode error!!!!!!! typename:", typename2)
-    end 
+    end
+
+    local visibleSize = VisibleRect:getVisibleSize()
+    local texture = cc.Director:getInstance():getTextureCache():addImage("repeat.jpg")
+    texture:setTexParameters(gl.LINEAR, gl.LINEAR, gl.REPEAT, gl.REPEAT)
+    local sprite = cc.Sprite:createWithTexture(texture, cc.rect(0 , 0, visibleSize.width, visibleSize.height))
+    sprite:setPosition(cc.p(visibleSize.width/2, visibleSize.height/2))
+    self:addChild(sprite, 0)
+
+    for i = 1, 4, 1 do
+        for j = 1, 3, 1 do
+            local card = self:create_card()
+            card:setPosition(150*i, 200*j)
+            self:addChild(card)
+            card.run_action()
+        end
+    end
 end
 
+function PhysicsScene:create_card(  )
+    local back = cc.Sprite:create("card/ui_card.png")
+    local front = cc.Sprite:create("card/ui_card1.png")
+    local card_size = front:getContentSize()
+    local card = cc.Layer:create()
+    card:setContentSize(card_size)
+    front:setPosition(card_size.width/2, card_size.height/2)
+    back:setPosition(card_size.width/2, card_size.height/2)
+    front:setVisible(false)
+    card:addChild(front)
+    card:addChild(back)
+
+    card.run_action =  function()
+        local duration = 1.5
+        front:stopAllActions()
+        back:stopAllActions()
+        --正面z轴起始角度为90度（向左旋转90度），然后向右旋转90度
+        local orbitFront = cc.OrbitCamera:create(duration*0.5,1,0,90,-90,0,0);
+        orbitFront:setTarget(front)
+        orbitFront:setCenter({100,100,0})
+        --正面z轴起始角度为0度，然后向右旋转90度
+        local orbitBack = cc.OrbitCamera:create(duration*0.5,1,0,0,-90,0,0);
+        orbitBack:setTarget(back)
+        orbitBack:setCenter({100,100,0})
+        front:setVisible(false)
+        
+        local function callback()
+            local temp = front
+            front = back
+            back = temp
+        end
+        --背面向右旋转90度->正面向左旋转90度
+        back:runAction(cc.RepeatForever:create( cc.Sequence:create(cc.TargetedAction:create(front, cc.Hide:create()),cc.Show:create(),orbitBack,cc.Hide:create(),
+            cc.TargetedAction:create(front,cc.Sequence:create(cc.Show:create(),orbitFront)), cc.CallFunc:create(callback))))
+    end
+
+    card:ignoreAnchorPointForPosition(false)
+    card:setAnchorPoint(0.5, 0.5)
+
+    return card
+end
