@@ -3,3 +3,7 @@
 client/GameClient/frameworks/runtime-src/proj.win32/Debug.win32/
 *.opensdf
 *.vsp
+client/GameClient/frameworks/runtime-src/proj.android/assets/
+client/GameClient/frameworks/runtime-src/proj.android/obj/local/armeabi/objs-debug/cocos_extension_static/GUI/CCControlExtension/CCControlHuePicker.o
+client/GameClient/frameworks/runtime-src/proj.android/obj/
+client/GameClient/frameworks/runtime-src/proj.android/bin/
