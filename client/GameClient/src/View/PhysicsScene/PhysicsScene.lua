@@ -43,7 +43,7 @@ function PhysicsScene:init()
     crab_obj = nil
     collectgarbage()
 
-
+    ---[[
     -- 测试协议
     local person = {
         name = "xiezhunben",
@@ -62,7 +62,7 @@ function PhysicsScene:init()
     else
         print("proto decode error!!!!!!! typename:", typename2)
     end
-
+	--]]
     local visibleSize = VisibleRect:getVisibleSize()
     local texture = cc.Director:getInstance():getTextureCache():addImage("repeat.jpg")
     texture:setTexParameters(gl.LINEAR, gl.LINEAR, gl.REPEAT, gl.REPEAT)

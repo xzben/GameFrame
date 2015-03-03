@@ -17,12 +17,10 @@ f = {
 
 
 function registe(file)
-	local filefullpath = cc.FileUtils:getInstance():fullPathForFilename(file)
-	--print("###################", filefullpath, "###############")
-    protobuf.register_file(filefullpath)
+	local buffer = cc.FileUtils:getInstance():getStringFromFile(file)
+    protobuf.register(buffer)
 end
 
-  
 function registe_all()
     for _, file in pairs(f) do
         registe(file)

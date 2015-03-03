@@ -52,11 +52,6 @@ void Mutex::lock()
 	m_lock.lock();
 }
 
-bool Mutex::try_lock(unsigned int milliseconds /*= 200*/)
-{
-	return m_lock.try_lock_for(std::chrono::milliseconds(milliseconds));
-}
-
 void Mutex::unlock()
 {
 	m_lock.unlock();

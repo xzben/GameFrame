@@ -34,10 +34,9 @@ public:
 	Mutex();
 	virtual ~Mutex();
 	void lock();
-	bool try_lock(unsigned int milliseconds = 200);
 	void unlock();
 protected:
-	std::timed_mutex	m_lock;
+	std::mutex	m_lock;
 };
 
 class Guard

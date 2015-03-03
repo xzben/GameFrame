@@ -45,7 +45,10 @@ bool	TCPSocket::set_unblock()
 	if (flag = fcntl(m_hSocket, F_GETFL, 0) < 0)
 		return false;
 
-	SET_DEL_BIT( flag, O_NONBLOCK, !bBlock );
+	if( !bBlock )
+		flag |= O_NONBLOCK;
+	else
+		flag &= ~(O_NONBLOCK);
 
 	if (fcntl(m_hSocket, F_SETFL, flag) < 0)
 		return false;

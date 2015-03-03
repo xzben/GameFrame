@@ -8,7 +8,7 @@
 #define __2014_12_09_NETWORK_H__
 
 
-
+#include "cocos2d.h"
 #include <thread>
 #include <queue>
 //SOCKET 句柄类型
@@ -24,14 +24,16 @@
 	#include <sys/types.h>
 	#include <sys/select.h>
 	#include <sys/epoll.h>
+	#include <fcntl.h>
 	#include <arpa/inet.h>
 	#include <netinet/in.h>
 	#include <unistd.h>
 	#include <errno.h>
-	typedef int32					SOCKET_HANDLE;
+	typedef int					int32;
+	typedef int					SOCKET_HANDLE;
 #endif//平台相关
 
-#include "cocos2d.h"
+
 #include "packet.h"
 #include "Mutex.h"
 
