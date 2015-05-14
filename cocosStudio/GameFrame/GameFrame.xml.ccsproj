@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<GameProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>F:\Github\GameFrame\cocosStudio\GameFrame</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>F:\Github\GameFrame\cocosStudio\GameFrame</Resources>
+  <Name>GameFrame</Name>
+  <JsonFileName>GameFrame.json</JsonFileName>
+  <CanvasSize>
+    <Width>480</Width>
+    <Height>320</Height>
+  </CanvasSize>
+  <filePath>F:\Github\GameFrame\cocosStudio\GameFrame\GameFrame.xml.ccsproj</filePath>
+  <ProjectType>GameProject</ProjectType>
+  <ResRelativePath />
+  <ResProjFolder>F:\Github\GameFrame\cocosStudio\GameFrame\CocosStudio\ccsprojs</ResProjFolder>
+  <AssetsDir>F:\Github\GameFrame\cocosStudio\GameFrame\CocosStudio\assets</AssetsDir>
+  <LanaguageType>cpp</LanaguageType>
+</GameProject>

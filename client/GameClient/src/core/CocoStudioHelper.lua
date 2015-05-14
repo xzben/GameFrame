@@ -95,10 +95,7 @@ end
 function CocoStudioHelper.init_ui_controls(init_layer_obj, table_control_map)
 	init_layer_obj.controls_ = {}
 	for _, theControl in ipairs(table_control_map) do
-		--print("--------------"..theControl.tag_name.."--------------")
-		-- 注意不要用 getChildByName() 因为3.0 开始 getChildByname 只能获取到子节点，不能获取到孙节点。
-		-- 可以用 seekWidgetByName 。他可以从根节点开始深度遍历所有节点找。
-		init_layer_obj.controls_[theControl.tag_name] = ccui.Helper:seekWidgetByName(init_layer_obj, theControl.tag_name)
+		init_layer_obj.controls_[theControl.tag_name] = Helper.seek_child_by_name(init_layer_obj, theControl.tag_name)
 		assert(init_layer_obj.controls_[theControl.tag_name] ~= nil, string.format("can't load control: "..theControl.tag_name))
 	end
 	
@@ -108,7 +105,7 @@ function CocoStudioHelper.init_ui_controls(init_layer_obj, table_control_map)
 			return layer_obj.controls_[control_name]
 		end
 
-		local control_obj = ccui.Helper:seekWidgetByName(layer_obj, control_name)
+		local control_obj = Helper.seek_child_by_name(layer_obj, control_name)
 		assert(control_obj~=nil, string.format("can't find the control by name [%s]", tostring(control_name)))
 		layer_obj.controls_[control_name] = control_obj
 
@@ -117,7 +114,7 @@ function CocoStudioHelper.init_ui_controls(init_layer_obj, table_control_map)
 
 	-- 通过名字从控件中获得子控件
 	init_layer_obj.get_control_child_by_name = function (layer_obj, control_obj, child_name )
-		local child_obj = ccui.Helper:seekWidgetByName(control_obj, child_name)
+		local child_obj = Helper.seek_child_by_name(control_obj, child_name)
 		assert(child_obj~=nil, string.format("can't find the control by name [%s]", tostring(child_name)))
 		return child_obj
 	end
@@ -153,5 +150,5 @@ function CocoStudioHelper.load_ui(init_layer_obj, layer_json_file, table_control
 	init_layer_obj.widget_:setAnchorPoint(cc.p(0.5,0.5))
     init_layer_obj.widget_:setPosition(size.width/2, size.height/2)
 
-   	return CocoStudioHelper.init_ui_controls(init_layer_obj.widget_, table_control_map) 
+   	return CocoStudioHelper.init_ui_controls(init_layer_obj,table_control_map) 
 end

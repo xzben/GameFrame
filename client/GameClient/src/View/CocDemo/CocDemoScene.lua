@@ -39,7 +39,7 @@ function CocDemoScene:add_bg_layer()
     bg_layer:ignoreAnchorPointForPosition(false)
     bg_layer:setAnchorPoint(0.5, 0.5)
     bg_layer:setPosition(VisibleRect:center())
-    self:addChild(bg_layer, 0)
+    self:addChild(bg_layer)
 
     local bg_file = "coc/background_player/0.0.png"
     local left_bg = cc.Sprite:create(bg_file)
@@ -63,14 +63,18 @@ function CocDemoScene:add_bg_layer()
     local max_x = visible_size.width/2 + (bg_size.width - visible_size.width)/2
     local min_y = visible_size.height/2 - (bg_size.height - visible_size.height)/2 
     local max_y = visible_size.height/2 + (bg_size.height - visible_size.height)/2 
+    local touch_begin_points = {}
 
     local function onTouchBegan(touchs, event)
+        local touch_num = #touchs
+        for index, touch in ipairs(touchs) do
+            touch_begin_points[index] = touch:getLocation()
+        end
         return true
     end
 
     local function onTouchMoved(touchs, event)
         local touch_num = #touchs
-
         if touch_num == 1 then --单点触摸则为移动背景
             local touch = touchs[1]
             local move_offset = touch:getDelta()
@@ -79,8 +83,28 @@ function CocDemoScene:add_bg_layer()
             if new_pos.x >= min_x and new_pos.x <= max_x and new_pos.y >= min_y and new_pos.y <= max_y then 
                 bg_layer:setPosition(new_pos)
             end
-        else
+        elseif touch_num >= 2 then
+            if #touch_begin_points < 2 then
+                touch_begin_points[1] = touchs[1]:getLocation()
+                touch_begin_points[2] = touchs[2]:getLocation()
+            else
+                local move_points = {}
+                move_points[1] = touchs[1]:getLocation()
+                move_points[2] = touchs[2]:getLocation()
 
+                local begin_len = cc.pGetLength(cc.pSub(touch_begin_points[1], touch_begin_points[2]))
+                local end_len = cc.pGetLength(cc.pSub(move_points[1], move_points[2]))
+                local offset = end_len - begin_len
+                local cur_scale = bg_layer:getScale()
+                local set_scale = cur_scale + offset/20*0.1
+                print("#################### setScale 1: ", set_scale)
+                set_scale = math.min(1, set_scale)
+                set_scale = math.max(0.1, set_scale)
+
+                bg_layer:setScale(set_scale)
+                print("#################### setScale 2: ", set_scale)
+                touch_begin_points = move_points
+            end
         end
     end
 
@@ -97,9 +121,10 @@ function CocDemoScene:add_bg_layer()
                 print("map_pos:", map_pos.x, map_pos.y, "## ", map_pos_1.x, map_pos_1.y, touch_pos.x, touch_pos.y, local_pos.x, local_pos.y)
                 self:move_roles_to(map_pos)
             end
-        else
-
+        elseif touch_num >= 2 then
+            
         end
+        touch_begin_points = {}
     end
     
     TouchHelper:add_mutile_touch_listener( bg_layer, {onTouchBegan, onTouchEnded, onTouchMoved})
@@ -152,8 +177,17 @@ function CocDemoScene:move_roles_to( point )
     end
 end
 
+function CocDemoScene:add_main_ui()
+    local layer = CocMainUI.create()
+    layer:ignoreAnchorPointForPosition(false)
+    layer:setAnchorPoint(0.5, 0.5)
+    layer:setPosition(VisibleRect:center())
+    self:addChild(layer)
+end
+
 function CocDemoScene:init()
    self:add_bg_layer()
+   self:add_main_ui()
    self:load_map_data()
 
    self:add_role_to_map( BaseRole.create("coc/characters/32.0.png"), 10, 10 )
