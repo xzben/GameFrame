@@ -8,15 +8,17 @@
 
 Session = Session or class("Session", EventDispatcher)
 
-local tagChildrens = {
-	TAG_SCENE = 1,	
-}
+--------------------- scene tags ------------------------------
+local TAG_SCENE = 1
 
-local zorderChildrens = {
-	ZORDER_SCENE = 1,
-}
+
+--------------------- scene zorders ---------------------------
+local ZORDER_SCENE = 1
+
+
+---------------------------------------------------
 function Session.create()
-	return CocDemoScene.extend(cc.Scene:create())	
+	return Session.extend(cc.Scene:create())	
 end
 
 function Session:ctor()
@@ -61,7 +63,7 @@ function Session:replaceScene( newScene )
 	self._curRunningScene = newScene
 	self:addChild(newScene, ZORDER_SCENE, TAG_SCENE)
 
-	cc.TextureCache:getInstance():removeUnusedTextures();
+	self._director:getTextureCache():removeUnusedTextures();
 end
 
 function Session:runWithScene( newScene )
@@ -71,16 +73,20 @@ end
 function Session:init()
 	self:init_file_utils();
 	self:init_director();
+	ProtoRegister.registe_all();
 end
 
-function Session:lauchScene( scene )
+function Session:lauchScene()
 	if self._director:getRunningScene() then
         self._director:replaceScene(self)
     else
         self._director:runWithScene(self)
     end
 
-    self:replaceScene( scene )
+    local scene = LauchScene.create()
+    if scene then
+    	self:replaceScene( scene )
+    end
 end
 
 GSession = GSession or Session.create()

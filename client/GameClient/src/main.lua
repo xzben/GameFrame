@@ -77,18 +77,13 @@ require_ex("core.VisibleRect")
 require_ex("core.TouchHelper")
 require_ex("View.LauchScene.LauchScene")
 
-function start_game_scene()
-    ProtoRegister.registe_all()
-end
-
 local function main()
     collectgarbage("collect")
     -- avoid memory leak
     collectgarbage("setpause", 100)
     collectgarbage("setstepmul", 5000)
 
-    local scene = LauchScene.create()
-    GSession:lauchScene(scene);
+    GSession:lauchScene();
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)
