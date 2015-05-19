@@ -73,7 +73,7 @@ end
 function Session:init()
 	self:init_file_utils();
 	self:init_director();
-	ProtoRegister.registe_all();
+	
 end
 
 function Session:lauchScene()
@@ -82,7 +82,8 @@ function Session:lauchScene()
     else
         self._director:runWithScene(self)
     end
-
+    
+    ProtoRegister.registe_all();
     local scene = LauchScene.create()
     if scene then
     	self:replaceScene( scene )

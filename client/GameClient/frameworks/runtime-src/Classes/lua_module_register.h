@@ -10,16 +10,17 @@
 #include "spine/lua_cocos2dx_spine_manual.hpp"
 #include "3d/lua_cocos2dx_3d_manual.h"
 #include "audioengine/lua_cocos2dx_audioengine_manual.h"
-#include "lua/quick/lua_cocos2dx_quick_manual.hpp"
+#include "pbc.h"
+//#include "lua/quick/lua_cocos2dx_quick_manual.hpp"
 
 #include "lua52.h"
-#include "lua_register/luaNetwork.h"
+//#include "lua_register/luaNetwork.h"
 
 int lua_module_register(lua_State* L)
 {
 	luaopen_utf8_c(L);
 	luaopen_crab_c(L);
-	luaopen_network_c(L);
+	//luaopen_network_c(L);
 	luaopen_protobuf_c(L);
     //Dont' change the module register order unless you know what your are doing
     register_cocosdenshion_module(L);

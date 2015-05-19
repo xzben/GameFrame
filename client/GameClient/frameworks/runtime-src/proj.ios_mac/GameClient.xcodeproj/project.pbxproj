@@ -54,6 +54,17 @@
 		C03781BC18BF655400FE4F13 /* src in Resources */ = {isa = PBXBuildFile; fileRef = C03781B818BF655400FE4F13 /* src */; };
 		C06E23C418CEF9740093C81A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C06E23C318CEF9740093C81A /* main.cpp */; };
 		D6B061351803AC000077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B061341803AC000077942B /* CoreMotion.framework */; };
+		E506D6331B05CB9A0048C9BF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E506D6321B05CB9A0048C9BF /* Security.framework */; };
+		E506D6351B05CBA00048C9BF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E506D6341B05CBA00048C9BF /* Security.framework */; };
+		E506D63D1B05CBCC0048C9BF /* lua_crab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D63B1B05CBCC0048C9BF /* lua_crab.cpp */; };
+		E506D63E1B05CBCC0048C9BF /* lua_crab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D63B1B05CBCC0048C9BF /* lua_crab.cpp */; };
+		E506D63F1B05CBCC0048C9BF /* lua_utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D63C1B05CBCC0048C9BF /* lua_utf8.cpp */; };
+		E506D6401B05CBCC0048C9BF /* lua_utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D63C1B05CBCC0048C9BF /* lua_utf8.cpp */; };
+		E506D6441B05CBE40048C9BF /* lua52.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6421B05CBE40048C9BF /* lua52.cpp */; };
+		E506D6451B05CBE40048C9BF /* lua52.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6421B05CBE40048C9BF /* lua52.cpp */; };
+		E506D6481B05CED50048C9BF /* pbc-lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6461B05CED50048C9BF /* pbc-lua.cpp */; };
+		E506D6491B05CED50048C9BF /* pbc-lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6461B05CED50048C9BF /* pbc-lua.cpp */; };
+		E5F8D2D91B0B50F800507901 /* libpbc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F8D2D81B0B50F800507901 /* libpbc.a */; };
 		F293B3CD15EB7BE500256477 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F293B3CC15EB7BE500256477 /* QuartzCore.framework */; };
 		F293B3D115EB7BE500256477 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F293B3D015EB7BE500256477 /* OpenAL.framework */; };
 		F293B3D315EB7BE500256477 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F293B3D215EB7BE500256477 /* AudioToolbox.framework */; };
@@ -120,6 +131,13 @@
 			remoteGlobalIDString = A07A4D641783777C0073F6A7;
 			remoteInfo = "cocos2dx iOS";
 		};
+		E5F8D2D71B0B50F800507901 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5F8D2D31B0B4FD700507901 /* pbc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D7EF1334179E5530002B6A46;
+			remoteInfo = pbc;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -168,6 +186,16 @@
 		C03781B818BF655400FE4F13 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../src; sourceTree = "<group>"; };
 		C06E23C318CEF9740093C81A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D6B061341803AC000077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
+		E506D6321B05CB9A0048C9BF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		E506D6341B05CBA00048C9BF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		E506D63B1B05CBCC0048C9BF /* lua_crab.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lua_crab.cpp; path = ../Classes/crab/lua_crab.cpp; sourceTree = "<group>"; };
+		E506D63C1B05CBCC0048C9BF /* lua_utf8.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lua_utf8.cpp; path = ../Classes/crab/lua_utf8.cpp; sourceTree = "<group>"; };
+		E506D6411B05CBE40048C9BF /* LLLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLLua.h; path = ../Classes/LLLua.h; sourceTree = "<group>"; };
+		E506D6421B05CBE40048C9BF /* lua52.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lua52.cpp; path = ../Classes/lua52.cpp; sourceTree = "<group>"; };
+		E506D6431B05CBE40048C9BF /* lua52.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua52.h; path = ../Classes/lua52.h; sourceTree = "<group>"; };
+		E506D6461B05CED50048C9BF /* pbc-lua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "pbc-lua.cpp"; path = "../Classes/pbc-lua.cpp"; sourceTree = "<group>"; };
+		E506D6471B05CED50048C9BF /* pbc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pbc.h; path = ../Classes/pbc.h; sourceTree = "<group>"; };
+		E5F8D2D31B0B4FD700507901 /* pbc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pbc.xcodeproj; path = ../../../../3rd/pbc/pbc.xcodeproj; sourceTree = "<group>"; };
 		F293B3C815EB7BE500256477 /* GameClient iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GameClient iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F293B3CC15EB7BE500256477 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F293B3CE15EB7BE500256477 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -186,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E506D6351B05CBA00048C9BF /* Security.framework in Frameworks */,
 				15427C79198F1FA200DC375D /* libluacocos2d Mac.a in Frameworks */,
 				15427C78198F1F9900DC375D /* libcocos2d Mac.a in Frameworks */,
 				15A8A4881834C90F00142BE0 /* libcurl.dylib in Frameworks */,
@@ -205,6 +234,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5F8D2D91B0B50F800507901 /* libpbc.a in Frameworks */,
+				E506D6331B05CB9A0048C9BF /* Security.framework in Frameworks */,
 				15427C5B198F1E0100DC375D /* libluacocos2d iOS.a in Frameworks */,
 				15427C5A198F1DF000DC375D /* libcocos2d iOS.a in Frameworks */,
 				15AECE29195D482800907DB0 /* MediaPlayer.framework in Frameworks */,
@@ -293,9 +324,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		E506D6361B05CBAA0048C9BF /* crab */ = {
+			isa = PBXGroup;
+			children = (
+				E506D63B1B05CBCC0048C9BF /* lua_crab.cpp */,
+				E506D63C1B05CBCC0048C9BF /* lua_utf8.cpp */,
+			);
+			name = crab;
+			sourceTree = "<group>";
+		};
+		E5F8D2D41B0B4FD700507901 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E5F8D2D81B0B50F800507901 /* libpbc.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F293B3BD15EB7BE500256477 = {
 			isa = PBXGroup;
 			children = (
+				E5F8D2D31B0B4FD700507901 /* pbc.xcodeproj */,
 				C03781AE18BF654500FE4F13 /* cocos2d_lua_bindings.xcodeproj */,
 				15A8A4031834BDA200142BE0 /* cocos2d_libs.xcodeproj */,
 				5023810617EBBCAC00990C9B /* ios */,
@@ -319,6 +368,8 @@
 		F293B3CB15EB7BE500256477 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E506D6341B05CBA00048C9BF /* Security.framework */,
+				E506D6321B05CB9A0048C9BF /* Security.framework */,
 				15AECE28195D482800907DB0 /* MediaPlayer.framework */,
 				15A8A4871834C90E00142BE0 /* libcurl.dylib */,
 				D6B061341803AC000077942B /* CoreMotion.framework */,
@@ -344,6 +395,12 @@
 		F293BB7C15EB830F00256477 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E506D6361B05CBAA0048C9BF /* crab */,
+				E506D6461B05CED50048C9BF /* pbc-lua.cpp */,
+				E506D6471B05CED50048C9BF /* pbc.h */,
+				E506D6411B05CBE40048C9BF /* LLLua.h */,
+				E506D6421B05CBE40048C9BF /* lua52.cpp */,
+				E506D6431B05CBE40048C9BF /* lua52.h */,
 				15427C7E198F201A00DC375D /* lua_module_register.h */,
 				F293BB7E15EB831F00256477 /* AppDelegate.cpp */,
 				F293BB7F15EB831F00256477 /* AppDelegate.h */,
@@ -413,7 +470,7 @@
 				LastUpgradeCheck = 0500;
 				TargetAttributes = {
 					F293B3C715EB7BE500256477 = {
-						DevelopmentTeam = MDDB52YB8L;
+						DevelopmentTeam = 94U2MA6SJK;
 					};
 				};
 			};
@@ -435,6 +492,10 @@
 				{
 					ProductGroup = C03781AF18BF654500FE4F13 /* Products */;
 					ProjectRef = C03781AE18BF654500FE4F13 /* cocos2d_lua_bindings.xcodeproj */;
+				},
+				{
+					ProductGroup = E5F8D2D41B0B4FD700507901 /* Products */;
+					ProjectRef = E5F8D2D31B0B4FD700507901 /* pbc.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -472,6 +533,13 @@
 			fileType = archive.ar;
 			path = "libcocos2d iOS.a";
 			remoteRef = 15A8A4241834BDA200142BE0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E5F8D2D81B0B50F800507901 /* libpbc.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libpbc.a;
+			remoteRef = E5F8D2D71B0B50F800507901 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -550,8 +618,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E506D6491B05CED50048C9BF /* pbc-lua.cpp in Sources */,
 				C06E23C418CEF9740093C81A /* main.cpp in Sources */,
+				E506D6401B05CBCC0048C9BF /* lua_utf8.cpp in Sources */,
 				5023813317EBBCE400990C9B /* AppDelegate.cpp in Sources */,
+				E506D63E1B05CBCC0048C9BF /* lua_crab.cpp in Sources */,
+				E506D6451B05CBE40048C9BF /* lua52.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,10 +631,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E506D6481B05CED50048C9BF /* pbc-lua.cpp in Sources */,
 				5023812517EBBCAC00990C9B /* RootViewController.mm in Sources */,
+				E506D63F1B05CBCC0048C9BF /* lua_utf8.cpp in Sources */,
 				F293BB9C15EB831F00256477 /* AppDelegate.cpp in Sources */,
 				5023812417EBBCAC00990C9B /* main.m in Sources */,
 				5023811817EBBCAC00990C9B /* AppController.mm in Sources */,
+				E506D63D1B05CBCC0048C9BF /* lua_crab.cpp in Sources */,
+				E506D6441B05CBE40048C9BF /* lua52.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,7 +685,7 @@
 				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)";
 				OTHER_LDFLAGS = (
 					"-image_base",
 					100000000,
@@ -635,7 +711,7 @@
 				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = mac/Info.plist;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)";
 				OTHER_LDFLAGS = (
 					"-image_base",
 					100000000,
@@ -700,6 +776,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -711,11 +788,16 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../",
+					"$(PROJECT_DIR)/ios",
+				);
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../cocos2d-x/cocos/platform/ios";
-				VALID_ARCHS = "arm64 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -724,6 +806,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ios/Prefix.pch;
@@ -734,11 +817,16 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../",
+					"$(PROJECT_DIR)/ios",
+				);
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(inherited) $(SRCROOT)/../../cocos2d-x/cocos/platform/ios";
-				VALID_ARCHS = "arm64 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
