@@ -6,7 +6,7 @@
 --
 -------------------------------------------------------------------------------
 require_ex("HotCodeInclude")
-LauchScene = LauchScene or class("LauchScene", EventDispatcher)
+LauchScene = LauchScene or class("LauchScene", VBase)
 
 function LauchScene.create()
 	return LauchScene.extend(cc.Scene:create())
@@ -60,7 +60,7 @@ local BeginPos = {x = 0, y = 0}
 
 function LauchScene:extend_goback_menu( scene )
     local function closeCallback()
-        cc.Director:getInstance():replaceScene(LauchScene.create())
+        GSession:replaceScene(LauchScene.create())
     end
     local s = VisibleRect:getVisibleSize()
     local CloseItem = cc.MenuItemImage:create("close.png", "close.png")
@@ -77,7 +77,7 @@ function LauchScene:create_menu_layer()
     local menu_layer = cc.Layer:create()
 
     local function closeCallback()
-        cc.Director:getInstance():endToLua()
+        GSession:exitGame();
     end
 
     local function menuCallback(tag)
@@ -89,7 +89,7 @@ function LauchScene:create_menu_layer()
             self:extend_goback_menu(testScene)
 
             if testScene then
-                cc.Director:getInstance():replaceScene(testScene)
+                GSession:replaceScene(testScene)
             end
         end
     end

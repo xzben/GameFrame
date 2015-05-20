@@ -7,7 +7,8 @@
 -------------------------------------------------------------------------------
 
 Session = Session or class("Session", VBase)
-
+local scheduler = cc.Director:getInstance():getScheduler()
+local director = cc.Director:getInstance()
 --------------------- scene tags ------------------------------
 local TAG_SCENE = 1
 
@@ -22,23 +23,19 @@ function Session.create()
 end
 
 function Session:ctor()
-	self._curRunningScene = nil;
-	self._director = cc.Director:getInstance()
+    self._needRemoveUnusedCached = false
+    self._nowRemoveUnusedCached = false
+	self._curRunningScene = nil
 
 	self:init()
 end
 
-function Session:session_destroy()
-	
-end
-
-function Session:init_file_utils()
+function Session:initFileUtils()
     
 end
 
-function Session:init_director()
+function Session:initDirector()
     -- initialize director
-    local director = self._director
     local glview = director:getOpenGLView()
     
     local mySize = cc.size(960, 640)
@@ -76,7 +73,7 @@ function Session:replaceScene( newScene )
 	self._curRunningScene = newScene
 	self:addChild(newScene, ZORDER_SCENE, TAG_SCENE)
 
-	self._director:getTextureCache():removeUnusedTextures();
+	self:setNeedToRemoveUnusedCached(true)
 end
 
 function Session:runWithScene( newScene )
@@ -84,21 +81,48 @@ function Session:runWithScene( newScene )
 end
 
 function Session:init()
-	self:init_file_utils();
-	self:init_director();
+	self:initFileUtils();
+	self:initDirector();
+
+    local function update(dt)
+        self:update(dt)
+    end
+    scheduler:scheduleScriptFunc(update, 0, false)
+end
+
+function Session:exitGame()
+    cc.Director:getInstance():endToLua()
 end
 
 function Session:lauchScene()
-	if self._director:getRunningScene() then
-        self._director:replaceScene(self)
+	if director:getRunningScene() then
+        director:replaceScene(self)
     else
-        self._director:runWithScene(self)
+        director:runWithScene(self)
     end
     
     ProtoRegister.registe_all();
     local scene = LauchScene.create()
     if scene then
     	self:replaceScene( scene )
+    end
+end
+
+function Session:setNeedToRemoveUnusedCached( isNeedRemove )
+    self._needRemoveUnusedCached = isNeedRemove
+end
+
+function Session:update(dt)
+    --延迟一针移除 cached 资源使场景切换的时候更加快速
+    if self._nowRemoveUnusedCached then
+        self._nowRemoveUnusedCached = false
+
+        director:purgeCachedData()
+    end
+
+    if self._needRemoveUnusedCached then
+        self._nowRemoveUnusedCached = true
+        self._needRemoveUnusedCached = false
     end
 end
 
