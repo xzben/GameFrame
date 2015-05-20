@@ -24,11 +24,13 @@ extern "C" {
 #include "cocos2d.h"
 #include "lua52.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC )
+#ifdef __cplusplus
 extern "C" {
 #endif
+    
 #include "pbc.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC )
+
+#ifdef __cplusplus
 }
 #endif
 

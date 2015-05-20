@@ -67,15 +67,17 @@ function require_ex(modname)
     return ret
 end
 
-
-require_ex("GSession")
-require_ex("Configure")
 require_ex("core.EventDispatcher")
 require_ex("core.Helper")
 require_ex("core.CocoStudioHelper")
 require_ex("core.VisibleRect")
 require_ex("core.TouchHelper")
+require_ex("View.VBase")
+require_ex("Data.MBase")
+require_ex("Controller.CBase")
 require_ex("View.LauchScene.LauchScene")
+require_ex("Configure")
+require_ex("GSession")
 
 local function main()
     collectgarbage("collect")

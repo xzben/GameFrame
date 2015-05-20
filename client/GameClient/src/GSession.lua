@@ -6,7 +6,7 @@
 -- 本文见存放整个游戏的控制逻辑
 -------------------------------------------------------------------------------
 
-Session = Session or class("Session", EventDispatcher)
+Session = Session or class("Session", VBase)
 
 --------------------- scene tags ------------------------------
 local TAG_SCENE = 1
@@ -40,12 +40,25 @@ function Session:init_director()
     -- initialize director
     local director = self._director
     local glview = director:getOpenGLView()
+    
+    local mySize = cc.size(960, 640)
     if nil == glview then
-        glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0, 0, 960, 640))
+        glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0, 0, mySize.width, mySize.height))
         director:setOpenGLView(glview)
     end
 
-    glview:setDesignResolutionSize(960, 640, cc.ResolutionPolicy.NO_BORDER)
+    local screenSize = cc.Director:getInstance():getWinSize()
+    local resolutionSize = {};
+
+    if screenSize.width/screenSize.height > mySize.width/mySize.height then
+        resolutionSize.height = mySize.height
+        resolutionSize.width = resolutionSize.height * screenSize.width / screenSize.height
+    else
+        resolutionSize.width = mySize.width
+        resolutionSize.height = resolutionSize.width * screenSize.height / screenSize.width
+    end
+    cclog(string.format(" screen size [ %f | %f ] resolutionSize [ %f | %f ]", screenSize.width, screenSize.height, resolutionSize.width, resolutionSize.height))
+    glview:setDesignResolutionSize(resolutionSize.width, resolutionSize.height, cc.ResolutionPolicy.SHOW_ALL)
 
     --turn on display FPS
     director:setDisplayStats(true)
@@ -73,7 +86,6 @@ end
 function Session:init()
 	self:init_file_utils();
 	self:init_director();
-	
 end
 
 function Session:lauchScene()
