@@ -39,7 +39,7 @@ bool	TCPSocket::set_unblock()
 	u_long iMode = bBlock ? 0 : 1;
 	return (SOCKET_ERROR != ioctlsocket(m_hSocket, FIONBIO, &iMode));
 
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC) )
 
 	int32 flag;
 	if (flag = fcntl(m_hSocket, F_GETFL, 0) < 0)
@@ -67,7 +67,7 @@ bool	TCPSocket::connect(const char* host, short port, int timeval /* = 1000 */ )
 	{
 #if	(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		addrCon.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC) )
 		addrCon.sin_addr.s_addr = htonl(INADDR_ANY);
 #endif
 	}
@@ -75,7 +75,7 @@ bool	TCPSocket::connect(const char* host, short port, int timeval /* = 1000 */ )
 	{
 #if	(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		addrCon.sin_addr.S_un.S_addr = inet_addr(host);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC))
 		addrCon.sin_addr.s_addr = inet_addr(host);
 #endif
 	}
@@ -87,7 +87,7 @@ bool	TCPSocket::connect(const char* host, short port, int timeval /* = 1000 */ )
 #if	(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		int error = ::GetLastError();
 		if ( WSAEWOULDBLOCK == error)
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC))
 		int error = errno;
 		if (EINPROGRESS == error)
 #endif
@@ -97,7 +97,7 @@ bool	TCPSocket::connect(const char* host, short port, int timeval /* = 1000 */ )
 			FD_SET(m_hSocket, &wset);
 #if	(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 			int nWidth = 0;
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC) )
 			int32 nWidth = m_hSocket + 1;
 #endif
 			struct timeval	tmval;
@@ -157,7 +157,7 @@ bool	TCPSocket::close()
 	bool bRet = false;
 #if	(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	bRet = (0 == ::closesocket(m_hSocket));
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC))
 	bRet = (0 == ::close(m_hSocket));
 #endif
 
@@ -186,7 +186,7 @@ void	TCPSocket::get_status(bool *pReadReady /* = nullptr */, bool* pWriteReady /
 
 #if	(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	int selectWith = 0;
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC))
 	int selectWith = m_hSocket + 1;
 #endif
 	struct timeval	tmval;
@@ -353,8 +353,8 @@ void CCNetwork::register_lua_callback(int state_ref, int msg_ref)
 {
 	m_lua_state_callback = state_ref;
 	m_lua_msg_callback = msg_ref;
-	CCDirector::sharedDirector()->getScheduler()->unscheduleAllForTarget(this);
-	CCDirector::sharedDirector()->getScheduler()->scheduleSelector(SEL_SCHEDULE(&CCNetwork::update), this, 0.0f, false);
+	CCDirector::getInstance()->getScheduler()->unscheduleAllForTarget(this);
+	CCDirector::getInstance()->getScheduler()->schedule(SEL_SCHEDULE(&CCNetwork::update), this, 0.0f, false);
 }
 
 void CCNetwork::push_status(int state)

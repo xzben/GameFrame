@@ -31,6 +31,18 @@
 	#include <errno.h>
 	typedef int					int32;
 	typedef int					SOCKET_HANDLE;
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+    #include <sys/socket.h>
+    #include <sys/types.h>
+    #include <sys/select.h>
+    //#include <sys/epoll.h>
+    #include <fcntl.h>
+    #include <arpa/inet.h>
+    #include <netinet/in.h>
+    #include <unistd.h>
+    #include <errno.h>
+    typedef int					int32;
+    typedef int					SOCKET_HANDLE;
 #endif//平台相关
 
 

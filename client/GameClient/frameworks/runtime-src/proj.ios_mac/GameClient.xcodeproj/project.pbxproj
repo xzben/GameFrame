@@ -64,6 +64,16 @@
 		E506D6451B05CBE40048C9BF /* lua52.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6421B05CBE40048C9BF /* lua52.cpp */; };
 		E506D6481B05CED50048C9BF /* pbc-lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6461B05CED50048C9BF /* pbc-lua.cpp */; };
 		E506D6491B05CED50048C9BF /* pbc-lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6461B05CED50048C9BF /* pbc-lua.cpp */; };
+		E523B7661B0DAD7D007ADCBF /* MemoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */; };
+		E523B7671B0DAD7D007ADCBF /* MemoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */; };
+		E523B7681B0DAD7D007ADCBF /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7601B0DAD7D007ADCBF /* Mutex.cpp */; };
+		E523B7691B0DAD7D007ADCBF /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7601B0DAD7D007ADCBF /* Mutex.cpp */; };
+		E523B76A1B0DAD7D007ADCBF /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7621B0DAD7D007ADCBF /* network.cpp */; };
+		E523B76B1B0DAD7D007ADCBF /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7621B0DAD7D007ADCBF /* network.cpp */; };
+		E523B76C1B0DAD7D007ADCBF /* packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7641B0DAD7D007ADCBF /* packet.cpp */; };
+		E523B76D1B0DAD7D007ADCBF /* packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7641B0DAD7D007ADCBF /* packet.cpp */; };
+		E523B7711B0DADAB007ADCBF /* luaNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B76F1B0DADAB007ADCBF /* luaNetwork.cpp */; };
+		E523B7721B0DADAB007ADCBF /* luaNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B76F1B0DADAB007ADCBF /* luaNetwork.cpp */; };
 		E5F8D2D91B0B50F800507901 /* libpbc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F8D2D81B0B50F800507901 /* libpbc.a */; };
 		F293B3CD15EB7BE500256477 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F293B3CC15EB7BE500256477 /* QuartzCore.framework */; };
 		F293B3D115EB7BE500256477 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F293B3D015EB7BE500256477 /* OpenAL.framework */; };
@@ -195,6 +205,16 @@
 		E506D6431B05CBE40048C9BF /* lua52.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua52.h; path = ../Classes/lua52.h; sourceTree = "<group>"; };
 		E506D6461B05CED50048C9BF /* pbc-lua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "pbc-lua.cpp"; path = "../Classes/pbc-lua.cpp"; sourceTree = "<group>"; };
 		E506D6471B05CED50048C9BF /* pbc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pbc.h; path = ../Classes/pbc.h; sourceTree = "<group>"; };
+		E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MemoryPool.cpp; path = ../Classes/network/MemoryPool.cpp; sourceTree = "<group>"; };
+		E523B75F1B0DAD7D007ADCBF /* MemoryPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryPool.h; path = ../Classes/network/MemoryPool.h; sourceTree = "<group>"; };
+		E523B7601B0DAD7D007ADCBF /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mutex.cpp; path = ../Classes/network/Mutex.cpp; sourceTree = "<group>"; };
+		E523B7611B0DAD7D007ADCBF /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mutex.h; path = ../Classes/network/Mutex.h; sourceTree = "<group>"; };
+		E523B7621B0DAD7D007ADCBF /* network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = network.cpp; path = ../Classes/network/network.cpp; sourceTree = "<group>"; };
+		E523B7631B0DAD7D007ADCBF /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = network.h; path = ../Classes/network/network.h; sourceTree = "<group>"; };
+		E523B7641B0DAD7D007ADCBF /* packet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = packet.cpp; path = ../Classes/network/packet.cpp; sourceTree = "<group>"; };
+		E523B7651B0DAD7D007ADCBF /* packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = packet.h; path = ../Classes/network/packet.h; sourceTree = "<group>"; };
+		E523B76F1B0DADAB007ADCBF /* luaNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = luaNetwork.cpp; path = ../Classes/lua_register/luaNetwork.cpp; sourceTree = "<group>"; };
+		E523B7701B0DADAB007ADCBF /* luaNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = luaNetwork.h; path = ../Classes/lua_register/luaNetwork.h; sourceTree = "<group>"; };
 		E5F8D2D31B0B4FD700507901 /* pbc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pbc.xcodeproj; path = ../../../../3rd/pbc/pbc.xcodeproj; sourceTree = "<group>"; };
 		F293B3C815EB7BE500256477 /* GameClient iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GameClient iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F293B3CC15EB7BE500256477 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -333,6 +353,30 @@
 			name = crab;
 			sourceTree = "<group>";
 		};
+		E523B75C1B0DAD6A007ADCBF /* network */ = {
+			isa = PBXGroup;
+			children = (
+				E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */,
+				E523B75F1B0DAD7D007ADCBF /* MemoryPool.h */,
+				E523B7601B0DAD7D007ADCBF /* Mutex.cpp */,
+				E523B7611B0DAD7D007ADCBF /* Mutex.h */,
+				E523B7621B0DAD7D007ADCBF /* network.cpp */,
+				E523B7631B0DAD7D007ADCBF /* network.h */,
+				E523B7641B0DAD7D007ADCBF /* packet.cpp */,
+				E523B7651B0DAD7D007ADCBF /* packet.h */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
+		E523B76E1B0DAD97007ADCBF /* lua_register */ = {
+			isa = PBXGroup;
+			children = (
+				E523B76F1B0DADAB007ADCBF /* luaNetwork.cpp */,
+				E523B7701B0DADAB007ADCBF /* luaNetwork.h */,
+			);
+			name = lua_register;
+			sourceTree = "<group>";
+		};
 		E5F8D2D41B0B4FD700507901 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +439,8 @@
 		F293BB7C15EB830F00256477 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E523B76E1B0DAD97007ADCBF /* lua_register */,
+				E523B75C1B0DAD6A007ADCBF /* network */,
 				E506D6361B05CBAA0048C9BF /* crab */,
 				E506D6461B05CED50048C9BF /* pbc-lua.cpp */,
 				E506D6471B05CED50048C9BF /* pbc.h */,
@@ -619,11 +665,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				E506D6491B05CED50048C9BF /* pbc-lua.cpp in Sources */,
+				E523B76D1B0DAD7D007ADCBF /* packet.cpp in Sources */,
 				C06E23C418CEF9740093C81A /* main.cpp in Sources */,
 				E506D6401B05CBCC0048C9BF /* lua_utf8.cpp in Sources */,
 				5023813317EBBCE400990C9B /* AppDelegate.cpp in Sources */,
 				E506D63E1B05CBCC0048C9BF /* lua_crab.cpp in Sources */,
+				E523B7691B0DAD7D007ADCBF /* Mutex.cpp in Sources */,
+				E523B7671B0DAD7D007ADCBF /* MemoryPool.cpp in Sources */,
+				E523B7721B0DADAB007ADCBF /* luaNetwork.cpp in Sources */,
 				E506D6451B05CBE40048C9BF /* lua52.cpp in Sources */,
+				E523B76B1B0DAD7D007ADCBF /* network.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,9 +684,14 @@
 			files = (
 				E506D6481B05CED50048C9BF /* pbc-lua.cpp in Sources */,
 				5023812517EBBCAC00990C9B /* RootViewController.mm in Sources */,
+				E523B7711B0DADAB007ADCBF /* luaNetwork.cpp in Sources */,
 				E506D63F1B05CBCC0048C9BF /* lua_utf8.cpp in Sources */,
+				E523B76C1B0DAD7D007ADCBF /* packet.cpp in Sources */,
+				E523B7681B0DAD7D007ADCBF /* Mutex.cpp in Sources */,
 				F293BB9C15EB831F00256477 /* AppDelegate.cpp in Sources */,
+				E523B76A1B0DAD7D007ADCBF /* network.cpp in Sources */,
 				5023812417EBBCAC00990C9B /* main.m in Sources */,
+				E523B7661B0DAD7D007ADCBF /* MemoryPool.cpp in Sources */,
 				5023811817EBBCAC00990C9B /* AppController.mm in Sources */,
 				E506D63D1B05CBCC0048C9BF /* lua_crab.cpp in Sources */,
 				E506D6441B05CBE40048C9BF /* lua52.cpp in Sources */,
@@ -785,7 +841,7 @@
 					CC_TARGET_OS_IPHONE,
 					"$(inherited)",
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../Classes/";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -814,7 +870,7 @@
 					CC_TARGET_OS_IPHONE,
 					"$(inherited)",
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../Classes/";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (

@@ -46,7 +46,8 @@ function Session:initDirector()
 
     local screenSize = cc.Director:getInstance():getWinSize()
     local resolutionSize = {};
-
+    
+    --保证适配各种尺寸的屏幕的时候总是能够保证至少有我们的设计尺寸的大小
     if screenSize.width/screenSize.height > mySize.width/mySize.height then
         resolutionSize.height = mySize.height
         resolutionSize.width = resolutionSize.height * screenSize.width / screenSize.height

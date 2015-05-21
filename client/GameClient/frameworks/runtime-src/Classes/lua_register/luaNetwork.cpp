@@ -49,8 +49,11 @@ static int c_connect(lua_State* L)
 static int c_send_message(lua_State* L)
 {
 	CCNetwork* network = check_network_obj(L, 1);
-	
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+    size_t       all_size = 0;
+#else
 	unsigned int all_size = 0;
+#endif
 	const char* buffer = luaL_checklstring(L, 2, &all_size);
 	int write_size = 0;
 

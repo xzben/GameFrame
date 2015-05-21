@@ -11,7 +11,7 @@
 #include "Mutex.h"
 
 #define USE_MEMORY_POOL 1
-#define PACKET_MAX_SIZE 4096
+#define PACKET_MAX_SIZE 40960
 
 class PacketBuffer
 {
