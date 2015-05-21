@@ -27,6 +27,7 @@ function Session:ctor()
     self._nowRemoveUnusedCached = false
 	self._curRunningScene = nil
 
+	self._network = Network.create()
 	self:init()
 end
 

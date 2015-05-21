@@ -15,6 +15,10 @@ local NETSTATE = {
 	FAILED 	   = 3,		--链接失败
 }
 
+function Network.create()
+	return Network.new()
+end
+
 function Network:ctor()
 	self._core 	= CNetwork.new_network() --对应c++ 导出的核心模块
 	self._ip   	= nil	

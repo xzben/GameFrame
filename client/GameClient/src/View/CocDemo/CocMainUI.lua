@@ -40,7 +40,7 @@ function CocMainUI:control_init_btn_shop( control_obj )
             shop_layer:ignoreAnchorPointForPosition(false)
             shop_layer:setAnchorPoint(0.5, 0.5)
             shop_layer:setPosition(VisibleRect:center())
-            cc.Director:getInstance():getRunningScene():addChild(shop_layer)
+            self:addChild(shop_layer)
         end
     end
     control_obj:addTouchEventListener(btnCallBack)
