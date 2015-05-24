@@ -41,7 +41,7 @@ function Network:init()
 end
 
 function Network:handle_connect_success()
-
+	print("Network:handle_connect_success()")
 end
 
 function Network:handle_disconnect()
@@ -49,7 +49,7 @@ function Network:handle_disconnect()
 end
 
 function Network:handle_connect_failed()
-
+	print("Network:handle_connect_failed()")
 end
 
 -- 链接状态更新
@@ -88,6 +88,8 @@ function Network:register_callback()
 end
 
 function Network:connect(host, port, waittime)
+	if waittime == nil then waittime = 30000 end
+
 	if self._core then
 		CNetwork.connect( self._core, host, port, waittime)
 	end

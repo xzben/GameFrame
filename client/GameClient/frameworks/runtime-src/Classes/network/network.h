@@ -94,6 +94,7 @@ public:
 protected:
 	static void	socketThreadFunc(void* param);
 
+	void	reset();
 	void	push_status(int state);
 private:
 	TCPSocket		 m_socket;

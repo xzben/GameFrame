@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <cstring>
 #include <cocos2d.h>
+#include <cstdint>
 #include "CCLuaEngine.h"
 USING_NS_CC;
 
@@ -245,14 +246,18 @@ void	CCNetwork::socketThreadFunc(void* param)
 			else
 			{
 				networkObj->push_status(NETSTATE::DISCONNECT);
+				networkObj->reset();
 			}
-			
 		}
 
 		if(writeable)
 		{
 			networkObj->m_send_lock.lock();
-			PacketBuffer* packet = networkObj->m_sendPackets.front();
+			PacketBuffer* packet = nullptr;
+			if (!networkObj->m_sendPackets.empty())
+			{
+				packet = networkObj->m_sendPackets.front();
+			}
 			networkObj->m_send_lock.unlock();
 
 			if (packet != nullptr)
@@ -261,14 +266,16 @@ void	CCNetwork::socketThreadFunc(void* param)
 				void* buffer = packet->getBuffer();
 
 				int send_size = networkObj->m_socket.send_msg(buffer, data_size);
-				packet->ReadData(send_size);
-
-				if (send_size >= data_size)
+				if (send_size > 0)
 				{
-					networkObj->m_send_lock.lock();
-					networkObj->m_sendPackets.pop();
-					networkObj->m_send_lock.unlock();
-					delete packet;
+					packet->ReadData(send_size);
+					if (send_size >= data_size)
+					{
+						networkObj->m_send_lock.lock();
+						networkObj->m_sendPackets.pop();
+						networkObj->m_send_lock.unlock();
+						delete packet;
+					}
 				}
 			}
 		}
@@ -281,16 +288,24 @@ CCNetwork::CCNetwork()
 	m_close(false)
 {
 	strcpy(m_szHost, "");
+	init();
 }
 
 CCNetwork::~CCNetwork()
 {
+	m_close = true;
+	m_recvThread->join();
+}
 
+void CCNetwork::reset()
+{
+	m_socket.init();
+	m_bConnected = false;
+	m_close = false;
 }
 
 bool CCNetwork::init()
 {
-
 	m_socket.init();
 	m_recvThread = new std::thread(socketThreadFunc, this);
 	return true;
@@ -329,6 +344,7 @@ int	CCNetwork::connect(const char* host, short port, int timeval /*= 1000*/)
 	strcpy(m_szHost, host);
 	port = port;
 	
+	reset();
 	m_bConnected = false;
 	if (!m_socket.connect(host, port, timeval))
 	{
@@ -363,3 +379,63 @@ void CCNetwork::push_status(int state)
 	m_status.push(state);
 }
 
+//////////////////////////////////////////////////////////////////////////
+//用于自动装载 SocketLib 用
+#ifdef _WIN32
+
+class SocketLibLoadHelper
+{
+public:
+	SocketLibLoadHelper()
+	{
+		s_loadSockLib();
+	}
+	~SocketLibLoadHelper()
+	{
+		s_destroySockLib();
+	}
+private:
+	static bool			s_loadSockLib(int32_t nHigh = 2, int32_t nLow = 2);
+	static bool			s_destroySockLib();
+private:
+	static	bool		s_bLoadedSockLib;
+};
+
+bool SocketLibLoadHelper::s_bLoadedSockLib = false;
+bool SocketLibLoadHelper::s_loadSockLib(int32_t nHigh /* = 2 */, int32_t nLow /* = 2 */)
+{
+	if (s_bLoadedSockLib) //已经加载过，直接返回
+		return true;
+	s_bLoadedSockLib = true;
+
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int32_t err;
+
+	wVersionRequested = MAKEWORD(nHigh, nLow);
+	err = WSAStartup(wVersionRequested, &wsaData);
+	if (err != 0)
+		return false;
+
+	if (LOBYTE(wsaData.wVersion) != nHigh
+		|| HIBYTE(wsaData.wVersion) != nLow)
+	{
+		WSACleanup();
+		return false;
+	}
+	return true;
+}
+bool SocketLibLoadHelper::s_destroySockLib()
+{
+	if (!s_bLoadedSockLib) //还未加载过，或已经卸载了
+		return true;
+
+	s_bLoadedSockLib = false;
+	if (0 != WSACleanup())
+		return false;
+
+	return true;
+}
+
+SocketLibLoadHelper g_socketLibLoadHelper; //定义一个全局变量，使运行环境自动装载和卸载 SocketLib
+#endif //_WIN32

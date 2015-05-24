@@ -57,7 +57,7 @@ static int c_send_message(lua_State* L)
 	const char* buffer = luaL_checklstring(L, 2, &all_size);
 	int write_size = 0;
 
-	while (write_size >= all_size)
+	while (write_size < all_size)
 	{
 		PacketBuffer *packet = new PacketBuffer;
 		int free_size = packet->getFreeSize();
@@ -66,7 +66,7 @@ static int c_send_message(lua_State* L)
 		if (size > free_size)
 			size = free_size;
 		
-		packet->FillData(size, (void*)buffer[write_size]);
+		packet->FillData(size, (void*)&buffer[write_size]);
 		network->send_msg(packet);
 		write_size += size;
 	}
