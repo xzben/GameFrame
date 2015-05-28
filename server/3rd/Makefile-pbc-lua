@@ -1,0 +1,8 @@
+.PHONY : all 51 clean
+
+linux:
+	gcc -O2 -Wall -shared -o ../../../../source/libs/protobuf.so -I../../ -I../../../../skynet/3rd/lua/ -L../../../../skynet/3rd/lua/ -L../../build/ pbc-lua.c -lpbc -llua
+
+
+clean :
+	rm protobuf.so
