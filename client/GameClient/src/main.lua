@@ -5,6 +5,7 @@ cc.FileUtils:getInstance():addSearchPath("res")
 -- CC_USE_DEPRECATED_API = true
 require "cocos.init"
 
+
 local targetPlatform = cc.Application:getInstance():getTargetPlatform()
 
 -- cclog
@@ -66,57 +67,17 @@ function require_ex(modname)
     return ret
 end
 
-local function init_file_utils()
-    
-end
-
-local function init_director()
-    -- initialize director
-    local director = cc.Director:getInstance()
-    local glview = director:getOpenGLView()
-    if nil == glview then
-        glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0, 0, 960, 640))
-        director:setOpenGLView(glview)
-    end
-
-    glview:setDesignResolutionSize(960, 640, cc.ResolutionPolicy.NO_BORDER)
-
-    --turn on display FPS
-    director:setDisplayStats(true)
-
-    --set FPS. the default value is 1.0/60 if you don't call this
-    director:setAnimationInterval(1.0 / 60)
-end
-
-require_ex("Configure")
 require_ex("core.EventDispatcher")
 require_ex("core.Helper")
 require_ex("core.CocoStudioHelper")
 require_ex("core.VisibleRect")
 require_ex("core.TouchHelper")
+require_ex("View.VBase")
+require_ex("Data.MBase")
+require_ex("Controller.CBase")
 require_ex("View.LauchScene.LauchScene")
-
-function lauch_scene()
-    local scene = LauchScene.create()
-    -- 
-    -- 如果GSession存在，则程序正在走重新启动游戏流程，需要先将GSession销毁
-    if GSession then 
-        GSession:session_destroy()
-        GSession = nil
-        cc.Director:getInstance():replaceScene(scene)
-        return 
-    end
-
-    if cc.Director:getInstance():getRunningScene() then
-        cc.Director:getInstance():replaceScene(scene)
-    else
-        cc.Director:getInstance():runWithScene(scene)
-    end
-end
-
-function start_game_scene()
-    ProtoRegister.registe_all()
-end
+require_ex("Configure")
+require_ex("GSession")
 
 local function main()
     collectgarbage("collect")
@@ -124,10 +85,7 @@ local function main()
     collectgarbage("setpause", 100)
     collectgarbage("setstepmul", 5000)
 
-    init_file_utils()
-    init_director()
-    lauch_scene()
-    start_game_scene()
+    GSession:lauchScene();
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

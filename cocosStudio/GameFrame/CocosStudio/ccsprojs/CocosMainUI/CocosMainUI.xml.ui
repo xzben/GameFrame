@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>F:\Github\GameFrame\cocosStudio\GameFrame\CocosStudio\ccsprojs\CocosMainUI</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>F:\Github\GameFrame\cocosStudio\GameFrame\CocosStudio\assets</Resources>
+  <Name>CocosMainUI</Name>
+  <JsonFileName>CocosMainUI.json</JsonFileName>
+  <JsonFolder>F:\Github\GameFrame\cocosStudio\GameFrame\CocosStudio\ccsprojs\CocosMainUI\Json</JsonFolder>
+  <JsonList>
+    <string>CocosMainUI.json</string>
+    <string>ShopMainUI.json</string>
+    <string>ShopSubUI.json</string>
+  </JsonList>
+  <CanvasSize>
+    <Width>480</Width>
+    <Height>320</Height>
+  </CanvasSize>
+  <filePath>F:\Github\GameFrame\cocosStudio\GameFrame\CocosStudio\ccsprojs\CocosMainUI\CocosMainUI.xml.ui</filePath>
+  <ProjectType>UIProject</ProjectType>
+  <ResRelativePath>\\..\\..\\assets</ResRelativePath>
+  <imageFileList />
+  <imagePngList>
+    <string>shop/21.2.png</string>
+    <string>ui_lowres/129.0.png</string>
+    <string>shop/25.0.png</string>
+    <string>shop/26.0.png</string>
+  </imagePngList>
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>ShopSubUI.json</CurrentUIJson>
+</UIProject>

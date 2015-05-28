@@ -49,24 +49,35 @@ static int c_connect(lua_State* L)
 static int c_send_message(lua_State* L)
 {
 	CCNetwork* network = check_network_obj(L, 1);
-	
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+    size_t       all_size = 0;
+#else
 	unsigned int all_size = 0;
+#endif
 	const char* buffer = luaL_checklstring(L, 2, &all_size);
 	int write_size = 0;
+	char head[2];
+	head[0] = (all_size >> 8)&0xff;
+	head[1] = all_size & 0xff;
 
-	while (write_size >= all_size)
+	PacketBuffer *packet = new PacketBuffer;
+	packet->FillData(2, head);
+	do
 	{
-		PacketBuffer *packet = new PacketBuffer;
+		if (packet == nullptr)
+			packet = new PacketBuffer;
+
 		int free_size = packet->getFreeSize();
 		int size = all_size-write_size;
 
 		if (size > free_size)
 			size = free_size;
 		
-		packet->FillData(size, (void*)buffer[write_size]);
+		packet->FillData(size, (void*)&buffer[write_size]);
 		network->send_msg(packet);
 		write_size += size;
-	}
+		packet = nullptr;
+	} while (write_size < all_size);
 	
 
 	return 1;

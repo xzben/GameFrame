@@ -1,5 +1,6 @@
 #include "MemoryPool.h"
 #include <cassert>
+#include <cstdlib>
 
 typedef unsigned int uint32;
 typedef int			 int32;

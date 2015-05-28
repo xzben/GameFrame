@@ -9,7 +9,7 @@ extern "C" {
 }
 #endif
 
-#include <malloc.h>
+//#include <malloc.h>
 
 #ifndef _MSC_VER
 #include <stdbool.h>
@@ -24,11 +24,13 @@ extern "C" {
 #include "cocos2d.h"
 #include "lua52.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if( CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC )
 extern "C" {
 #endif
+    
 #include "pbc.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
+#if( CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC )
 }
 #endif
 

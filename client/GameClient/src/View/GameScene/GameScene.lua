@@ -35,7 +35,7 @@ function GameScene:on_exit( )
 end
 
 function GameScene:init()
-    CocoStudioHelper.load_scene(self, "publish/FightScene.csb")
+    CocoStudioHelper.load_scene(self, "publish/FightScene.json")
     FightUI.extend(self:get_component_by_name("ui", "GUIComponent"))
     self.hero_img_ = self:get_component_by_tag(10010, "CCSprite")
     self.hero_img_:setVisible(false)

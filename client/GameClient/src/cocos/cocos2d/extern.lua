@@ -38,7 +38,7 @@ function class(classname, super)
             cls.super    = super
         else
             cls.__create = super
-        end
+        end 
 
         cls.ctor    = function() end
         cls.__cname = classname
@@ -89,6 +89,7 @@ function class(classname, super)
         end
 
         function cls.new(...)
+            
             local instance = setmetatable({}, cls)
             instance.class = cls
             -- instance:ctor(...)

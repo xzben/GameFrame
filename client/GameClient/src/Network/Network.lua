@@ -15,6 +15,10 @@ local NETSTATE = {
 	FAILED 	   = 3,		--链接失败
 }
 
+function Network.create()
+	return Network.new()
+end
+
 function Network:ctor()
 	self._core 	= CNetwork.new_network() --对应c++ 导出的核心模块
 	self._ip   	= nil	
@@ -37,7 +41,7 @@ function Network:init()
 end
 
 function Network:handle_connect_success()
-
+	print("Network:handle_connect_success()")
 end
 
 function Network:handle_disconnect()
@@ -45,7 +49,7 @@ function Network:handle_disconnect()
 end
 
 function Network:handle_connect_failed()
-
+	print("Network:handle_connect_failed()")
 end
 
 -- 链接状态更新
@@ -84,6 +88,8 @@ function Network:register_callback()
 end
 
 function Network:connect(host, port, waittime)
+	if waittime == nil then waittime = 10000 end
+
 	if self._core then
 		CNetwork.connect( self._core, host, port, waittime)
 	end

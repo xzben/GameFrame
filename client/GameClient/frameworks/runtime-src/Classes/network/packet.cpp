@@ -30,6 +30,8 @@ void	PacketBuffer::operator delete[](void *pobj)
 PacketBuffer::PacketBuffer()
 {
 	m_dataSize = 0;
+	m_read = 0;
+	m_write = 0;
 	memset(m_data, 0, PACKET_MAX_SIZE);
 }
 
