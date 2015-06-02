@@ -88,7 +88,7 @@ function Network:register_callback()
 end
 
 function Network:connect(host, port, waittime)
-	if waittime == nil then waittime = 30000 end
+	if waittime == nil then waittime = 10000 end
 
 	if self._core then
 		CNetwork.connect( self._core, host, port, waittime)

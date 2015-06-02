@@ -55,6 +55,7 @@ function PhysicsScene:init()
     GSession._network:connect(SERVER_HOST, SERVER_PORT)
     GSession._network:send_msg(buffer)
 
+
     print("protobuf encode:", buffer)
     local decode, typename, typename2 = protobuf.tpdecode(buffer)
     if decode then

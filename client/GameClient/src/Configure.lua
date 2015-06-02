@@ -5,7 +5,7 @@
 
 URL_SERVER_ROOT = "http://192.168.1.112:88/admin/version/"
 
-SERVER_HOST = "192.168.19.131"
+SERVER_HOST = "192.168.19.132"
 SERVER_PORT = 3000
 
 -- 错误日志
