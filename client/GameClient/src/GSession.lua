@@ -6,6 +6,8 @@
 -- 本文见存放整个游戏的控制逻辑
 -------------------------------------------------------------------------------
 
+require_ex("Data.MPlayer")
+
 Session = Session or class("Session", VBase)
 local scheduler = cc.Director:getInstance():getScheduler()
 local director = cc.Director:getInstance()
@@ -27,7 +29,7 @@ function Session:ctor()
     self._nowRemoveUnusedCached = false
 	self._curRunningScene = nil
 
-	self._network = Network.create()
+    self._player = MPlayer.new()
 	self:init()
 end
 
@@ -39,25 +41,13 @@ function Session:initDirector()
     -- initialize director
     local glview = director:getOpenGLView()
     
-    local mySize = cc.size(960, 640)
+    local mySize = cc.size(512, 960)
     if nil == glview then
         glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0, 0, mySize.width, mySize.height))
         director:setOpenGLView(glview)
     end
-
-    local screenSize = cc.Director:getInstance():getWinSize()
-    local resolutionSize = {};
     
-    --保证适配各种尺寸的屏幕的时候总是能够保证至少有我们的设计尺寸的大小
-    if screenSize.width/screenSize.height > mySize.width/mySize.height then
-        resolutionSize.height = mySize.height
-        resolutionSize.width = resolutionSize.height * screenSize.width / screenSize.height
-    else
-        resolutionSize.width = mySize.width
-        resolutionSize.height = resolutionSize.width * screenSize.height / screenSize.width
-    end
-    cclog(string.format(" screen size [ %f | %f ] resolutionSize [ %f | %f ]", screenSize.width, screenSize.height, resolutionSize.width, resolutionSize.height))
-    glview:setDesignResolutionSize(resolutionSize.width, resolutionSize.height, cc.ResolutionPolicy.SHOW_ALL)
+    glview:setDesignResolutionSize(mySize.width, mySize.height, cc.ResolutionPolicy.FIXED_WIDTH)
 
     --turn on display FPS
     director:setDisplayStats(true)
@@ -97,13 +87,13 @@ function Session:exitGame()
 end
 
 function Session:lauchScene()
+    require_ex("View.LauchScene.LauchScene")
 	if director:getRunningScene() then
         director:replaceScene(self)
     else
         director:runWithScene(self)
     end
     
-    ProtoRegister.registe_all();
     local scene = LauchScene.create()
     if scene then
     	self:replaceScene( scene )

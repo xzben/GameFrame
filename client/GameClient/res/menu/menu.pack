@@ -1,0 +1,87 @@
+
+menu.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+help0
+  rotate: false
+  xy: 1, 400
+  size: 480, 582
+  orig: 480, 582
+  offset: 0, 0
+  index: -1
+help1
+  rotate: false
+  xy: 483, 400
+  size: 480, 582
+  orig: 480, 582
+  offset: 0, 0
+  index: -1
+logo
+  rotate: false
+  xy: 1, 160
+  size: 480, 238
+  orig: 480, 238
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 1, 80
+  size: 263, 78
+  orig: 263, 78
+  offset: 0, 0
+  index: -1
+how-to-play
+  rotate: false
+  xy: 483, 321
+  size: 263, 77
+  orig: 263, 77
+  offset: 0, 0
+  index: -1
+pingfen
+  rotate: false
+  xy: 1, 1
+  size: 77, 77
+  orig: 77, 77
+  offset: 0, 0
+  index: -1
+yinyue
+  rotate: false
+  xy: 266, 81
+  size: 77, 77
+  orig: 77, 77
+  offset: 0, 0
+  index: -1
+close
+  rotate: false
+  xy: 965, 935
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+d1
+  rotate: false
+  xy: 483, 307
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+d2
+  rotate: false
+  xy: 748, 386
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+
+menu2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+help2
+  rotate: false
+  xy: 1, 1
+  size: 480, 582
+  orig: 480, 582
+  offset: 0, 0
+  index: -1

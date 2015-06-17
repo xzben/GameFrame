@@ -64,6 +64,7 @@
 		E506D6451B05CBE40048C9BF /* lua52.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6421B05CBE40048C9BF /* lua52.cpp */; };
 		E506D6481B05CED50048C9BF /* pbc-lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6461B05CED50048C9BF /* pbc-lua.cpp */; };
 		E506D6491B05CED50048C9BF /* pbc-lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E506D6461B05CED50048C9BF /* pbc-lua.cpp */; };
+		E50DF8311B2FB6AA003BB435 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50DF8301B2FB6AA003BB435 /* Images.xcassets */; };
 		E523B7661B0DAD7D007ADCBF /* MemoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */; };
 		E523B7671B0DAD7D007ADCBF /* MemoryPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */; };
 		E523B7681B0DAD7D007ADCBF /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E523B7601B0DAD7D007ADCBF /* Mutex.cpp */; };
@@ -205,6 +206,7 @@
 		E506D6431B05CBE40048C9BF /* lua52.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua52.h; path = ../Classes/lua52.h; sourceTree = "<group>"; };
 		E506D6461B05CED50048C9BF /* pbc-lua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "pbc-lua.cpp"; path = "../Classes/pbc-lua.cpp"; sourceTree = "<group>"; };
 		E506D6471B05CED50048C9BF /* pbc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pbc.h; path = ../Classes/pbc.h; sourceTree = "<group>"; };
+		E50DF8301B2FB6AA003BB435 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "GameClient iOS/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		E523B75E1B0DAD7D007ADCBF /* MemoryPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MemoryPool.cpp; path = ../Classes/network/MemoryPool.cpp; sourceTree = "<group>"; };
 		E523B75F1B0DAD7D007ADCBF /* MemoryPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryPool.h; path = ../Classes/network/MemoryPool.h; sourceTree = "<group>"; };
 		E523B7601B0DAD7D007ADCBF /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mutex.cpp; path = ../Classes/network/Mutex.cpp; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 		F293BC4615EB859D00256477 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E50DF8301B2FB6AA003BB435 /* Images.xcassets */,
 				C03781B718BF655400FE4F13 /* res */,
 				C03781B818BF655400FE4F13 /* src */,
 			);
@@ -614,6 +617,7 @@
 				5091733917ECE17A00D62437 /* Icon-58.png in Resources */,
 				521A8E6B19F0C3AC00D177D7 /* Default-736h@3x.png in Resources */,
 				521A8E6A19F0C3AC00D177D7 /* Default-667h@2x.png in Resources */,
+				E50DF8311B2FB6AA003BB435 /* Images.xcassets in Resources */,
 				5023811F17EBBCAC00990C9B /* Icon-152.png in Resources */,
 				5023812017EBBCAC00990C9B /* Icon-57.png in Resources */,
 				C03781B918BF655400FE4F13 /* res in Resources */,
@@ -831,6 +835,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
@@ -843,7 +849,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../Classes/";
 				INFOPLIST_FILE = ios/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/../",
@@ -861,6 +867,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
@@ -872,7 +880,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../Classes/";
 				INFOPLIST_FILE = ios/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/../",

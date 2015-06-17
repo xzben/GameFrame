@@ -1,0 +1,152 @@
+
+game.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+kuang
+  rotate: false
+  xy: 1, 498
+  size: 454, 492
+  orig: 454, 492
+  offset: 0, 0
+  index: -1
+jiesu-kuang
+  rotate: false
+  xy: 457, 725
+  size: 462, 265
+  orig: 462, 265
+  offset: 0, 0
+  index: -1
+score
+  rotate: false
+  xy: 457, 638
+  size: 480, 85
+  orig: 480, 85
+  offset: 0, 0
+  index: -1
+game-over
+  rotate: false
+  xy: 1, 442
+  size: 409, 54
+  orig: 409, 54
+  offset: 0, 0
+  index: -1
+win
+  rotate: false
+  xy: 457, 582
+  size: 336, 54
+  orig: 336, 54
+  offset: 0, 0
+  index: -1
+go-on
+  rotate: false
+  xy: 1, 362
+  size: 233, 78
+  orig: 233, 78
+  offset: 0, 0
+  index: -1
+try-again
+  rotate: false
+  xy: 457, 502
+  size: 233, 78
+  orig: 233, 78
+  offset: 0, 0
+  index: -1
+20
+  rotate: false
+  xy: 1, 280
+  size: 157, 80
+  orig: 157, 80
+  offset: 0, 0
+  index: -1
+1024
+  rotate: false
+  xy: 921, 899
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+128
+  rotate: false
+  xy: 1, 187
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+16
+  rotate: false
+  xy: 921, 806
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1, 94
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+2048
+  rotate: false
+  xy: 1, 1
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+256
+  rotate: false
+  xy: 236, 349
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+32
+  rotate: false
+  xy: 329, 349
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 692, 489
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+512
+  rotate: false
+  xy: 94, 187
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+64
+  rotate: false
+  xy: 94, 94
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 94, 1
+  size: 91, 91
+  orig: 91, 91
+  offset: 0, 0
+  index: -1
+chongxinkaishi
+  rotate: false
+  xy: 921, 727
+  size: 77, 77
+  orig: 77, 77
+  offset: 0, 0
+  index: -1
+fanhuizhucaidan
+  rotate: false
+  xy: 939, 648
+  size: 77, 77
+  orig: 77, 77
+  offset: 0, 0
+  index: -1

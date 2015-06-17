@@ -14,23 +14,6 @@ require_ex("core.ScrollMap")
 require_ex("core.PathFindHelper")
 require_ex("core.TileMapHelper")
 
---网络模块
-require_ex("Network.Network")
-require_ex("Network.ProtoRegister")
-require_ex("View.GameScene.FightUI")
-require_ex("View.GameScene.GameScene")
-
-require_ex("View.PhysicsScene.PhysicsScene")
-
-require_ex("View.GameMapScene.GameMapScene")
-
-require_ex("View.CocDemo.BaseRole")
-require_ex("View.CocDemo.CocDemoScene")
-require_ex("View.CocDemo.CocMainUI")
-require_ex("View.CocDemo.CocShopMainUI")
-require_ex("View.CocDemo.CocShopSubUI")
-
-require_ex("View.CocoStudioHelper.TestCocoStudioHelper")
 
 
 
