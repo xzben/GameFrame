@@ -17,15 +17,7 @@ function GameOver:ctor(win, score, record)
 	self._score = score
 	self._record = record
 	self._win = win
-
-	local function handlercallback(event)
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback)	
+    
 end
 
 function GameOver:on_enter( )

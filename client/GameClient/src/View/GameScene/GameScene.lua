@@ -27,14 +27,7 @@ function GameScene:ctor()
     self._lblRecord = nil
     self._lblScore  = nil
     self._gameView = nil
-	local function handlercallback(event)
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback)	
+
 end
 
 function GameScene:on_enter( )
@@ -71,6 +64,10 @@ function GameScene:onGameOver( sender, win )
     self:addChild(ly)
 
     GSession._player:updateRecord(self._gameView._score)
+end
+
+function GameScene:handleKeyBackClicked()
+    self:gotoHome()
 end
 
 function GameScene:init()
@@ -209,14 +206,6 @@ function GameView:ctor()
     self._score = 0
 
     self:initCell()
-    local function handlercallback(event)   
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback) 
 end
 
 function GameView:on_enter()
@@ -461,6 +450,7 @@ function GameView:handleMove( direct )
         self._isMoving = true
         self._mergeFlag = {}
         self._canMove = false
+        RequestEvent("playEffect", "cellMove")
         func(self)
     end
 end

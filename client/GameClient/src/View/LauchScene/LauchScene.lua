@@ -13,18 +13,10 @@ end
 
 function LauchScene:ctor()
 
-	local function handlercallback(event)
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback)	
 end
 
 function LauchScene:on_enter( )
-	self:init()
+	--self:init()
 end
 
 function LauchScene:on_exit( )
@@ -41,21 +33,10 @@ function LauchScene:startGame( control )
     GSession:replaceScene(GameScene.create())
 end
 
-function LauchScene:closeMusic()
-    print("LauchScene:closeMusic()")
-end
-
-function LauchScene:openMusic()
-    print("LauchScene:openMusic()")
-end
-
 function LauchScene:music( control )
     if control._spClose then
         control._spClose:removeFromParent()
         control._spClose = nil
-        
-        self:openMusic()
-        
     else
         local sp = cc.Sprite:create("menu/menu.png", resRect.closeMusic)
         sp:ignoreAnchorPointForPosition(false)
@@ -63,14 +44,18 @@ function LauchScene:music( control )
         sp:setPosition(control:getContentSize().width/2, control:getContentSize().height/2)
         control:addChild(sp)
         control._spClose = sp
-        self:closeMusic()
     end
+    
+    RequestEvent("switchAudio")
 end
 
 function LauchScene:pingfen( control )
 
 end
 
+function LauchScene:handleKeyBackClicked()
+    GSession:exitGame()
+end
 
 function LauchScene:init()
     local visible_size = VisibleRect:getVisibleSize()

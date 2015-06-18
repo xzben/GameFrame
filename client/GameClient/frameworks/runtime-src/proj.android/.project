@@ -30,4 +30,16 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>cocos2dxSrc</name>
+			<type>2</type>
+			<location>/Users/lwl/Downloads/GitHub/GameFrame/client/GameClient/frameworks/cocos2d-x/cocos/platform/android/java/src</location>
+		</link>
+		<link>
+			<name>java</name>
+			<type>2</type>
+			<location>/Users/lwl/Downloads/GitHub/GameFrame/client/GameClient/frameworks/cocos2d-x/cocos/platform/android/java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

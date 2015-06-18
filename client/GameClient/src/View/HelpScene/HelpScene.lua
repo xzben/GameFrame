@@ -13,14 +13,7 @@ end
 
 function HelpScene:ctor()
 
-	local function handlercallback(event)
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback)	
+
 end
 
 function HelpScene:on_enter( )
@@ -33,6 +26,10 @@ end
 
 function HelpScene:start()
     GSession:replaceScene(LauchScene.create())
+end
+
+function HelpScene:handleKeyBackClicked()
+    self:start()
 end
 
 function HelpScene:init()
