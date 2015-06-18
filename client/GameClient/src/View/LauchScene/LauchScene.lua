@@ -16,7 +16,7 @@ function LauchScene:ctor()
 end
 
 function LauchScene:on_enter( )
-	--self:init()
+	self:init()
 end
 
 function LauchScene:on_exit( )
@@ -46,7 +46,7 @@ function LauchScene:music( control )
         control._spClose = sp
     end
     
-    RequestEvent("switchAudio")
+    GSession._player:switchAudio()
 end
 
 function LauchScene:pingfen( control )
@@ -80,6 +80,14 @@ function LauchScene:init()
     itemMusic:ignoreAnchorPointForPosition(false)
     itemMusic:setAnchorPoint(cc.p(1, 1))
     itemMusic:setPosition(cc.p(posX, posY))
+    if not GSession._player:isMusicOpen() then
+        local sp = cc.Sprite:create("menu/menu.png", resRect.closeMusic)
+        sp:ignoreAnchorPointForPosition(false)
+        sp:setAnchorPoint(0.5, 0.5)
+        sp:setPosition(itemMusic:getContentSize().width/2, itemMusic:getContentSize().height/2)
+        itemMusic:addChild(sp)
+        itemMusic._spClose = sp
+    end
 
     posX = visible_size.width/2
     posY = visible_size.height - 400

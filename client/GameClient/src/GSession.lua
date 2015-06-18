@@ -52,7 +52,7 @@ function Session:initDirector()
     glview:setDesignResolutionSize(mySize.width, mySize.height, cc.ResolutionPolicy.FIXED_WIDTH)
 
     --turn on display FPS
-    director:setDisplayStats(true)
+    director:setDisplayStats(false)
 
     --set FPS. the default value is 1.0/60 if you don't call this
     director:setAnimationInterval(1.0 / 60)
@@ -91,14 +91,14 @@ end
 
 function Session:lauchScene()
     require_ex("View.LauchScene.LauchScene")
-    --require_ex("Audio.AudioManager")
+    require_ex("Audio.AudioManager")
     if director:getRunningScene() then
         director:replaceScene(self)
     else
         director:runWithScene(self)
     end
     
-    --self._audioManager = AudioManager.create()
+    self._audioManager = AudioManager.create()
     
     local scene = LauchScene.create()
     if scene then

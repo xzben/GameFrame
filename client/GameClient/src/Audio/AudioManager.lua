@@ -14,18 +14,15 @@ function AudioManager.create()
 end
 
 function AudioManager:ctor()
-	self._isOpenAudio = cc.UserDefault:getInstance():getBoolForKey("AudioManager.openAudio", true)
 	self:init()
 end
 
-function AudioManager:switchAudio()
-	self._isOpenAudio = not self._isOpenAudio
-	cc.UserDefault:getInstance():setBoolForKey("AudioManager.openAudio", self._isOpenAudio)
-	RequestEvent("playBGM")
+function AudioManager:isOpenMusic()
+	return GSession._player:isMusicOpen()
 end
 
 function AudioManager:handle_playEffect(sender, effectType, loop)
-	if not self._isOpenAudio then return end
+	if not self:isOpenMusic() then return end
 
 	local loop = loop or false
 	local effectNameMap = {
@@ -42,7 +39,7 @@ function AudioManager:handle_stopAllEffect()
 end
 
 function AudioManager:handle_playBackgroundMusic()
-	if self._isOpenAudio then
+	if self:isOpenMusic() then
     	--cc.SimpleAudioEngine:getInstance():playMusic("", true)
     end
 end
@@ -51,5 +48,4 @@ function AudioManager:init()
 	HandleRequestEvent("playBGM", self.handle_playBackgroundMusic, self)
 	HandleRequestEvent("playEffect", self.handle_playEffect, self)
 	HandleRequestEvent("stopAllEffect", self.handle_stopAllEffect, self)
-	HandleRequestEvent("switchAudio", self.switchAudio, self)
 end
