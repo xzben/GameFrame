@@ -6,7 +6,7 @@
 --
 -------------------------------------------------------------------------------
 
-CocDemoScene = CocDemoScene or class("CocDemoScene", EventDispatcher)
+CocDemoScene = CocDemoScene or class("CocDemoScene", VBase)
 
 function CocDemoScene.create()
 	return CocDemoScene.extend(cc.Scene:create())
@@ -183,6 +183,8 @@ function CocDemoScene:add_main_ui()
     layer:setAnchorPoint(0.5, 0.5)
     layer:setPosition(VisibleRect:center())
     self:addChild(layer)
+
+   
 end
 
 function CocDemoScene:init()
@@ -191,5 +193,13 @@ function CocDemoScene:init()
    self:load_map_data()
 
    self:add_role_to_map( BaseRole.create("coc/characters/32.0.png"), 10, 10 )
+
+   self:loadAnimate("animations/dh_soldier_1")
+   local solider = cc.Sprite:create()
+   solider:ignoreAnchorPointForPosition(false)
+   solider:setAnchorPoint(0.5, 0.5)
+   solider:setPosition(VisibleRect:center())
+   self:addChild(solider)
+   solider:runAction(cc.RepeatForever:create(self:animate("dh_soldier_1_atk_ani")))
 end
 

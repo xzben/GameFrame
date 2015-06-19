@@ -1,0 +1,10 @@
+        <?xml version="1.0" encoding="UTF-8"?>  
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">  
+          <dict>  
+          <key>animations</key>  
+          <dict>  
+          <key>dh_soldier_1_atk_ani</key><dict><key>delay</key><real>0.08</real><key>frames</key><array><string>dh_soldier_1_atk_1.png</string><string>dh_soldier_1_atk_2.png</string><string>dh_soldier_1_atk_3.png</string><string>dh_soldier_1_atk_4.png</string><string>dh_soldier_1_atk_5.png</string><string>dh_soldier_1_atk_6.png</string><string>dh_soldier_1_atk_7.png</string><string>dh_soldier_1_atk_8.png</string></array></dict><key>dh_soldier_1_die_ani</key><dict><key>delay</key><real>0.08</real><key>frames</key><array><string>dh_soldier_1_die_1.png</string><string>dh_soldier_1_die_2.png</string><string>dh_soldier_1_die_3.png</string></array></dict><key>dh_soldier_1_walk_ani</key><dict><key>delay</key><real>0.08</real><key>frames</key><array><string>dh_soldier_1_walk_1.png</string><string>dh_soldier_1_walk_2.png</string><string>dh_soldier_1_walk_3.png</string><string>dh_soldier_1_walk_4.png</string><string>dh_soldier_1_walk_5.png</string><string>dh_soldier_1_walk_6.png</string><string>dh_soldier_1_walk_7.png</string><string>dh_soldier_1_walk_8.png</string></array></dict>        </dict> 
+          </dict> 
+          </plist> 
+          
