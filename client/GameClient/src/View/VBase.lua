@@ -63,7 +63,7 @@ function VBase:root_on_exit()
         GSession:unregisterKeyMenuListener(self.handleKeyMenuClicked, self)
     end
 
-    if not self.on_exit then
+    if self.on_exit then
         self:on_exit()
     end
 end
