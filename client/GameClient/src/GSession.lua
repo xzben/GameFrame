@@ -20,7 +20,7 @@ local ZORDER_SCENE = 1
 
 ---------------------------------------------------
 function Session.create()
-	return Session.extend(cc.Scene:create())	
+	return Session.extend(cc.Scene:createWithPhysics())
 end
 
 function Session:ctor()
@@ -43,7 +43,7 @@ function Session:initDirector()
     -- initialize director
     local glview = director:getOpenGLView()
     
-    local mySize = cc.size(960, 640)
+    local mySize = cc.size(800, 640)
     if nil == glview then
         glview = cc.GLViewImpl:createWithRect("GameClient", cc.rect(0, 0, mySize.width, mySize.height))
         director:setOpenGLView(glview)
@@ -90,6 +90,8 @@ function Session:init()
     self:initFileUtils();
 	self:initDirector();
     self:registerKeypadManager()
+    
+    
 
     local function update(dt)
         self:update(dt)
@@ -108,7 +110,7 @@ function Session:lauchScene()
     else
         director:runWithScene(self)
     end
-    
+
     ProtoRegister.registe_all();
     self._audioManager = AudioManager.create()
     

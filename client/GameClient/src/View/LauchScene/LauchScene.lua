@@ -14,14 +14,6 @@ end
 
 function LauchScene:ctor()
 
-	local function handlercallback(event)
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback)	
 end
 
 function LauchScene:on_enter( )
@@ -29,130 +21,176 @@ function LauchScene:on_enter( )
 end
 
 function LauchScene:on_exit( )
-	--self:destroy()
+
 end
 
-local _allTests = {
-    {name = "Fight Scene",                      create_func = GameScene.create},
-    {name = "Physics Scene",                    create_func = PhysicsScene.create},
-    {name = "Game Map Scene",                   create_func = GameMapScene.create},
-    {name = "Coc Demo",                         create_func = CocDemoScene.create},
-    {name = "Test TestCocoStudioHelper",        create_func = TestCocoStudioHelperScene.create},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-    {name = "test",                             create_func = nil},
-}               
-
-local TESTS_COUNT = #_allTests
-local LINE_SPACE = 40
-
-local CurPos = {x = 0, y = 0}
-local BeginPos = {x = 0, y = 0}
-
-
-function LauchScene:extend_goback_menu( scene )
-    local function closeCallback()
-        GSession:replaceScene(LauchScene.create())
+function LauchScene:createBtn(sp_file_normal, sp_file_select, func, owner)
+    local tmpSp1 = cc.Sprite:create(sp_file_normal)
+    local tmpSp2 = cc.Sprite:create(sp_file_select)
+    if sp_file_normal == sp_file_select then
+        tmpSp2:setColor(cc.c3b(192, 192, 192))
     end
-    local s = VisibleRect:getVisibleSize()
-    local CloseItem = cc.MenuItemImage:create("close.png", "close.png")
-    CloseItem:registerScriptTapHandler(closeCallback)
-    CloseItem:setPosition(cc.p(s.width - 30, 30))
+    
+    local btn = cc.MenuItemSprite:create(tmpSp1, tmpSp2)
+    local function menucallback()
+        if owner then
+            func(owner, btn);
+        else
+            func(btn)
+        end
+    end
+    btn:registerScriptTapHandler(menucallback)
 
-    local CloseMenu = cc.Menu:create()
-    CloseMenu:setPosition(0, 0)
-    CloseMenu:addChild(CloseItem)
-    scene:addChild(CloseMenu, 100)
+    return btn
 end
 
-function LauchScene:create_menu_layer()
-    local menu_layer = cc.Layer:create()
+function LauchScene:onExit()
+    GSession:exitGame()
+end
 
-    local function closeCallback()
-        GSession:exitGame();
-    end
+function LauchScene:onPlay()
+    GSession:replaceScene(GameScene.create())
+end
 
-    local function menuCallback(tag)
-        local Idx = tag - 10000
+function LauchScene:onStore()
 
-        local create_func = _allTests[Idx].create_func
-        if create_func then
-            local testScene = create_func()
-            self:extend_goback_menu(testScene)
+end
 
-            if testScene then
-                GSession:replaceScene(testScene)
-            end
-        end
-    end
+function LauchScene:onGameSetting()
 
-    local s = VisibleRect:getVisibleSize()
-    local CloseItem = cc.MenuItemImage:create("close.png", "close.png")
-    CloseItem:registerScriptTapHandler(closeCallback)
-    CloseItem:setPosition(cc.p(s.width - 30, s.height - 30))
+end
 
-    local CloseMenu = cc.Menu:create()
-    CloseMenu:setPosition(0, 0)
-    CloseMenu:addChild(CloseItem)
-    menu_layer:addChild(CloseMenu)
+function LauchScene:onAboutGame()
 
-    -- add menu items for tests
-    local MainMenu = cc.Menu:create()
-    local index = 0
-    local obj = nil
-    for index, obj in pairs(_allTests) do
-        local testLabel = cc.Label:createWithTTF(obj.name, "fonts/arial.ttf", 24)
-        testLabel:setAnchorPoint(cc.p(0.5, 0.5))
-        local testMenuItem = cc.MenuItemLabel:create(testLabel)
-
-        testMenuItem:registerScriptTapHandler(menuCallback)
-        testMenuItem:setPosition(cc.p(s.width / 2, (s.height - (index) * LINE_SPACE)))
-        MainMenu:addChild(testMenuItem, index + 10000, index + 10000)
-    end
-
-    MainMenu:setContentSize(cc.size(s.width, (TESTS_COUNT + 1) * (LINE_SPACE)))
-    MainMenu:setPosition(CurPos.x, CurPos.y)
-    menu_layer:addChild(MainMenu)
-
-    -- handling touch events
-    local function onTouchBegan(touch, event)
-        BeginPos = touch:getLocation()
-        return true
-    end
-
-    local function onTouchMoved(touch, event)
-        local location = touch:getLocation()
-        local nMoveY = location.y - BeginPos.y
-        local curPosx, curPosy = MainMenu:getPosition()
-        local nextPosy = curPosy + nMoveY
-        local winSize = cc.Director:getInstance():getWinSize()
-        if nextPosy < 0 then
-            MainMenu:setPosition(0, 0)
-            return
-        end
-
-        if nextPosy > ((TESTS_COUNT + 1) * LINE_SPACE - winSize.height) then
-            MainMenu:setPosition(0, ((TESTS_COUNT + 1) * LINE_SPACE - winSize.height))
-            return
-        end
-
-        MainMenu:setPosition(curPosx, nextPosy)
-        BeginPos = {x = location.x, y = location.y}
-        CurPos = {x = curPosx, y = nextPosy}
-    end
-
-    TouchHelper:add_touch_listener(menu_layer, {onTouchBegan, nil, onTouchMoved})
-    return menu_layer
 end
 
 function LauchScene:init()
-   self:addChild(self:create_menu_layer()) 
+    local visible_size = VisibleRect:getVisibleSize()
+    local spBg = cc.Sprite:create("menu-bg.png");
+    spBg:ignoreAnchorPointForPosition(false)
+    spBg:setAnchorPoint(0.5, 0.5)
+    spBg:setPosition(visible_size.width/2, visible_size.height/2 - 30);
+    self:addChild(spBg)
+    spBg:runAction(cc.EaseElasticOut:create(cc.MoveTo:create(5, cc.p(visible_size.width/2, visible_size.height/2))));
+
+    local spLogo = cc.Sprite:create("game-logo.png");
+    spLogo:ignoreAnchorPointForPosition(false)
+    spLogo:setAnchorPoint(0.5, 0.5)
+    spLogo:setScale(0.8)
+    spLogo:setPosition(-200, visible_size.height-160)
+    self:addChild(spLogo)
+    local moveTo = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(250, visible_size.height-150)));
+    local sequence = cc.Sequence:create(
+        moveTo,
+        cc.CallFunc:create(function()
+                local shaking = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(250, visible_size.height-250)));
+                local shakingback = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(250, visible_size.height-140)));
+                local shakingSeq = cc.Sequence:create(shaking, shakingback);
+                spLogo:runAction(cc.RepeatForever:create(shakingSeq));
+            end));
+    spLogo:runAction(sequence)
+
+    local  menu = cc.Menu:create()
+    menu:ignoreAnchorPointForPosition(false)
+    menu:setAnchorPoint(0.5, 0.5)
+    menu:setPosition(visible_size.width/2, visible_size.height/2)
+    self:addChild(menu)
+
+    local btnExit = self:createBtn("ui/back-btn.png", "ui/back-btn.png", self.onExit, self);
+    btnExit:ignoreAnchorPointForPosition(false)
+    btnExit:setAnchorPoint(0, 0)
+    btnExit:setPosition(cc.p(10, 10))
+    menu:addChild(btnExit)
+
+    local btnPlay = self:createBtn("play-btn.png", "play-btn-s.png", self.onPlay, self);
+    menu:addChild(btnPlay)
+    btnPlay:setPosition(cc.p(-200, visible_size.height));
+    local btnPosX = 200
+    local btnPosY = 150
+    local seq = cc.Sequence:create(
+            cc.EaseElasticOut:create(cc.MoveTo:create(2, cc.p(btnPosX, btnPosY))),
+            cc.CallFunc:create(function()
+                local shaking = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(btnPosX, btnPosY)));
+                local shakingback = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(btnPosX, btnPosY-10)));
+                local shakingSeq = cc.Sequence:create(shaking, shakingback);
+                btnPlay:runAction(cc.RepeatForever:create(shakingSeq));
+            end)
+        )
+    btnPlay:runAction(seq)
+    local xGap = 20
+    local yGap = 20
+
+    local btnAbout = self:createBtn("about-btn.png", "about-btn-s.png", self.onStore, self);
+    menu:addChild(btnAbout)
+    btnAbout:setPosition(cc.p(visible_size.width-200, visible_size.height+100))  
+    local actionTo = cc.EaseElasticOut:create(cc.MoveTo:create(2, cc.p(visible_size.width-250-xGap, visible_size.height-425-yGap)))
+    local seq = cc.Sequence:create(
+        actionTo,
+        cc.CallFunc:create(function()
+                local shaking = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(visible_size.width-255-xGap, visible_size.height-425-yGap)));
+                local shakingback = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(visible_size.width-245-xGap, visible_size.height-425-yGap)));
+                local shakingSeq = cc.Sequence:create(shaking, shakingback);
+                btnAbout:runAction(cc.RepeatForever:create(shakingSeq));
+        end))
+    btnAbout:runAction(seq)
+
+
+    local btnSetting = self:createBtn("set-btn.png", "set-btn-s.png", self.onStore, self);
+    menu:addChild(btnSetting)
+    btnSetting:setPosition(cc.p(200, visible_size.height-300))
+    local actionTo = cc.EaseElasticOut:create(cc.MoveTo:create(2, cc.p(visible_size.width-250-xGap, visible_size.height-350-yGap)))
+    local seq = cc.Sequence:create(
+        actionTo,
+        cc.CallFunc:create(function()
+                local shaking = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(visible_size.width-255-xGap, visible_size.height-350-yGap)));
+                local shakingback = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(visible_size.width-245-xGap, visible_size.height-350-yGap)));
+                local shakingSeq = cc.Sequence:create(shaking, shakingback);
+                btnSetting:runAction(cc.RepeatForever:create(shakingSeq));
+        end))
+    btnSetting:runAction(seq)
+
+
+    local btnStore = self:createBtn("store-btn.png", "store-btn-s.png", self.onStore, self);
+    menu:addChild(btnStore)
+    btnStore:setPosition(cc.p(visible_size.width+200, visible_size.height-220))
+    local actionTo = cc.EaseElasticOut:create(cc.MoveTo:create(2, cc.p(visible_size.width-250-xGap, visible_size.height-270-yGap)))
+    local seq = cc.Sequence:create(
+        actionTo,
+        cc.CallFunc:create(function()
+                local shaking = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(visible_size.width-255-xGap, visible_size.height-270-yGap)));
+                local shakingback = cc.EaseElasticOut:create(cc.MoveTo:create(1, cc.p(visible_size.width-245-xGap, visible_size.height-270-yGap)));
+                local shakingSeq = cc.Sequence:create(shaking, shakingback);
+                btnStore:runAction(cc.RepeatForever:create(shakingSeq));
+        end))
+    btnStore:runAction(seq)
+
+    local hero = Hero.create()
+    self:addChild(hero)
+    hero:ignoreAnchorPointForPosition(false)
+    hero:setAnchorPoint(0.5, 0.5)
+    hero:setPosition(cc.p(-100, 50))
+    local seq = cc.Sequence:create(cc.MoveTo:create(10, cc.p(visible_size.width+200, 50)),
+        cc.CallFunc:create(function()
+            hero:setPositionX(-100)
+            end))
+    hero:runAction(cc.RepeatForever:create(seq))
+
+    local particle = cc.ParticleSystemQuad:create("circle_particle.plist")
+    particle:setPosition(800, 100)
+    self:addChild(particle)
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

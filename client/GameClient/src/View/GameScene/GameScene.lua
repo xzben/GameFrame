@@ -2,12 +2,10 @@
 -- @file GameScene.lua 
 --
 --
--- 游戏主场景
+-- 游戏初始加载场景
 --
 -------------------------------------------------------------------------------
-
-GameScene = GameScene or class("GameScene", EventDispatcher)
-
+GameScene = GameScene or class("GameScene", VBase)
 
 function GameScene.create()
 	return GameScene.extend(cc.Scene:create())
@@ -15,15 +13,6 @@ end
 
 function GameScene:ctor()
 
-	
-	local function handlercallback(event)
-        if "enter" == event then
-            self:on_enter()
-        elseif "exit" == event then
-            self:on_exit()
-        end
-    end
-    self:registerScriptHandler(handlercallback)	
 end
 
 function GameScene:on_enter( )
@@ -31,60 +20,102 @@ function GameScene:on_enter( )
 end
 
 function GameScene:on_exit( )
-	self:destroy()
+    cc.Director:getInstance():getRunningScene():getPhysicsWorld():setGravity(cc.p(0, 0));
+end
+
+function GameScene:onBtnback()
+    GSession:lauchScene()
+end
+
+function GameScene:init_show_layer()
+    local visible_size = VisibleRect:getVisibleSize()
+    local show_layer = cc.Layer:create()
+    show_layer:ignoreAnchorPointForPosition(false)
+    show_layer:setAnchorPoint(0.5, 0.5)
+    show_layer:setPosition(VisibleRect:center())
+    show_layer:setContentSize(visible_size)
+    self:addChild(show_layer, 30)
+
+    local btnExt = ccui.Button:create("ui/back-btn.png")
+    btnExt:ignoreAnchorPointForPosition(false)
+    btnExt:setAnchorPoint(0, 1)
+    btnExt:setPosition(cc.p(10, visible_size.height-10))
+    local function touchEvent(sender,eventType)
+        if eventType == ccui.TouchEventType.ended then
+            self:onBtnback()
+        end
+    end  
+    btnExt:addTouchEventListener(touchEvent)
+    show_layer:addChild(btnExt)
+
+    local wall = cc.Node:create()
+    wall:setPhysicsBody(cc.PhysicsBody:createEdgeBox(VisibleRect:getVisibleSize(), cc.PhysicsMaterial(0.1, 1, 0.0), 5))
+    wall:setPosition(VisibleRect:center())
+    show_layer:addChild(wall, 1000)
+
+    local hero = Hero.create()
+    show_layer:addChild(hero)
+    hero:ignoreAnchorPointForPosition(false)
+    hero:setAnchorPoint(0.5, 0.5)
+    hero:setPosition(cc.p(visible_size.width/2, 400))
+    hero:run()
+    hero:init_physics()
+    print(hero:getContentSize().width, hero:getContentSize().height)
+    
+    
+    local function onTouchBegan(touch, event)
+        print("jump .....")
+        hero:jump()
+        return true
+    end
+    
+    local function onTouchEnded(touch, event)
+       
+    end
+
+    local function onTouchMoved(touch, event)
+       
+    end
+
+    local function onTouchCancelled(touch, event)
+        
+    end
+    TouchHelper:add_touch_listener( show_layer, {onTouchBegan, onTouchEnded, onTouchMoved, onTouchCancelled})
+    
+    return show_layer
 end
 
 function GameScene:init()
-    CocoStudioHelper.load_scene(self, "publish/FightScene.json")
-    FightUI.extend(self:get_component_by_name("ui", "GUIComponent"))
-    self.hero_img_ = self:get_component_by_tag(10010, "CCSprite")
-    self.hero_img_:setVisible(false)
+    cc.Director:getInstance():getRunningScene():getPhysicsWorld():setGravity(cc.p(0, -980));
+    cc.Director:getInstance():getRunningScene():getPhysicsWorld():setDebugDrawMask(cc.PhysicsWorld.DEBUGDRAW_ALL)
 
-    local fsm_init_tbl = {
-        init_state = "attack",
-        states = {
-            ["idle"]    = { enter = function (self, to_state, from_state, event_name)
-                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
-                                        self:getAnimation():play("loading") 
-                                    end, leave = nil },
-            ["running"] = { enter = function (self, to_state, from_state, event_name) 
-                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################")
-                                        self:getAnimation():play("run") 
-                                    end, leave = nil },
-            ["attack"]  = { enter = function (self, to_state, from_state, event_name) 
-                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
-                                        self:getAnimation():play("attack") 
-                                    end, leave = nil },
-            ["hurt"]    = { enter = function (self, to_state, from_state, event_name) 
-                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
-                                        self:getAnimation():play("smitten") 
-                                    end, leave = nil },
-            ["dead"]    = { enter = function (self, to_state, from_state, event_name) 
-                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
-                                        self:getAnimation():play("death") 
-                                    end, leave = nil },   
-        },
-        events = {
-            ["stop"]    = { from = {"idle", "running", "attack" },          to = "idle" },
-            ["attack"]  = { from = {"idle", "running", "attack", "hurt" },  to = "attack" },
-            ["hurt"]    = { from = {"idle", "running", "attack", "hurt" },  to = "hurt" },
-            ["run"]     = { from = {"idle", "running", "attack", "hurt"},   to = "running" },
-            ["die"]     = { from = {"idle", "running", "attack", "hurt"},   to = "dead" },
-        }
-    }
-    self._hero  = FiniteStateMachine.extend( self:get_component_by_name("hero", "CCArmature") )
-    self._enemy = FiniteStateMachine.extend( self:get_component_by_name("enemy", "CCArmature") )
-    self._hero:init(fsm_init_tbl)
-    self._enemy:init(fsm_init_tbl)
+    local visible_size = VisibleRect:getVisibleSize()
 
-    local events = {"stop", "attack", "hurt", "run"}
-
-    local function random_event() 
-        local index = math.random(1, 4)
-        self._hero:do_event(events[index])
-        self._enemy:do_event(events[index])
-        self:timeout(0.5, random_event)
+    local function far_page_iterator(index, map_size)
+        local spTmp = cc.Sprite:create("far-bg.png")
+        return spTmp
     end
+    local spTmp = cc.Sprite:create("far-bg.png")
+    local far_map = ScrollMap.create(spTmp:getContentSize(), far_page_iterator, 200, ScrollMapMoveDir.LEFT)
+    far_map:ignoreAnchorPointForPosition(false)
+    far_map:setAnchorPoint(0.5, 0.5)
+    far_map:setPosition(visible_size.width/2, visible_size.height/2);
+    self:addChild(far_map, 1)
+    far_map:start()
 
-    self:timeout(0.5, random_event)
+    local function near_page_iterator(index, map_size)
+        local spTmp = cc.Sprite:create("near-bg.png")
+        return spTmp
+    end
+    local spTmp = cc.Sprite:create("near-bg.png")
+    local near_map = ScrollMap.create(spTmp:getContentSize(), near_page_iterator, 100, ScrollMapMoveDir.LEFT)
+    near_map:ignoreAnchorPointForPosition(false)
+    near_map:setAnchorPoint(0.5, 0)
+    near_map:setPosition(visible_size.width/2, 0);
+    self:addChild(near_map, 20)
+    near_map:start()
+
+    
+    self:init_show_layer()
 end
+
