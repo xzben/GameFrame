@@ -58,10 +58,7 @@ function GameScene:init_show_layer()
     hero:ignoreAnchorPointForPosition(false)
     hero:setAnchorPoint(0.5, 0.5)
     hero:setPosition(cc.p(visible_size.width/2, 400))
-    hero:run()
-    hero:init_physics()
-    print(hero:getContentSize().width, hero:getContentSize().height)
-    
+    hero:init_physics();
     
     local function onTouchBegan(touch, event)
         print("jump .....")
@@ -87,16 +84,19 @@ end
 
 function GameScene:init()
     cc.Director:getInstance():getRunningScene():getPhysicsWorld():setGravity(cc.p(0, -980));
-    cc.Director:getInstance():getRunningScene():getPhysicsWorld():setDebugDrawMask(cc.PhysicsWorld.DEBUGDRAW_ALL)
+    --cc.Director:getInstance():getRunningScene():getPhysicsWorld():setDebugDrawMask(cc.PhysicsWorld.DEBUGDRAW_ALL)
 
     local visible_size = VisibleRect:getVisibleSize()
-
+    self:loadFrame("platform")
+    self:loadFrame("gold")
+    self:loadAnimateByFrames("gold", "gold%d.png", 0, 9, 0.08)
+    
     local function far_page_iterator(index, map_size)
         local spTmp = cc.Sprite:create("far-bg.png")
         return spTmp
     end
     local spTmp = cc.Sprite:create("far-bg.png")
-    local far_map = ScrollMap.create(spTmp:getContentSize(), far_page_iterator, 200, ScrollMapMoveDir.LEFT)
+    local far_map = ScrollMap.create(spTmp:getContentSize(), far_page_iterator, 400, ScrollMapMoveDir.LEFT)
     far_map:ignoreAnchorPointForPosition(false)
     far_map:setAnchorPoint(0.5, 0.5)
     far_map:setPosition(visible_size.width/2, visible_size.height/2);
@@ -108,14 +108,55 @@ function GameScene:init()
         return spTmp
     end
     local spTmp = cc.Sprite:create("near-bg.png")
-    local near_map = ScrollMap.create(spTmp:getContentSize(), near_page_iterator, 100, ScrollMapMoveDir.LEFT)
+    local near_map = ScrollMap.create(spTmp:getContentSize(), near_page_iterator, 200, ScrollMapMoveDir.LEFT)
     near_map:ignoreAnchorPointForPosition(false)
     near_map:setAnchorPoint(0.5, 0)
     near_map:setPosition(visible_size.width/2, 0);
     self:addChild(near_map, 20)
     near_map:start()
 
+    local function create_platform( index )
+        local frame = cc.SpriteFrameCache:getInstance():getSpriteFrame(string.format("platform_%d.png", index))
+        local sp = cc.Sprite:createWithSpriteFrame(frame)
+        local body = cc.PhysicsBody:createBox(sp:getContentSize(), cc.PhysicsMaterial(0, 0, 0.0))
+        body:setDynamic(false)
+        sp:setPhysicsBody(body)
+
+        return sp
+    end
+
+    local function way_page_iterator(index, map_size)
+        local way = cc.Layer:create()
+
+        local platform = create_platform(4)
+        platform:ignoreAnchorPointForPosition(false)
+        platform:setAnchorPoint(0.5, 0)
+        platform:setPosition(map_size.width/2, 0)
+        way:addChild(platform)
+
+        local platfrom1 = create_platform(2)
+        platfrom1:ignoreAnchorPointForPosition(false)
+        platfrom1:setAnchorPoint(0.5, 0)
+        platfrom1:setPosition(map_size.width/2, 100)
+        way:addChild(platfrom1)
+
     
+
+        way:setContentSize(map_size)
+
+        return way
+    end
+
+    local frame = cc.SpriteFrameCache:getInstance():getSpriteFrame("platform_4.png")
+    local sp = cc.Sprite:createWithSpriteFrame(frame)
+
+    local way_map = ScrollMap.create(cc.size(sp:getContentSize().width, visible_size.height), way_page_iterator, 200, ScrollMapMoveDir.LEFT)
+    way_map:ignoreAnchorPointForPosition(false)
+    way_map:setAnchorPoint(0.5, 0)
+    way_map:setPosition(visible_size.width/2, 0);
+    self:addChild(way_map, 20)
+    way_map:start()
+
     self:init_show_layer()
 end
 

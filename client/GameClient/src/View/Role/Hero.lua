@@ -31,12 +31,17 @@ function Hero:run()
 end
 
 function Hero:jump()
-    self:getPhysicsBody():applyImpulse(cc.p(0, 1000))
-    self._FSM:do_event("jump")
-end
+    local curStatus = self._FSM:getCurStatus()
+    if curStatus == "jumping2" or curStatus == "rolling" then return end
 
-function Hero:roll()
-	self._FSM:do_event("roll")
+    if curStatus == "jumping" then
+        self._FSM:do_event("jump2")
+    else
+        self._FSM:do_event("jump")
+    end
+    self:getPhysicsBody():applyImpulse(cc.p(0, 400), cc.p(0,0))
+    self.jumpTime = 0 
+    
 end
 
 function Hero:clear_scheduler()
@@ -47,12 +52,31 @@ function Hero:clear_scheduler()
 end
 
 function Hero:update(dt)
-   local v = self:getPhysicsBody():getVelocity()
-
+    local vel = self:getPhysicsBody():getVelocity()
+    local curStatus = self._FSM:getCurStatus()
+    if not self.jumpTime then
+        self.jumpTime = 0
+    end
+    self.jumpTime = self.jumpTime + dt
+    local pos = cc.p(self:getPosition())
+    print("status:", curStatus, "time:",self.jumpTime, "vel:", vel.y, vel.x, "pos:", pos.y, pos.x)
+     
+    if curStatus == "jumping" or curStatus == "jumping2" then
+        if vel.y < 0 then
+            self._FSM:do_event("down")
+        end
+    elseif curStatus == "downing" then
+        if vel.y > 0 then
+            self._FSM:do_event("roll")
+        end
+    end
 end
 
 function Hero:init_physics()
-    self:setPhysicsBody(cc.PhysicsBody:createBox(cc.size(50, 50)))
+    local size = self:getContentSize()
+    local body = cc.PhysicsBody:createBox(size,cc.PhysicsMaterial(0, 0, 0.0))
+    print("moment:", body:getMoment())
+    self:setPhysicsBody(body)
     self:clear_scheduler();
     local function update(dt)
         self:update(dt)
@@ -83,7 +107,15 @@ function Hero:init()
                                         print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################")
                                         local animate = self:animate("panda_jump_%02d.png")
                                         self:stopActionByTag(stateActionTag)
-                                        local action = cc.RepeatForever:create(animate)
+                                        local action = animate
+                                        action:setTag(stateActionTag)
+                                        self:runAction(action)
+                                    end, leave = nil },
+            ["jumping2"] = { enter = function (fsm, to_state, from_state, event_name) 
+                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################")
+                                        local animate = self:animate("panda_jump_%02d.png")
+                                        self:stopActionByTag(stateActionTag)
+                                        local action = animate
                                         action:setTag(stateActionTag)
                                         self:runAction(action)
                                     end, leave = nil },
@@ -92,19 +124,35 @@ function Hero:init()
                                         print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
                                         local animate = self:animate("panda_roll_%02d.png")
                                         self:stopActionByTag(stateActionTag)
-                                        local action = cc.RepeatForever:create(animate)
+                                        local function callback()
+                                            self._FSM:do_event("run")
+                                        end
+                                        local action = cc.Sequence:create(animate, cc.CallFunc:create(callback))
                                         action:setTag(stateActionTag)
                                         self:runAction(action)
                                     end, leave = nil },
+            ["downing"]  = { enter = function (fsm, to_state, from_state, event_name) 
+                                        print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
+                                        --[[
+                                        local animate = self:animate("panda_jump_%02d.png")
+                                        self:stopActionByTag(stateActionTag)
+                                        local action = cc.RepeatForever:create(animate)
+                                        action:setTag(stateActionTag)
+                                        self:runAction(action)
+                                        --]]
+                                    end, leave = nil },                
         },
 
         events = {
-            ["run"]   = { from = {"rolling", "jumping" },  to = "running" },
-            ["jump"]  = { from = {"running", "rolling" },  to = "jumping" },
-            ["roll"]  = { from = {"jumping", "running" },  to = "rolling" },
+            ["run"]   = { from = {"rolling", "running", "jumping", "jumping2", "downing" },   to = "running" },
+            ["jump"]  = { from = {"rolling", "running", "jumping", "jumping2", "downing" },   to = "jumping" },
+            ["jump2"] = { from = {"rolling", "running", "jumping", "jumping2", "downing" },   to = "jumping2"},
+            ["roll"]  = { from = {"rolling", "running", "jumping", "jumping2", "downing" },   to = "rolling" },
+            ["down"]  = { from = {"rolling", "running", "jumping", "jumping2", "downing" },   to = "downing" },
         }
     }
-
+    local frame = cc.SpriteFrameCache:getInstance():getSpriteFrame("panda_run_01.png")
+    self:setSpriteFrame(frame)
     self._FSM:init(fsm_init_tbl)
 end
 

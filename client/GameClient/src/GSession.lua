@@ -90,7 +90,7 @@ function Session:init()
     self:initFileUtils();
 	self:initDirector();
     self:registerKeypadManager()
-    
+    self:getPhysicsWorld():setGravity(cc.p(0, 0));
     
 
     local function update(dt)

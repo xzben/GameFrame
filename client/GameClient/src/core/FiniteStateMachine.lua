@@ -55,6 +55,9 @@ function FiniteStateMachine:init( init_table )
 	self:set_init_state(init_table.init_state)
 end
 
+function FiniteStateMachine:getCurStatus()
+	return self._cur_state
+end
 -- 设置初始状态
 function FiniteStateMachine:set_init_state( state_name )
 	assert(self._state_map[state_name], "[ FiniteStateMachine:set_init_state ] please give a valid state_name:"..state_name)
@@ -99,5 +102,9 @@ function FiniteStateMachine:do_event(event_name)
 		enter_func( self, to_state, from_state, event_name )
 
 		self._cur_state = to_state
+
+		return true
 	end
+
+	return false
 end
