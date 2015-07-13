@@ -59,10 +59,14 @@ function Hero:update(dt)
     end
     self.jumpTime = self.jumpTime + dt
     local pos = cc.p(self:getPosition())
-    print("status:", curStatus, "time:",self.jumpTime, "vel:", vel.y, vel.x, "pos:", pos.y, pos.x)
-     
+    --print("status:", curStatus, "time:",self.jumpTime, "vel:", vel.y, vel.x, "pos:", pos.y, pos.x)
+    
+    if vel.y < 0 and math.abs(vel.y) > 100 and curStatus ~= "downing" then
+        self._FSM:do_event("down")
+    end
+
     if curStatus == "jumping" or curStatus == "jumping2" then
-        if vel.y < 0 then
+        if math.abs(vel.y) < 10 then
             self._FSM:do_event("down")
         end
     elseif curStatus == "downing" then
@@ -70,6 +74,9 @@ function Hero:update(dt)
             self._FSM:do_event("roll")
         end
     end
+    self:setRotation(0)
+    self:getPhysicsBody():setVelocity(cc.p(0, vel.y))
+    self:dispatch_event("updateSpeed", vel)
 end
 
 function Hero:init_physics()
@@ -133,13 +140,11 @@ function Hero:init()
                                     end, leave = nil },
             ["downing"]  = { enter = function (fsm, to_state, from_state, event_name) 
                                         print("####### event_name ###", event_name, "from_state ", from_state, " to_state ", to_state, "####################################") 
-                                        --[[
                                         local animate = self:animate("panda_jump_%02d.png")
                                         self:stopActionByTag(stateActionTag)
-                                        local action = cc.RepeatForever:create(animate)
+                                        local action = animate
                                         action:setTag(stateActionTag)
                                         self:runAction(action)
-                                        --]]
                                     end, leave = nil },                
         },
 
