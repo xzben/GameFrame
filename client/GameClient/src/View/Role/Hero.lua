@@ -32,7 +32,7 @@ end
 
 function Hero:jump()
     local curStatus = self._FSM:getCurStatus()
-    if curStatus == "jumping2" or curStatus == "rolling" then return end
+    if curStatus == "jumping2" or curStatus == "rolling" or curStatus == "downing" then return end
 
     if curStatus == "jumping" then
         self._FSM:do_event("jump2")
@@ -59,7 +59,7 @@ function Hero:update(dt)
     end
     self.jumpTime = self.jumpTime + dt
     local pos = cc.p(self:getPosition())
-    --print("status:", curStatus, "time:",self.jumpTime, "vel:", vel.y, vel.x, "pos:", pos.y, pos.x)
+    print("dt:", dt, "status:", curStatus, "time:",self.jumpTime, "vel:", vel.y, vel.x, "pos:", pos.y, pos.x)
     
     if vel.y < 0 and math.abs(vel.y) > 100 and curStatus ~= "downing" then
         self._FSM:do_event("down")
@@ -70,11 +70,11 @@ function Hero:update(dt)
             self._FSM:do_event("down")
         end
     elseif curStatus == "downing" then
-        if vel.y > 0 then
+        if vel.y >= 0 then
             self._FSM:do_event("roll")
         end
     end
-    self:setRotation(0)
+    --self:setRotation(0)
     self:getPhysicsBody():setVelocity(cc.p(0, vel.y))
     self:dispatch_event("updateSpeed", vel)
 end
@@ -83,6 +83,10 @@ function Hero:init_physics()
     local size = self:getContentSize()
     local body = cc.PhysicsBody:createBox(size,cc.PhysicsMaterial(0, 0, 0.0))
     print("moment:", body:getMoment())
+    print("mass:", body:getMass())
+    print("velocity:", body:getVelocity().x, body:getVelocity().y)
+    
+    body:setMoment(PHYSICS_INFINITY)
     self:setPhysicsBody(body)
     self:clear_scheduler();
     local function update(dt)

@@ -17,6 +17,7 @@ function VBase:ctor()
     self.__loadFrameSet = {}
     self.__loadAnimatSet = {}
     self.__loadFrameAnimateSet = {}
+    self._haveLoadResource = false
 
 	local function handlercallback(event)
         if "enter" == event then
@@ -49,6 +50,7 @@ function VBase:loadFrame( plistFile )
         self.__loadFrameSet[plistFile] = true
     end
     
+    self._haveLoadResource = true
     return true
 end
 
@@ -88,6 +90,8 @@ function VBase:loadAnimateByFrames(framePlist, frameFormat, begin_index, end_ind
         self.__loadFrameAnimateSet[frameFormat] = framePlist
     end
 
+    self._haveLoadResource = true
+
     return true
 end
 
@@ -123,6 +127,8 @@ function VBase:loadAnimate( plistFile )
         loadAnimateSetCount[plistFile] = loadAnimateSetCount[plistFile] + 1
         self.__loadAnimatSet[plistFile] = true
     end
+
+    self._haveLoadResource = true
 
     return true
 end
@@ -168,6 +174,10 @@ function VBase:clearResources()
     for animateName, framePlist in pairs(self.__loadFrameAnimateSet) do
         self:removeAnimationByFrames(animateName, framePlist)
     end
+
+    if self._haveLoadResource then
+        GSession:setNeedToRemoveUnusedCached(true)
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function VBase:root_on_enter()
@@ -203,5 +213,4 @@ function VBase:root_on_exit()
     end
 
     self:clearResources()
-    GSession:setNeedToRemoveUnusedCached(true)
 end

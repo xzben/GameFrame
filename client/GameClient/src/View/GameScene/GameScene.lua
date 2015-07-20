@@ -12,7 +12,7 @@ local near_speed_scale = 1
 local way_speed_scale = 1
 
 local hero_bitmask = 1          -- 0001
-local hero_collision_bitmask =  2
+local hero_collision_bitmask =  10
 local hero_contact_bitmask = 255
 
 local platform_bitmask = 2      -- 0010
@@ -24,6 +24,11 @@ local gold_bitmask = 4          -- 0100
 local gold_collision_bitmask = 1
 local gold_contact_bitmask = 255
 
+local wall_bitmask = 8      -- 1000
+local wall_collision_bitmask = 255 
+local wall_contact_bitmask = 255
+
+
 function GameScene.create()
 	return GameScene.extend(cc.Scene:create())
 end
@@ -34,6 +39,7 @@ function GameScene:ctor()
     self._farBg = nil
     self._nearBg = nil
     self._way = nil
+    self._isGameOver = false
 
 end
 
@@ -71,7 +77,11 @@ function GameScene:init_show_layer()
     show_layer:addChild(btnExt)
 
     local wall = cc.Node:create()
-    wall:setPhysicsBody(cc.PhysicsBody:createEdgeBox(VisibleRect:getVisibleSize(), cc.PhysicsMaterial(0.1, 1, 0.0), 5))
+    local wallbody = cc.PhysicsBody:createEdgeBox(VisibleRect:getVisibleSize(), cc.PhysicsMaterial(0.1, 1, 0.0), 5)
+    wallbody:setCategoryBitmask(wall_bitmask)
+    wallbody:setContactTestBitmask(wall_contact_bitmask)
+    wallbody:setCollisionBitmask(wall_collision_bitmask)
+    wall:setPhysicsBody(wallbody)
     wall:setPosition(VisibleRect:center())
     show_layer:addChild(wall, 1000)
 
@@ -112,7 +122,6 @@ function GameScene:init_show_layer()
 end
 
 function GameScene:setSpeed(speed)
-    local visible_size = VisibleRect:getVisibleSize()
     self._farBg:set_speed(speed*far_speed_scale)
     self._nearBg:set_speed(speed*near_speed_scale)
     self._way:set_speed(speed*way_speed_scale)
@@ -120,6 +129,13 @@ end
 
 function GameScene:handleHeroSpeedUpdate(sender, vel)
     self:setSpeed(self._baseSpeed+vel.x)
+end
+
+
+function GameScene:gameOver()
+    print("GameScene:gameOver")
+    self._hero:remove_listener("updateSpeed", self.handleHeroSpeedUpdate, self)
+    self:setSpeed(0)
 end
 
 function GameScene:init()
@@ -214,7 +230,7 @@ function GameScene:init()
     local frame = cc.SpriteFrameCache:getInstance():getSpriteFrame("platform_4.png")
     local sp = cc.Sprite:createWithSpriteFrame(frame)
 
-    local way_map = ScrollMap.create(cc.size(sp:getContentSize().width, visible_size.height), way_page_iterator, self._baseSpeed*way_speed_scale, ScrollMapMoveDir.LEFT)
+    local way_map = ScrollMap.create(cc.size(sp:getContentSize().width*2, visible_size.height), way_page_iterator, self._baseSpeed*way_speed_scale, ScrollMapMoveDir.LEFT)
     way_map:ignoreAnchorPointForPosition(false)
     way_map:setAnchorPoint(0.5, 0)
     way_map:setPosition(visible_size.width/2, 0);
@@ -239,6 +255,10 @@ function GameScene:init()
         
         if gold then
             gold:getNode():removeFromParent();
+        end
+
+        if a:getCategoryBitmask() == wall_bitmask or b:getCategoryBitmask() == wall_bitmask then
+            --self:gameOver()
         end
 
         print("onContactBegin", a:getCategoryBitmask(), b:getCategoryBitmask())
