@@ -11,12 +11,15 @@ VBase = VBase or class("VBase", EventDispatcher)
 
 local loadFrameSetCount = {}
 local loadAnimateSetCount = {}
+local loadFramesAnimateSetCount = {}
 
 function VBase:ctor()
     self.__loadFrameSet = {}
     self.__loadAnimatSet = {}
+    self.__loadFrameAnimateSet = {}
+    self._haveLoadResource = false
 
-	local function handlercallback(event)
+    local function handlercallback(event)
         if "enter" == event then
             self:root_on_enter()
         elseif "exit" == event then
@@ -47,6 +50,7 @@ function VBase:loadFrame( plistFile )
         self.__loadFrameSet[plistFile] = true
     end
     
+    self._haveLoadResource = true
     return true
 end
 
@@ -60,6 +64,46 @@ function VBase:removeFrame( plistFile )
 
         loadFrameSetCount[plistFile] = nil
         cclog("removeFrame:", plistFile)
+    end
+end
+
+function VBase:loadAnimateByFrames(framePlist, frameFormat, begin_index, end_index, delay)
+    if nil == loadFramesAnimateSetCount[frameFormat] or loadFramesAnimateSetCount[frameFormat] <= 0 then
+        self:loadFrame(framePlist)
+
+        local animation = cc.Animation:create()
+        for i = begin_index, end_index, 1 do
+            local frameName = string.format(frameFormat, i)
+            print("frameName", frameName)
+            local frame = cc.SpriteFrameCache:getInstance():getSpriteFrame(frameName)
+            assert(frame)
+            animation:addSpriteFrame(frame)
+        end
+        animation:setDelayPerUnit(delay)
+        cc.AnimationCache:getInstance():addAnimation(animation, frameFormat);
+
+        loadFramesAnimateSetCount[frameFormat] = 0
+    end
+
+    if not self.__loadFrameAnimateSet[frameFormat] then
+        loadFramesAnimateSetCount[frameFormat] = loadFramesAnimateSetCount[frameFormat] + 1
+        self.__loadFrameAnimateSet[frameFormat] = framePlist
+    end
+
+    self._haveLoadResource = true
+
+    return true
+end
+
+function VBase:removeAnimationByFrames( animateName , framePlist )
+    if  loadFramesAnimateSetCount[animateName] == nil or loadFramesAnimateSetCount[animateName] <= 0 then return end
+
+    loadFramesAnimateSetCount[animateName] = loadFramesAnimateSetCount[animateName] - 1
+    if loadFramesAnimateSetCount[animateName] <= 0 then
+        self:removeFrame(framePlist)
+        cc.AnimationCache:getInstance():removeAnimation(animateName);
+        loadFramesAnimateSetCount[animateName] = nil
+        cclog("removeAnimate:", animateName)
     end
 end
 
@@ -83,6 +127,8 @@ function VBase:loadAnimate( plistFile )
         loadAnimateSetCount[plistFile] = loadAnimateSetCount[plistFile] + 1
         self.__loadAnimatSet[plistFile] = true
     end
+
+    self._haveLoadResource = true
 
     return true
 end
@@ -124,6 +170,14 @@ function VBase:clearResources()
     for plist in pairs(self.__loadFrameSet) do
         self:removeFrame(plist)
     end
+
+    for animateName, framePlist in pairs(self.__loadFrameAnimateSet) do
+        self:removeAnimationByFrames(animateName, framePlist)
+    end
+
+    if self._haveLoadResource then
+        GSession:setNeedToRemoveUnusedCached(true)
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function VBase:root_on_enter()
@@ -159,5 +213,4 @@ function VBase:root_on_exit()
     end
 
     self:clearResources()
-    GSession:setNeedToRemoveUnusedCached(true)
 end
