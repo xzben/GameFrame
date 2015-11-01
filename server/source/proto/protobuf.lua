@@ -400,13 +400,13 @@ function tpencode( message, t , func , ...)
 	if func then
 		local buffer, len = c._wmessage_buffer(encoder)
 
-		local typebuff = string.format("%03d%s%s",string.len(message),message,buffer)
+		local typebuff = string.format("%03d%s",string.len(message),message)..buffer
 		local ret = func(typebuff, len, ...)
 		c._wmessage_delete(encoder)
 		return ret
 	else
 		local s = c._wmessage_buffer_string(encoder)
-		local typebuff = string.format("%03d%s%s",string.len(message),message,s)
+		local typebuff = string.format("%03d%s",string.len(message),message)..s
 		c._wmessage_delete(encoder)
 		return typebuff
 	end
