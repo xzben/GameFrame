@@ -9,10 +9,9 @@ extern "C" {
 }
 #endif
 
-//#include <malloc.h>
 
 #ifndef _MSC_VER
-#include <stdbool.h>
+#include <alloca.h>
 #else
 #define alloca _alloca
 #endif
@@ -52,7 +51,7 @@ extern "C" {
 
 #endif
 
-#define inline __inline
+#define UNUSED(x) ((void)(x))  /* to avoid warnings */
 
 static inline void *
 checkuserdata(lua_State *L, int index) {
@@ -84,6 +83,19 @@ _env_register(lua_State *L) {
 		return luaL_error(L, "register fail");
 	}
 	return 0;
+}
+
+static int
+_env_enum_id(lua_State *L) {
+	struct pbc_env * env = (struct pbc_env *)checkuserdata(L,1);
+	size_t sz = 0;
+	const char* enum_type = luaL_checklstring(L, 2, &sz);
+	const char* enum_name = luaL_checklstring(L, 3, &sz);
+	int32_t enum_id = pbc_enum_id(env, enum_type, enum_name);
+	if (enum_id < 0)
+		return 0;
+	lua_pushinteger(L, enum_id);
+	return 1;
 }
 
 static int
@@ -1101,11 +1113,12 @@ LUALIB_API int luaopen_protobuf_c(lua_State *L) {
 		{"_gc", _gc },
 		{"_add_pattern", _add_pattern },
 		{"_add_rmessage", _add_rmessage },
+		{"_env_enum_id", _env_enum_id},
 		{NULL,NULL},
 	};
 
 	luaL_checkversion(L);
-	luaL_register(L,"protobuf.c",reg);
+	luaL_register(L, "protobuf.c", reg);
 
 	return 1;
 }

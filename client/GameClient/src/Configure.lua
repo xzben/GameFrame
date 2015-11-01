@@ -3,8 +3,15 @@
 --]]
 
 
-URL_SERVER_ROOT = "http://192.168.1.112:88/admin/version/"
+-- 适配最小屏幕尺寸，系统会保证在任何分辨率时UI的尺寸都大于或等于此吃寸
+MIN_VIEW_SIZE = cc.size(960, 640)
+-- 是否显示 游戏的帧频
+SHOW_FPS 	= true
+-- 每多少秒显示刷一帧
+FPS_INTERVA = 1/60.0
 
+
+URL_SERVER_ROOT = "http://192.168.1.112:88/admin/version/"
 SERVER_HOST = "192.168.19.132"
 SERVER_PORT = 3000
 

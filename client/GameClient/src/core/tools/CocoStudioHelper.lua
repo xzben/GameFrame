@@ -5,9 +5,6 @@
 --
 -- cocostudio 的辅助工具，用于读取从cocostudio中导出的文件
 -------------------------------------------------------------------------------
-
-require_ex("core.Helper")
-
 CocoStudioHelper = CocoStudioHelper or {}
 
 --[[
@@ -152,3 +149,5 @@ function CocoStudioHelper.load_ui(init_layer_obj, layer_json_file, table_control
 
    	return CocoStudioHelper.init_ui_controls(init_layer_obj,table_control_map) 
 end
+
+return CocoStudioHelper

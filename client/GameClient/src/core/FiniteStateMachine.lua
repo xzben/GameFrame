@@ -18,7 +18,7 @@
 --		状态机初始化完毕了，就可以开始调用 do_event 执行事件了
 -------------------------------------------------------------------------------
 
-FiniteStateMachine = FiniteStateMachine or class("FiniteStateMachine", EventDispatcher)
+local FiniteStateMachine = class("FiniteStateMachine", core.EventDispatcher)
 
 function FiniteStateMachine:ctor()
 	self._state_map = {}
@@ -101,3 +101,5 @@ function FiniteStateMachine:do_event(event_name)
 		self._cur_state = to_state
 	end
 end
+
+return FiniteStateMachine

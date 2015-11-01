@@ -4,13 +4,13 @@ cc.FileUtils:getInstance():addSearchPath("res")
 -- 是否使用被弃用的API接口
 -- CC_USE_DEPRECATED_API = true
 require "cocos.init"
-
+require "Configure"
 
 local targetPlatform = cc.Application:getInstance():getTargetPlatform()
 
 -- cclog
 cclog = function(...)
-    print(string.format(...))
+    print(...)
 end
 
 function send_err_log( msg )
@@ -58,26 +58,15 @@ function require_ex(modname)
 
     package.loaded[modname] = nil
     cclog(string.format("require_ex %s", modname))
-    local ret = xpcall(function() require(modname) end, __G__TRACKBACK__)
+    local _, ret = xpcall(function() return require(modname) end, __G__TRACKBACK__)
 
     if targetPlatform == cc.PLATFORM_OS_WINDOWS then
         collectgarbage("collect")
         cclog(string.format("size of '%s': %sKB", modname, collectgarbage("count") - count)) 
     end
+    
     return ret
 end
-
-require_ex("core.EventDispatcher")
-require_ex("core.Helper")
-require_ex("core.CocoStudioHelper")
-require_ex("core.VisibleRect")
-require_ex("core.TouchHelper")
-require_ex("View.VBase")
-require_ex("Data.MBase")
-require_ex("Controller.CBase")
-require_ex("View.LauchScene.LauchScene")
-require_ex("Configure")
-require_ex("GSession")
 
 local function main()
     collectgarbage("collect")
@@ -85,7 +74,8 @@ local function main()
     collectgarbage("setpause", 100)
     collectgarbage("setstepmul", 5000)
 
-    GSession:lauchScene();
+    require("HotCodeInclude")
+    game.instance():lauchScene()
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

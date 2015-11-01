@@ -41,6 +41,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     // If you want to use Quick-Cocos2d-X, please uncomment below code
     // register_all_quick_manual(L);
 
+	//此方法需要将 override 目录下的 FileUtils.h 和 FileUtils.cpp 覆盖cocos的对应文件
+	FileUtils::getInstance()->setEncrypt("xiezhunben", strlen("xiezhunben"), "xiezhunben", strlen("xiezhunben"));
     if (engine->executeScriptFile("src/main.lua")) {
         return false;
     }
