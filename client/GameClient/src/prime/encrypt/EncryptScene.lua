@@ -24,7 +24,7 @@ function EncryptScene:on_exit( )
 end
 
 function EncryptScene:handleKeyBackClicked()
-
+    game.session():popScene()
 end
 
 function EncryptScene:init()

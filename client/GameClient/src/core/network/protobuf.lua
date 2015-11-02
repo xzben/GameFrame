@@ -391,27 +391,6 @@ function encode( message, t , func , ...)
 	end
 end
 
--- add message type for protobuffer
--- create by linxinjun
-function tpencode( message, t , func , ...)
-	local encoder = c._wmessage_new(P, message)
-	assert(encoder ,  message)
-	encode_message(encoder, message, t)
-	if func then
-		local buffer, len = c._wmessage_buffer(encoder)
-
-		local typebuff = string.format("%03d%s",string.len(message),message)..buffer
-		local ret = func(typebuff, len, ...)
-		c._wmessage_delete(encoder)
-		return ret
-	else
-		local s = c._wmessage_buffer_string(encoder)
-		local typebuff = string.format("%03d%s",string.len(message),message)..s
-		c._wmessage_delete(encoder)
-		return typebuff
-	end
-end
-
 --------- unpack ----------
 
 local _pattern_type = {
@@ -522,20 +501,10 @@ function decode(typename, buffer, length)
 	local ret = {}
 	local ok = c._decode(P, decode_message_cb , ret , typename, buffer, length)
 	if ok then
-		return setmetatable(ret , default_table(typename)), typename
+		return setmetatable(ret , default_table(typename))
 	else
-		return false , c._last_error(P), typename
+		return false , c._last_error(P)
 	end
-end
-
--- transfor the type header for protobuffer
--- create by xinjun 
-function tpdecode(buffer,length)
-    local typelen = string.sub(buffer,1,3)
-    local typename = string.sub(buffer,4,3+typelen)
-    local ptbuff = string.sub(buffer,3+typelen+1,string.len(buffer))
-
-    return decode(typename,ptbuff,length)
 end
 
 local function expand(tbl)
@@ -581,6 +550,26 @@ function register_file(filename)
 	local buffer = f:read "*a"
 	c._env_register(P, buffer)
 	f:close()
+end
+
+function enum_id(enum_type, enum_name)
+	return c._env_enum_id(P, enum_type, enum_name)
+end
+
+function extract(tbl)
+    local typename = rawget(tbl , 1)
+    local buffer = rawget(tbl , 2)
+    if type(typename) == "string" and type(buffer) == "string" then
+        if check(typename) then
+            expand(tbl)
+        end
+    end
+
+    for k, v in pairs(tbl) do
+        if type(v) == "table" then
+            extract(v)
+        end
+    end
 end
 
 default=set_default

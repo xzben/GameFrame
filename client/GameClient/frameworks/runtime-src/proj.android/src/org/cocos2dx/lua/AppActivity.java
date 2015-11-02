@@ -27,6 +27,19 @@ THE SOFTWARE.
 package org.cocos2dx.lua;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
+import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
-public class AppActivity extends Cocos2dxActivity {
+import com.xzben.Util;
+
+public class AppActivity extends Cocos2dxActivity 
+{
+	public static AppActivity context;
+	
+	public Cocos2dxGLSurfaceView onCreateView()
+	{
+		context = this;
+		Util.init(this);
+		
+		return super.onCreateView();
+	}
 }

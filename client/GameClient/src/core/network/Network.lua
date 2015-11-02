@@ -125,7 +125,7 @@ function Network:decode(buffer)
     local dataLen = buffLen - 3+typelen
     local data = string.sub(buffer,3+typelen+1, buffLen)
 
-    return protobuf.decode(typename, data, dataLen)
+    return protobuf.decode(typename, data, dataLen), typename
 end
 
 return Network

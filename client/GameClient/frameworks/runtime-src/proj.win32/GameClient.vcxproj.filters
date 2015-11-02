@@ -51,6 +51,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\LLLua.h" />
     <ClInclude Include="..\Classes\crab\crab.h" />
+    <ClInclude Include="..\Classes\lua52.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\lua_register\luaNetwork.cpp">
       <Filter>Classes\lua_register</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\lua52.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

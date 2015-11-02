@@ -24,7 +24,7 @@ function NetworkScene:on_exit( )
 end
 
 function NetworkScene:handleKeyBackClicked()
-
+    game.session():popScene()
 end
 
 function NetworkScene:init()
@@ -34,6 +34,7 @@ function NetworkScene:init()
         id = 0,
     }
     local buffer = game.instance():network():encode("Proto.Person", person)
+    print("encode buffer: ", buffer)
     local decode, typename, typename2 = game.instance():network():decode(buffer)
     
     if decode then
@@ -45,6 +46,12 @@ function NetworkScene:init()
         print("proto decode error!!!!!!! typename:", typename2)
     end
 
+    local visibleSize = core.VisibleRect:getVisibleSize()
+    local title = ccui.Text:create()
+    title:setString("please see console log!!!")
+    title:setFontSize(30)
+    title:setPosition(cc.p(visibleSize.width/2, visibleSize.height/2))
+    self:addChild(title)
 end
 
 return NetworkScene

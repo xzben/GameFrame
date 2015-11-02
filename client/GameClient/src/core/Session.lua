@@ -121,7 +121,7 @@ end
 --@param function#func 监听回调函数
 --@param Object#owner  当监听回调函数为对象接口时为对象的self 否则为 nil
 function Session:unregisterKeybackListener(func, owner)
-    if not func then return end
+    if #self._keypadbackListener <= 0 or not func then return end
     local listener = table.remove(self._keypadbackListener, 1)
     assert(listener.func == func and listener.owner == owner, "Session:unregisterKeybackListener unregister a no match")
 end
@@ -139,7 +139,7 @@ end
 --@param function#func 监听回调函数
 --@param Object#owner  当监听回调函数为对象接口时为对象的self 否则为 nil
 function Session:unregisterKeyMenuListener(func, owner)
-    if not func then return end
+    if #self._keypadmenuListener < 0 or not func then return end
     local listener = table.remove(self._keypadmenuListener, 1)
     assert(listener.func == func and listener.owner == owner, "Session:unregisterKeybackListener unregister a no match")
 end
@@ -151,9 +151,9 @@ end
 registerKeypadManager = function ( self )
     local function onKeyReleased(keyCode, event)
         if keyCode == cc.KeyCode.KEY_BACK then
-            self:handleKeybackClicked()
+            handleKeybackClicked(self)
         elseif keyCode == cc.KeyCode.KEY_MENU  then
-            self:handleKeyMenuClicked()
+            handleKeyMenuClicked(self)
         end
     end
     local listener = cc.EventListenerKeyboard:create()

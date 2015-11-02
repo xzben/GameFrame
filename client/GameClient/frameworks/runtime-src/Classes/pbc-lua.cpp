@@ -5,8 +5,17 @@ extern "C" {
 #include "lualib.h"
 #include "lauxlib.h"
 
+#include "pbc.h"
+
 #ifdef __cplusplus
 }
+#endif
+
+#include <stdbool.h>
+#if defined(__APPLE__)
+    #include <malloc/malloc.h>
+#else
+    #include <malloc.h>
 #endif
 
 
@@ -20,23 +29,10 @@ extern "C" {
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "cocos2d.h"
-#include "lua52.h"
-
-#if( CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC )
-extern "C" {
-#endif
-    
-#include "pbc.h"
-
-#if( CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC )
-}
-#endif
-
 #if LUA_VERSION_NUM == 501
 
 #define lua_rawlen lua_objlen
-//#define luaL_newlib(L ,reg) luaL_register(L,"protobuf.c",reg)
+#define luaL_newlib(L ,reg) luaL_register(L,"protobuf.c",reg)
 #define luaL_buffinit(L , _ ) 
 #define luaL_prepbuffsize( b , cap ) malloc(cap)
 #define _Free(p) free(p)
@@ -605,15 +601,15 @@ _pattern_unpack(lua_State *L) {
 		return 0;
 	}
 	lua_checkstack(L, format_sz + 3);
-	int i;
+	size_t i;
 	char * ptr = temp;
-	bool array = false;
+	bool is_array = false;
 	for (i=0;i<format_sz;i++) {
 		char type = format[i];
 		if (type >= 'a' && type <='z') {
 			ptr = (char *)_push_value(L,ptr,type);
 		} else {
-			array = true;
+			is_array = true;
 			int n = pbc_array_size((struct _pbc_array *)ptr);
 			lua_createtable(L,n,0);
 			int j;
@@ -623,7 +619,7 @@ _pattern_unpack(lua_State *L) {
 			ptr += sizeof(pbc_array);
 		}
 	}
-	if (array) {
+	if (is_array) {
 		pbc_pattern_close_arrays(pat, temp);
 	}
 	return format_sz;
@@ -793,7 +789,7 @@ _pattern_pack(lua_State *L) {
 
 	char * ptr = data;
 
-	int i;
+    size_t i;
 
 	for (i=0;i<format_sz;i++) {
 		if (format[i] >= 'a' && format[i] <='z') {
@@ -814,6 +810,7 @@ _pattern_pack(lua_State *L) {
 	}
 
 	luaL_Buffer b;
+	UNUSED(&b);
 	luaL_buffinit(L, &b);
 
 	int cap = 128;
@@ -845,7 +842,7 @@ static int
 _pattern_size(lua_State *L) {
 	size_t sz =0;
 	const char *format = luaL_checklstring(L,1,&sz);
-	int i;
+	size_t i;
 	int size = 0;
 	for (i=0;i<sz;i++) {
 		switch(format[i]) {
@@ -1075,7 +1072,12 @@ _add_rmessage(lua_State *L) {
 	return 0;
 }
 
-LUALIB_API int luaopen_protobuf_c(lua_State *L) {
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+int
+luaopen_protobuf_c(lua_State *L) {
 	luaL_Reg reg[] = {
 		{"_env_new" , _env_new },
 		{"_env_register" , _env_register },
@@ -1118,7 +1120,11 @@ LUALIB_API int luaopen_protobuf_c(lua_State *L) {
 	};
 
 	luaL_checkversion(L);
-	luaL_register(L, "protobuf.c", reg);
+	luaL_newlib(L, reg);
 
 	return 1;
 }
+
+#ifdef __cplusplus
+}
+#endif

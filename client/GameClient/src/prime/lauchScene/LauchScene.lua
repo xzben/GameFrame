@@ -23,9 +23,14 @@ function LauchScene:on_exit( )
 	--self:destroy()
 end
 
+function LauchScene:handleKeyBackClicked()
+    game.session():exitGame()
+end
+
 local _allTests = {
-    {name = "Encrypt Scene",                    create_func = prime.encrypt.EncryptScene.create},
-    {name = "Network Scene",                    create_func = prime.network.NetworkScene.create},
+    {name = "Encrypt Scene",                    create_func = prime.EncryptScene.create},
+    {name = "Network Scene",                    create_func = prime.NetworkScene.create},
+    {name = "luaBridge Scene",                  create_func = prime.LuaBridgeScene.create},
     {name = "Game Map Scene",                   create_func = nil},
     {name = "Coc Demo",                         create_func = nil},
     {name = "Test TestCocoStudioHelper",        create_func = nil},
@@ -47,7 +52,7 @@ local LINE_SPACE = 40
 
 local CurPos = {x = 0, y = 0}
 local BeginPos = {x = 0, y = 0}
-
+local targetPlatform = cc.Application:getInstance():getTargetPlatform()
 
 function LauchScene:extend_goback_menu( scene )
     local function closeCallback()
@@ -67,9 +72,13 @@ end
 
 function LauchScene:create_menu_layer()
     local menu_layer = cc.Layer:create()
-
+    print("targetPlatform: ",targetPlatform)
     local function closeCallback()
-        game.instance():hotupdate()
+        if cc.PLATFORM_OS_WINDOWS == targetPlatform then
+            game.instance():hotupdate()
+        else
+            game.session():exitGame()
+        end
     end
 
     local function menuCallback(tag)
