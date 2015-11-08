@@ -4,7 +4,7 @@
 #include "lua52.h"
 
 //support for lua 5.1 if use lua 5.1 please off this macro
-#if 1
+#if LUA_VERSION_NUM <= 501
 	#define	luaL_checkversion(a)
 	#define lua_pushunsigned		lua_pushnumber
 	#define lua_tounsigned			lua_tonumber
