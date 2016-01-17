@@ -15,6 +15,7 @@
 
 #include "lua52.h"
 #include "lua_register/luaNetwork.h"
+#include "battle/BattleStack.h"
 
 int lua_module_register(lua_State* L)
 {
@@ -22,6 +23,7 @@ int lua_module_register(lua_State* L)
 	luaopen_crab_c(L);
 	luaopen_network_c(L);
 	luaopen_protobuf_c(L);
+	luaopen_battleStack_c(L);
     //Dont' change the module register order unless you know what your are doing
     register_cocosdenshion_module(L);
     register_network_module(L);

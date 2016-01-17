@@ -27,21 +27,6 @@ function send_err_log( msg )
     xhr:send(json.encode(msg))    
 end
 
--- for CCLuaEngine traceback
-function __G__TRACKBACK__(msg)
-    cclog("----------------------------------------------------")
-    cclog("LUA ERROR: " .. tostring(msg) .. "\n")
-    local tracestr = debug.traceback()
-
-    if ERRLOG_SEND and ERRLOG_SEND == "send" then
-        send_err_log(tracestr)
-    end
-    
-    cclog(tracestr)
-    cclog("----------------------------------------------------")
-    return msg
-end
-
 -------------------------------------------------------------------------------------
 -- function require_ex  require module interface for reload
 --
@@ -69,15 +54,22 @@ function require_ex(modname)
 end
 
 local function main()
+    
     collectgarbage("collect")
     -- avoid memory leak
     collectgarbage("setpause", 100)
     collectgarbage("setstepmul", 5000)
-
+    
     require("HotCodeInclude")
+    require("battle.battle")
+    require("battle.view.view")
+
+    ---[[
     game.instance():lauchScene()
+    --]]
 end
 
+require("trackback")
 local status, msg = xpcall(main, __G__TRACKBACK__)
 if not status then
     error(msg)

@@ -19,6 +19,9 @@
     <Filter Include="Classes\lua_register">
       <UniqueIdentifier>{ce83c1bd-21be-41d9-be48-3b5846d4bb28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\battle">
+      <UniqueIdentifier>{1c34b0a2-5ba9-41d7-898a-109b6383bce6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -54,6 +57,9 @@
     <ClInclude Include="..\Classes\lua52.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\battle\BattleStack.h">
+      <Filter>Classes\battle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -88,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\lua52.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\battle\BattelStack.cpp">
+      <Filter>Classes\battle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

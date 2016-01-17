@@ -49,7 +49,8 @@ function class(classname, super)
             -- copy fields from class to native object
             for k,v in pairs(cls) do instance[k] = v end
             instance.class = cls
-            -- instance:ctor(...)
+            instance:ctor(...)
+            --[[
             -- 递归执行构造函数    
             do
                 local create
@@ -65,7 +66,7 @@ function class(classname, super)
                 
                 create(cls, ...)
             end
-            
+            --]]
             return instance
         end
 
@@ -92,7 +93,8 @@ function class(classname, super)
             
             local instance = setmetatable({}, cls)
             instance.class = cls
-            -- instance:ctor(...)
+            instance:ctor(...)
+            --[[
             -- 递归执行构造函数    
             do
                 local create
@@ -108,6 +110,7 @@ function class(classname, super)
                 
                 create(cls, ...)
             end
+            --]]
             return instance
         end
 
@@ -127,6 +130,7 @@ function class(classname, super)
                 tolua.setpeer(target, t)
             end
             setmetatable(t, cls)
+            --[[
             -- 递归执行构造函数
             do
                 local create
@@ -140,6 +144,8 @@ function class(classname, super)
                 end
                 create(cls,...)
             end
+            --]]
+            cls.ctor(target, ...)
             return target            
         end
     end

@@ -16,7 +16,6 @@ EventDispatcher._timeouts = nil
 ---@field [parent#EventDispatcher]  Object#Object 事件派发时传递给接收者的 sender
 EventDispatcher._target = nil
 
-local scheduler = cc.Director:getInstance():getScheduler()
 local LISTENER_OWNER = "__listener_owner__"
 
 ---@function 获取EventDispatcher对象当前的tag值
@@ -137,7 +136,7 @@ function EventDispatcher:timeout(delay, func, ...)
 		cur_tag = get_cur_tag(self)
 		local params = {...}
 
-		local id = scheduler:scheduleScriptFunc(function()
+		local id = cc.Director:getInstance():getScheduler():scheduleScriptFunc(function()
 			self:remove_timeout(cur_tag)
 			func(unpack(params))
 		end, delay, false)
@@ -151,14 +150,14 @@ end
 --@param number#tag  调用 timeout 接口返回的 tag 值 
 function EventDispatcher:remove_timeout( tag )
 	local value = self._timeouts[tag]
-	scheduler:unscheduleScriptEntry(value.id)
+	cc.Director:getInstance():getScheduler():unscheduleScriptEntry(value.id)
 	self._timeouts[tag] = nil
 end
 
 ---@function 清除掉所有的定时器
 function EventDispatcher:clear_timeout()
 	for _, value in pairs(self._timeouts) do
-		scheduler:unscheduleScriptEntry(value.id)
+		cc.Director:getInstance():getScheduler():unscheduleScriptEntry(value.id)
 	end
 end
 

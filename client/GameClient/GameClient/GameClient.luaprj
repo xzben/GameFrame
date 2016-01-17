@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Project Name="GameClient.luaprj" >
+    <Filter Name="src" >
+        <LuaFile RelativePath=".\..\src\Configure.lua" />
+        <LuaFile RelativePath=".\..\src\HotCodeInclude.lua" />
+        <LuaFile RelativePath=".\..\src\main.lua" />
+        <LuaFile RelativePath=".\..\src\trackback.lua" />
+        <Filter Name="battle" >
+            <LuaFile RelativePath=".\..\src\battle\battle.lua" />
+            <LuaFile RelativePath=".\..\src\battle\BattleLauch.lua" />
+            <Filter Name="engine" >
+                <LuaFile RelativePath=".\..\src\battle\engine\BattleComponent.lua" />
+                <LuaFile RelativePath=".\..\src\battle\engine\BattleEngine.lua" />
+                <LuaFile RelativePath=".\..\src\battle\engine\BattleEntity.lua" />
+                <LuaFile RelativePath=".\..\src\battle\engine\BattleScheduler.lua" />
+                <LuaFile RelativePath=".\..\src\battle\engine\BattleSystem.lua" />
+                <LuaFile RelativePath=".\..\src\battle\engine\SchedulerEntity.lua" />
+            </Filter>
+            <Filter Name="message" >
+                <LuaFile RelativePath=".\..\src\battle\message\BattleBaseMessage.lua" />
+                <LuaFile RelativePath=".\..\src\battle\message\message.lua" />
+                <LuaFile RelativePath=".\..\src\battle\message\MessageType.lua" />
+            </Filter>
+            <Filter Name="model" >
+                <LuaFile RelativePath=".\..\src\battle\model\model.lua" />
+                <LuaFile RelativePath=".\..\src\battle\model\ModelMain.lua" />
+                <LuaFile RelativePath=".\..\src\battle\model\ThreadEntry.lua" />
+            </Filter>
+            <Filter Name="pub" >
+                <LuaFile RelativePath=".\..\src\battle\pub\EntityType.lua" />
+                <LuaFile RelativePath=".\..\src\battle\pub\pub.lua" />
+                <Filter Name="lauchModel" />
+            </Filter>
+            <Filter Name="stack" >
+                <LuaFile RelativePath=".\..\src\battle\stack\BaseStack.lua" />
+                <LuaFile RelativePath=".\..\src\battle\stack\BaseStackManager.lua" />
+                <LuaFile RelativePath=".\..\src\battle\stack\CoroutineStack.lua" />
+                <LuaFile RelativePath=".\..\src\battle\stack\ModelStackManager.lua" />
+                <LuaFile RelativePath=".\..\src\battle\stack\stack.lua" />
+                <LuaFile RelativePath=".\..\src\battle\stack\ThreadStack.lua" />
+                <LuaFile RelativePath=".\..\src\battle\stack\ViewStackManager.lua" />
+            </Filter>
+            <Filter Name="view" >
+                <LuaFile RelativePath=".\..\src\battle\view\view.lua" />
+                <LuaFile RelativePath=".\..\src\battle\view\ViewManager.lua" />
+                <Filter Name="scene" >
+                    <LuaFile RelativePath=".\..\src\battle\view\scene\BaseBattleScene.lua" />
+                </Filter>
+            </Filter>
+        </Filter>
+        <Filter Name="cocos" >
+            <LuaFile RelativePath=".\..\src\cocos\init.lua" />
+            <Filter Name="cocos2d" >
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\bitExtend.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\Cocos2d.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\Cocos2dConstants.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\DeprecatedCocos2dClass.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\DeprecatedCocos2dEnum.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\DeprecatedCocos2dFunc.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\DeprecatedOpenglEnum.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\DrawPrimitives.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\extern.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\json.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\luaj.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\luaoc.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\Opengl.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocos2d\OpenglConstants.lua" />
+            </Filter>
+            <Filter Name="cocosbuilder" >
+                <LuaFile RelativePath=".\..\src\cocos\cocosbuilder\CCBReaderLoad.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocosbuilder\DeprecatedCocosBuilderClass.lua" />
+            </Filter>
+            <Filter Name="cocosdenshion" >
+                <LuaFile RelativePath=".\..\src\cocos\cocosdenshion\AudioEngine.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocosdenshion\DeprecatedCocosDenshionClass.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocosdenshion\DeprecatedCocosDenshionFunc.lua" />
+            </Filter>
+            <Filter Name="cocostudio" >
+                <LuaFile RelativePath=".\..\src\cocos\cocostudio\CocoStudio.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocostudio\DeprecatedCocoStudioClass.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocostudio\DeprecatedCocoStudioFunc.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\cocostudio\StudioConstants.lua" />
+            </Filter>
+            <Filter Name="controller" >
+                <LuaFile RelativePath=".\..\src\cocos\controller\ControllerConstants.lua" />
+            </Filter>
+            <Filter Name="extension" >
+                <LuaFile RelativePath=".\..\src\cocos\extension\DeprecatedExtensionClass.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\extension\DeprecatedExtensionEnum.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\extension\DeprecatedExtensionFunc.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\extension\ExtensionConstants.lua" />
+            </Filter>
+            <Filter Name="network" >
+                <LuaFile RelativePath=".\..\src\cocos\network\DeprecatedNetworkClass.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\network\DeprecatedNetworkEnum.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\network\DeprecatedNetworkFunc.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\network\NetworkConstants.lua" />
+            </Filter>
+            <Filter Name="spine" >
+                <LuaFile RelativePath=".\..\src\cocos\spine\SpineConstants.lua" />
+            </Filter>
+            <Filter Name="ui" >
+                <LuaFile RelativePath=".\..\src\cocos\ui\DeprecatedUIEnum.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\ui\DeprecatedUIFunc.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\ui\experimentalUIConstants.lua" />
+                <LuaFile RelativePath=".\..\src\cocos\ui\GuiConstants.lua" />
+            </Filter>
+        </Filter>
+        <Filter Name="core" >
+            <LuaFile RelativePath=".\..\src\core\CocoStudioHelper.lua" />
+            <LuaFile RelativePath=".\..\src\core\core.lua" />
+            <LuaFile RelativePath=".\..\src\core\EventDispatcher.lua" />
+            <LuaFile RelativePath=".\..\src\core\FiniteStateMachine.lua" />
+            <LuaFile RelativePath=".\..\src\core\Session.lua" />
+            <LuaFile RelativePath=".\..\src\core\VisibleRect.lua" />
+            <Filter Name="luaBridge" >
+                <LuaFile RelativePath=".\..\src\core\luaBridge\LuaBridge.lua" />
+                <LuaFile RelativePath=".\..\src\core\luaBridge\LuaJavaBridge.lua" />
+                <LuaFile RelativePath=".\..\src\core\luaBridge\LuaOCBridge.lua" />
+            </Filter>
+            <Filter Name="network" >
+                <LuaFile RelativePath=".\..\src\core\network\net.lua" />
+                <LuaFile RelativePath=".\..\src\core\network\Network.lua" />
+                <LuaFile RelativePath=".\..\src\core\network\protobuf.lua" />
+                <LuaFile RelativePath=".\..\src\core\network\ProtoRegister.lua" />
+            </Filter>
+            <Filter Name="struct" >
+                <LuaFile RelativePath=".\..\src\core\struct\Queue.lua" />
+                <LuaFile RelativePath=".\..\src\core\struct\Stack.lua" />
+                <LuaFile RelativePath=".\..\src\core\struct\struct.lua" />
+            </Filter>
+            <Filter Name="tools" >
+                <LuaFile RelativePath=".\..\src\core\tools\CocoStudioHelper.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\Helper.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\LoadDelay.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\PathFindHelper.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\SensitiveWordHelper.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\TileMapHelper.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\tools.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\TouchHelper.lua" />
+                <LuaFile RelativePath=".\..\src\core\tools\VisibleRect.lua" />
+            </Filter>
+        </Filter>
+        <Filter Name="game" >
+            <LuaFile RelativePath=".\..\src\game\game.lua" />
+        </Filter>
+        <Filter Name="prime" >
+            <LuaFile RelativePath=".\..\src\prime\prime.lua" />
+            <Filter Name="common" >
+                <LuaFile RelativePath=".\..\src\prime\common\common.lua" />
+                <Filter Name="base" >
+                    <LuaFile RelativePath=".\..\src\prime\common\base\BaseScene.lua" />
+                    <LuaFile RelativePath=".\..\src\prime\common\base\CBase.lua" />
+                    <LuaFile RelativePath=".\..\src\prime\common\base\MBase.lua" />
+                    <LuaFile RelativePath=".\..\src\prime\common\base\VBase.lua" />
+                </Filter>
+                <Filter Name="control" >
+                    <LuaFile RelativePath=".\..\src\prime\common\control\DragSprite.lua" />
+                    <LuaFile RelativePath=".\..\src\prime\common\control\ScrollMap.lua" />
+                    <LuaFile RelativePath=".\..\src\prime\common\control\SmartPageView.lua" />
+                </Filter>
+            </Filter>
+            <Filter Name="encrypt" >
+                <LuaFile RelativePath=".\..\src\prime\encrypt\EncryptScene.lua" />
+            </Filter>
+            <Filter Name="lauchScene" >
+                <LuaFile RelativePath=".\..\src\prime\lauchScene\LauchScene.lua" />
+            </Filter>
+            <Filter Name="luaBridge" >
+                <LuaFile RelativePath=".\..\src\prime\luaBridge\LuaBridgeScene.lua" />
+            </Filter>
+            <Filter Name="network" >
+                <LuaFile RelativePath=".\..\src\prime\network\NetworkScene.lua" />
+            </Filter>
+        </Filter>
+    </Filter>
+</Project>
