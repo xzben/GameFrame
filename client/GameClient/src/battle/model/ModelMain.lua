@@ -1,26 +1,16 @@
 require("battle.battle")
 require("battle.model.model")
-local ModelMain = class("ModelMain", require("core.EventDispatcher"))
-local _MessageType = battle.message.MessageType
+local ModelMain = class("ModelMain")
 
 local s_instance = nil
 
 ---@filed BaseStack#BaseStack _stack
 ModelMain._stack = nil
----@filed boolean#boolean  _isStop
+---@field BattleEngine#ModelMain _engine 
+ModelMain._engine = nil
+---@field   #boolean BattleEngine
 ModelMain._isStop = false
-
 local function _init( self )
-	self._isStop = false
-
-	self:add_listener(_MessageType.view2model.EndGame, self.onEndGame, self)
-	self:add_listener(_MessageType.model2view.EndGame, self.onEndGame, self)
-end
-
-
-function ModelMain:onEndGame(sender, msg)
-	print("ModelMain:onEndGame")
-	self._isStop = true
 end
 
 function ModelMain:getInstance()
@@ -37,35 +27,45 @@ end
 function ModelMain:reset( stack )
 	self._stack = stack
 	self._isStop = false
+	self._engine = battle.engine.BattleEngine.new()
 end
+
+function ModelMain:handleEndGame( sender , msg )
+	self._isStop = true
+end
+
 
 function ModelMain:run()
 	local stackManager = battle.stack.ModelStackManager.new(self._stack)
+	
+	self._engine:setStackManager(stackManager)
+	self._engine:addSystem(battle.model.system.BattleEnterSystem.new())
 
+	self._engine:add_listener(battle.message.MessageType.view2model.EndGame, self.handleEndGame, self)
 	while not self._isStop do
 		while not self._isStop and not self._stack:isPause() do
 			stackManager:startFrame()
 			while true do
 				local msg = stackManager:popMessage()
 				if msg == nil then
-					print("----nil-------")
 					break
 				end
 
-				battle.message.BattleBaseMessage.printSelf(msg)
+				battle.message.BattleBaseMessage.printSelf(msg, "ModelMain")
 
-				self:dispatch_event(msg.type, msg)
-				print("---------dispath")
+				self._engine:dispatch_event(msg.type, msg)
 			end
-			print("------------")
+			self._engine:update()
 			stackManager:endFrame()
 
 			if self._isStop then
 				break
 			end
-			self._stack:pause()
+			self._stack:pause(true)
 		end
 	end
+	stackManager:pushMessage(battle.message.BattleBaseMessage.new(battle.message.MessageType.model2view.EndGame))
+	stackManager:endFrame()
 	print("model Main  end.................")
 end
 

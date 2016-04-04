@@ -231,14 +231,17 @@ bool BattleStack::reset(const char* filename, const char* funcname)
 	return true;
 }
 
-void BattleStack::pause()
+void BattleStack::pause(bool yield)
 {
 	m_pause = true;
+	if (yield)
+		m_condition.wait();
 }
 
 void BattleStack::resume()
 {
 	m_pause = false;
+	m_condition.notify_all();
 }
 
 bool BattleStack::isPause()
@@ -272,7 +275,7 @@ void BattleStack::popOutputMessage(ValueVector& messages)
 void  BattleStack::pushInputMessage(ValueVector& messages)
 {
 	m_inputLock.lock();
-	m_inputMessage.assign(messages.begin(), messages.end());
+	m_inputMessage.insert(m_inputMessage.end(), messages.begin(), messages.end());
 	m_inputLock.unlock();
 }
 
@@ -288,7 +291,7 @@ void  BattleStack::popInputMessage(ValueVector& messages)
 void BattleStack::pushOutputMessage(ValueVector& messages)
 {
 	m_outputLock.lock();
-	m_outputMessage.assign(messages.begin(), messages.end());
+	m_outputMessage.insert(m_outputMessage.end(), messages.begin(), messages.end());
 	m_outputLock.unlock();
 }
 
@@ -309,13 +312,23 @@ static int c_get_battle_stack_instance(lua_State* L)
 
 static int c_pause_battle_stack_instance(lua_State* L)
 {
+	int argc = lua_gettop(L) - 1;
 	BattleStack* obj = check_battlestack_obj(L, 1);
 	if (obj == nullptr)
 	{
 		luaL_error(L, "invalid battleStack Obj");
 		return 0;
 	}
-	obj->pause();
+	if (argc == 0)
+	{
+		obj->pause();
+	}
+	else
+	{
+		bool yield = lua_toboolean(L, 2);
+		obj->pause(yield);
+	}
+	
 	return 1;
 }
 
@@ -339,6 +352,7 @@ static int c_is_pause_battle_stack_instance(lua_State* L)
 		luaL_error(L, "invalid battleStack Obj");
 		return 0;
 	}
+
 	bool isPause = obj->isPause();
 
 	lua_pushboolean(L, isPause);

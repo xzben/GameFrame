@@ -32,6 +32,7 @@ end
 -- @param xxx#xxx  model
 function BattleLauch:start( model )
 	battle.view.ViewManager:getInstance():startLoading(model)
+	battle.view.ViewManager:getInstance():reset()
 	self._stack:reset()
 	battle.view.ViewManager:getInstance():run(self._stack, model)
 end

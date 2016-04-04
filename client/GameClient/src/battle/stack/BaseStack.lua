@@ -38,7 +38,9 @@ function BaseStack:isPause()
 	
 end
 
-function BaseStack:pause()
+---@function pause
+---@param boolean#boolean yeild 是否挂起线程，给ThreadStack用的
+function BaseStack:pause( yield )
 
 end
 

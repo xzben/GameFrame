@@ -25,7 +25,7 @@ end
 ---@return #SchedulerEntity
 function BattleScheduler:registerScheduler( pause, rate, callback, owner )
 	local tag = self:getNextTag()
-	local entity = battle.SchedulerEntity.new(tag, pause, rate, callback, owner )
+	local entity = battle.engine.SchedulerEntity.new(tag, pause, rate, callback, owner )
 
 	table.insert(self._schedulerEntitys, entity)
 	return entity

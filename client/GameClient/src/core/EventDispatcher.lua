@@ -30,6 +30,7 @@ function EventDispatcher:ctor()
 	self._target = self
 end
 
+
 function EventDispatcher:get_target()
 	return self._target
 end
@@ -159,11 +160,19 @@ function EventDispatcher:clear_timeout()
 	for _, value in pairs(self._timeouts) do
 		cc.Director:getInstance():getScheduler():unscheduleScriptEntry(value.id)
 	end
+	self._timeouts = {}
+	self._timeout_tag = 1
+end
+
+---@function 清除掉所有的定时器
+function EventDispatcher:clear_listener()
+	self._listener_map = {}
 end
 
 ---@function 清除接口
 function EventDispatcher:destroy()
 	self:clear_timeout()
+	self:clear_listener()
 end
 
 ---@function 获取EventDispatcher对象当前的tag值

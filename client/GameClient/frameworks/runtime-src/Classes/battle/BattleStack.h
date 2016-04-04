@@ -3,7 +3,7 @@
 #include "cocos2d.h"
 #include "CCLuaStack.h"
 #include "CCFileUtils.h"
-#include <mutex>
+#include "network/Mutex.h"
 
 USING_NS_CC;
 
@@ -27,14 +27,15 @@ public:
 	void  popInputMessage(ValueVector& messages);
 	void  pushOutputMessage(ValueVector& messages);
 
-	void pause();
+	void pause(bool yield = false);
 	void resume();
 protected:
 	volatile bool m_pause;
-	std::mutex			   m_inputLock;
+	Mutex				   m_inputLock;
 	ValueVector			   m_inputMessage;
-	std::mutex			   m_outputLock;
+	Mutex				   m_outputLock;
 	ValueVector			   m_outputMessage;
+	Condition			   m_condition;
 protected:
 	static BattleStack*  s_instance;
 };

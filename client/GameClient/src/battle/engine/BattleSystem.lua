@@ -6,13 +6,32 @@ BattleSystem._engine = nil
 BattleSystem._schedulerEntity = nil
 
 ---@function ctor
----@param BattleEngine#BattleSystem engine
 function BattleSystem:ctor( engine )
+	
+end
+
+---@function setEngine
+---@param BattleEngine#BattleSystem engine
+function BattleSystem:setEngine( engine )
 	self._engine = engine
 end
 
 function BattleSystem:start()
 
+end
+
+---@function pushMessage
+---@param BattleBaseMessage#BattleBaseMessage msg
+function BattleSystem:pushMessage( msg )
+	self._engine:pushMessage(msg)
+end
+
+function BattleSystem:add_listener(type, listener, owner)
+	self._engine:add_listener(type, listener, owner)
+end
+
+function BattleSystem:dispatch_event(type, ...)
+	self._engine:dispatch_event(type, ...)
 end
 
 function BattleSystem:registerScheduler( pause, rate )

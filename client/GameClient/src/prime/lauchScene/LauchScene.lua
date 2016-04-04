@@ -31,7 +31,7 @@ local _allTests = {
     {name = "Encrypt Scene",                    create_func = prime.EncryptScene.create},
     {name = "Network Scene",                    create_func = prime.NetworkScene.create},
     {name = "luaBridge Scene",                  create_func = prime.LuaBridgeScene.create},
-    {name = "Game Map Scene",                   create_func = nil},
+    {name = "Battle Test",                      create_func = function()  battle.BattleLauch:getInstance():start() end},
     {name = "Coc Demo",                         create_func = nil},
     {name = "Test TestCocoStudioHelper",        create_func = nil},
     {name = "test",                             create_func = nil},
@@ -87,9 +87,9 @@ function LauchScene:create_menu_layer()
         local create_func = _allTests[Idx].create_func
         if create_func then
             local testScene = create_func()
-            self:extend_goback_menu(testScene)
-
+            
             if testScene then
+                self:extend_goback_menu(testScene)
                 game.session():pushScene(testScene)
             end
         end

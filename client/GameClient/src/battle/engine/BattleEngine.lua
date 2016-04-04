@@ -6,15 +6,32 @@ BattleEngine._entitys = nil
 BattleEngine._systems = nil
 ---@field   BattleScheduler#BattleScheduler _scheduler
 BattleEngine._scheduler = nil
+---@field   EventDispather#EventDispather _dispather
+BattleEngine._dispather = nil
+---@field   BaseStackManager#BaseStackManager _stackManager
+BattleEngine._stackManager = nil
 
 function BattleEngine:ctor()
 	self._entitys = {}
 	self._systems = {}
-	self._scheduler = battle.BattleScheduler.new()
+	self._scheduler = battle.engine.BattleScheduler.new()
+	self._dispather = battle.EventDispatcher.new()
+end
+
+function BattleEngine:setStackManager( stackManager )
+	self._stackManager = stackManager
 end
 
 function BattleEngine:update()
 	self._scheduler:update()
+end
+
+function BattleEngine:add_listener(type, listener, owner)
+	self._dispather:add_listener(type, listener, owner)
+end
+
+function BattleEngine:dispatch_event(type, ... )
+	self._dispather:dispatch_event(type, ...)
 end
 
 ---@function registerScheduler
@@ -31,6 +48,19 @@ function BattleEngine:pause()
 
 end
 
+---@function addSystem
+---@param BattleSystem#BattleSystem system
+function BattleEngine:addSystem( system )
+	table.insert(self._systems, system)
+	system:setEngine(self)
+	system:start()
+end
+
+---@function pushMessage
+---@param BattleBaseMessage#BattleBaseMessage msg
+function BattleEngine:pushMessage( msg )
+	self._stackManager:pushMessage(msg)
+end
 
 
 

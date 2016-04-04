@@ -1,16 +1,8 @@
 module("battle", package.seeall)
 
-battle.BattleComponent = require("battle.engine.BattleComponent")
+battle.EventDispatcher = require("core.EventDispatcher")
 
-battle.BattleEntity = require("battle.engine.BattleEntity")
-
-battle.SchedulerEntity = require("battle.engine.SchedulerEntity")
-
-battle.BattleScheduler = require("battle.engine.BattleScheduler")
-
-battle.BattleSystem = require("battle.engine.BattleSystem")
-
-battle.BattleEngine = require("battle.engine.BattleEngine")
+require("battle.engine.engine")
 
 battle.BattleLauch = require("battle.BattleLauch")
 

@@ -19,8 +19,8 @@ function BattleBaseMessage:isModelEndFrame()
 	return self.type == battle.message.MessageType.model2view.EndFrame
 end
 
-function BattleBaseMessage:printSelf()
-	print("---------- BattleBaseMessage ------------")
+function BattleBaseMessage:printSelf( header )
+	print(string.format("---------- %s ------------", header or "BattleBaseMessage"))
 	for key, value in pairs(self) do
 		print(key, ":", value)
 	end

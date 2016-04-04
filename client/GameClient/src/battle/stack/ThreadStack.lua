@@ -11,7 +11,7 @@ end
 ---@function _pushModelMessage
 ---@param array_table#BattleBaseMessage msgs
 function ThreadStack:_pushModelMessages( msgs )
-	self._cobj:pushOutputMessages(msgs)
+	self._cobj:pushInputMessages(msgs)
 end
 
 ---@function _popModelMessages
@@ -23,7 +23,7 @@ end
 ---@function _pushViewMessages
 ---@param array_table#BattleBaseMessage msg
 function ThreadStack:_pushViewMessages( msgs )
-	self._cobj:pushInputMessages(msgs)
+	self._cobj:pushOutputMessages(msgs)
 end
 
 ---@function _popViewMessages
@@ -39,8 +39,10 @@ function ThreadStack:reset()
 	self._cobj:run("ThreadBattleRunCallback")
 end
 
-function ThreadStack:pause()
-	self._cobj:pause()
+---@function pause
+---@param boolean#boolean yeild 是否挂起线程，给ThreadStack用的
+function ThreadStack:pause(yeild)
+	self._cobj:pause(yeild)
 end
 
 function ThreadStack:resume()
