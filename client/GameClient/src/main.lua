@@ -1,6 +1,3 @@
-cc.FileUtils:getInstance():addSearchPath("src")
-cc.FileUtils:getInstance():addSearchPath("res")
-
 -- 是否使用被弃用的API接口
 -- CC_USE_DEPRECATED_API = true
 require "cocos.init"

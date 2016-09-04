@@ -43,7 +43,12 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	//此方法需要将 override 目录下的 FileUtils.h 和 FileUtils.cpp 覆盖cocos的对应文件
 	FileUtils::getInstance()->setEncrypt("xiezhunben", strlen("xiezhunben"), "xiezhunben", strlen("xiezhunben"));
-    if (engine->executeScriptFile("src/main.lua")) {
+
+	FileUtils::getInstance()->addSearchPath("src");
+	FileUtils::getInstance()->addSearchPath("res");
+	FileUtils::getInstance()->addSearchPath("../res");
+
+    if (engine->executeScriptFile("main.lua")) {
         return false;
     }
 

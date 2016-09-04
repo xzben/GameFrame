@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>E439935D-B2A2-46AE-856D-2AA408428F33</ProjectGuid>
+    <!--$guid1$-->
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\battle\" />
+    <Folder Include="src\battle\engine\" />
+    <Folder Include="src\battle\message\" />
+    <Folder Include="src\battle\message\model2view\" />
+    <Folder Include="src\battle\message\view2model\" />
+    <Folder Include="src\battle\model\" />
+    <Folder Include="src\battle\model\component\" />
+    <Folder Include="src\battle\model\pub\" />
+    <Folder Include="src\battle\model\system\" />
+    <Folder Include="src\battle\model\system\enter\" />
+    <Folder Include="src\battle\pub\" />
+    <Folder Include="src\battle\pub\lauchModel\" />
+    <Folder Include="src\battle\stack\" />
+    <Folder Include="src\battle\view\" />
+    <Folder Include="src\battle\view\scene\" />
+    <Folder Include="src\battle\view\system\" />
+    <Folder Include="src\cocos\" />
+    <Folder Include="src\cocos\cocos2d\" />
+    <Folder Include="src\cocos\cocosbuilder\" />
+    <Folder Include="src\cocos\cocosdenshion\" />
+    <Folder Include="src\cocos\cocostudio\" />
+    <Folder Include="src\cocos\controller\" />
+    <Folder Include="src\cocos\extension\" />
+    <Folder Include="src\cocos\network\" />
+    <Folder Include="src\cocos\spine\" />
+    <Folder Include="src\cocos\ui\" />
+    <Folder Include="src\core\" />
+    <Folder Include="src\core\luaBridge\" />
+    <Folder Include="src\core\network\" />
+    <Folder Include="src\core\struct\" />
+    <Folder Include="src\core\tools\" />
+    <Folder Include="src\game\" />
+    <Folder Include="src\prime\" />
+    <Folder Include="src\prime\common\" />
+    <Folder Include="src\prime\common\base\" />
+    <Folder Include="src\prime\common\control\" />
+    <Folder Include="src\prime\encrypt\" />
+    <Folder Include="src\prime\lauchScene\" />
+    <Folder Include="src\prime\luaBridge\" />
+    <Folder Include="src\prime\network\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\battle\battle.lua" />
+    <Compile Include="src\battle\BattleLauch.lua" />
+    <Compile Include="src\battle\engine\BattleComponent.lua" />
+    <Compile Include="src\battle\engine\BattleEngine.lua" />
+    <Compile Include="src\battle\engine\BattleEntity.lua" />
+    <Compile Include="src\battle\engine\BattleScheduler.lua" />
+    <Compile Include="src\battle\engine\BattleSystem.lua" />
+    <Compile Include="src\battle\engine\engine.lua" />
+    <Compile Include="src\battle\engine\SchedulerEntity.lua" />
+    <Compile Include="src\battle\message\BattleBaseMessage.lua" />
+    <Compile Include="src\battle\message\message.lua" />
+    <Compile Include="src\battle\message\MessageType.lua" />
+    <Compile Include="src\battle\message\model2view\model2view.lua" />
+    <Compile Include="src\battle\message\view2model\StartGameMessage.lua" />
+    <Compile Include="src\battle\message\view2model\view2model.lua" />
+    <Compile Include="src\battle\model\model.lua" />
+    <Compile Include="src\battle\model\ModelMain.lua" />
+    <Compile Include="src\battle\model\system\enter\BattleEnterSystem.lua" />
+    <Compile Include="src\battle\model\system\system.lua" />
+    <Compile Include="src\battle\model\ThreadEntry.lua" />
+    <Compile Include="src\battle\pub\EntityType.lua" />
+    <Compile Include="src\battle\pub\pub.lua" />
+    <Compile Include="src\battle\stack\BaseStack.lua" />
+    <Compile Include="src\battle\stack\BaseStackManager.lua" />
+    <Compile Include="src\battle\stack\CoroutineStack.lua" />
+    <Compile Include="src\battle\stack\ModelStackManager.lua" />
+    <Compile Include="src\battle\stack\stack.lua" />
+    <Compile Include="src\battle\stack\ThreadStack.lua" />
+    <Compile Include="src\battle\stack\ViewStackManager.lua" />
+    <Compile Include="src\battle\view\scene\BaseBattleScene.lua" />
+    <Compile Include="src\battle\view\scene\BattleLoadingScene.lua" />
+    <Compile Include="src\battle\view\view.lua" />
+    <Compile Include="src\battle\view\ViewManager.lua" />
+    <Compile Include="src\cocos\cocos2d\bitExtend.lua" />
+    <Compile Include="src\cocos\cocos2d\Cocos2d.lua" />
+    <Compile Include="src\cocos\cocos2d\Cocos2dConstants.lua" />
+    <Compile Include="src\cocos\cocos2d\DeprecatedCocos2dClass.lua" />
+    <Compile Include="src\cocos\cocos2d\DeprecatedCocos2dEnum.lua" />
+    <Compile Include="src\cocos\cocos2d\DeprecatedCocos2dFunc.lua" />
+    <Compile Include="src\cocos\cocos2d\DeprecatedOpenglEnum.lua" />
+    <Compile Include="src\cocos\cocos2d\DrawPrimitives.lua" />
+    <Compile Include="src\cocos\cocos2d\extern.lua" />
+    <Compile Include="src\cocos\cocos2d\json.lua" />
+    <Compile Include="src\cocos\cocos2d\luaj.lua" />
+    <Compile Include="src\cocos\cocos2d\luaoc.lua" />
+    <Compile Include="src\cocos\cocos2d\Opengl.lua" />
+    <Compile Include="src\cocos\cocos2d\OpenglConstants.lua" />
+    <Compile Include="src\cocos\cocosbuilder\CCBReaderLoad.lua" />
+    <Compile Include="src\cocos\cocosbuilder\DeprecatedCocosBuilderClass.lua" />
+    <Compile Include="src\cocos\cocosdenshion\AudioEngine.lua" />
+    <Compile Include="src\cocos\cocosdenshion\DeprecatedCocosDenshionClass.lua" />
+    <Compile Include="src\cocos\cocosdenshion\DeprecatedCocosDenshionFunc.lua" />
+    <Compile Include="src\cocos\cocostudio\CocoStudio.lua" />
+    <Compile Include="src\cocos\cocostudio\DeprecatedCocoStudioClass.lua" />
+    <Compile Include="src\cocos\cocostudio\DeprecatedCocoStudioFunc.lua" />
+    <Compile Include="src\cocos\cocostudio\StudioConstants.lua" />
+    <Compile Include="src\cocos\controller\ControllerConstants.lua" />
+    <Compile Include="src\cocos\extension\DeprecatedExtensionClass.lua" />
+    <Compile Include="src\cocos\extension\DeprecatedExtensionEnum.lua" />
+    <Compile Include="src\cocos\extension\DeprecatedExtensionFunc.lua" />
+    <Compile Include="src\cocos\extension\ExtensionConstants.lua" />
+    <Compile Include="src\cocos\init.lua" />
+    <Compile Include="src\cocos\network\DeprecatedNetworkClass.lua" />
+    <Compile Include="src\cocos\network\DeprecatedNetworkEnum.lua" />
+    <Compile Include="src\cocos\network\DeprecatedNetworkFunc.lua" />
+    <Compile Include="src\cocos\network\NetworkConstants.lua" />
+    <Compile Include="src\cocos\spine\SpineConstants.lua" />
+    <Compile Include="src\cocos\ui\DeprecatedUIEnum.lua" />
+    <Compile Include="src\cocos\ui\DeprecatedUIFunc.lua" />
+    <Compile Include="src\cocos\ui\experimentalUIConstants.lua" />
+    <Compile Include="src\cocos\ui\GuiConstants.lua" />
+    <Compile Include="src\Configure.lua" />
+    <Compile Include="src\core\CocoStudioHelper.lua" />
+    <Compile Include="src\core\core.lua" />
+    <Compile Include="src\core\EventDispatcher.lua" />
+    <Compile Include="src\core\FiniteStateMachine.lua" />
+    <Compile Include="src\core\luaBridge\LuaBridge.lua" />
+    <Compile Include="src\core\luaBridge\LuaJavaBridge.lua" />
+    <Compile Include="src\core\luaBridge\LuaOCBridge.lua" />
+    <Compile Include="src\core\network\net.lua" />
+    <Compile Include="src\core\network\Network.lua" />
+    <Compile Include="src\core\network\protobuf.lua" />
+    <Compile Include="src\core\network\ProtoRegister.lua" />
+    <Compile Include="src\core\Session.lua" />
+    <Compile Include="src\core\struct\Queue.lua" />
+    <Compile Include="src\core\struct\Stack.lua" />
+    <Compile Include="src\core\struct\struct.lua" />
+    <Compile Include="src\core\tools\CocoStudioHelper.lua" />
+    <Compile Include="src\core\tools\Helper.lua" />
+    <Compile Include="src\core\tools\LoadDelay.lua" />
+    <Compile Include="src\core\tools\PathFindHelper.lua" />
+    <Compile Include="src\core\tools\SensitiveWordHelper.lua" />
+    <Compile Include="src\core\tools\TileMapHelper.lua" />
+    <Compile Include="src\core\tools\tools.lua" />
+    <Compile Include="src\core\tools\TouchHelper.lua" />
+    <Compile Include="src\core\tools\VisibleRect.lua" />
+    <Compile Include="src\core\VisibleRect.lua" />
+    <Compile Include="src\game\game.lua" />
+    <Compile Include="src\HotCodeInclude.lua" />
+    <Compile Include="src\main.lua" />
+    <Compile Include="src\prime\common\base\BaseScene.lua" />
+    <Compile Include="src\prime\common\base\CBase.lua" />
+    <Compile Include="src\prime\common\base\MBase.lua" />
+    <Compile Include="src\prime\common\base\VBase.lua" />
+    <Compile Include="src\prime\common\common.lua" />
+    <Compile Include="src\prime\common\control\DragSprite.lua" />
+    <Compile Include="src\prime\common\control\ScrollMap.lua" />
+    <Compile Include="src\prime\common\control\SmartPageView.lua" />
+    <Compile Include="src\prime\encrypt\EncryptScene.lua" />
+    <Compile Include="src\prime\lauchScene\LauchScene.lua" />
+    <Compile Include="src\prime\luaBridge\LuaBridgeScene.lua" />
+    <Compile Include="src\prime\network\NetworkScene.lua" />
+    <Compile Include="src\prime\prime.lua" />
+    <Compile Include="src\trackback.lua" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
